@@ -9,9 +9,9 @@ namespace PrototipoApi.Entities
         public int RequestId { get; set; }
         [ForeignKey("RequestId")]
         public Request Request { get; set; } = null!;
-        public int OldStatusId { get; set; }
+        public int? OldStatusId { get; set; } // Ahora es nullable
         [ForeignKey("OldStatusId")]
-        public Status OldStatus { get; set; } = null!;
+        public Status? OldStatus { get; set; } // Ahora es nullable
         public int NewStatusId { get; set; }
         [ForeignKey("NewStatusId")]
         public Status NewStatus { get; set; } = null!;
