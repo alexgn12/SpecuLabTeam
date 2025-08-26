@@ -55,7 +55,7 @@ namespace PrototipoApi.Controllers
         {
             _loguer.LogInfo("Creando nueva transacción");
             var createdTransaction = await _mediator.Send(
-                new CreateTransactionCommand(dto.TransactionDate, dto.TransactionTypeId, dto.RequestId)
+                new CreateTransactionCommand(dto.TransactionDate, dto.TransactionTypeId, (int)dto.BuildingAmount)
             );
             _loguer.LogInfo($"Transacción creada con id {createdTransaction.TransactionId}");
             return CreatedAtAction(nameof(GetTransaction), new { id = createdTransaction.TransactionId }, createdTransaction);

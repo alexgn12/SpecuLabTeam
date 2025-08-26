@@ -37,7 +37,7 @@ public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery
             TransactionDate = t.TransactionDate,
             TransactionType = t.TransactionsType.TransactionName,
             TransactionTypeId = t.TransactionTypeId,
-            RequestId = t.RequestId,
+            BuildingAmount = (decimal)t.Request.BuildingAmount,
             Description = t.Description
         };
 

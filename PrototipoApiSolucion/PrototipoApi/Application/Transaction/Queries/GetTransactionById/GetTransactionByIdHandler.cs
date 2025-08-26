@@ -30,7 +30,7 @@ public class GetTransactionByIdHandler : IRequestHandler<GetTransactionByIdQuery
             TransactionDate = transaction.TransactionDate,
             TransactionType = transaction.TransactionsType.TransactionName,
             TransactionTypeId = transaction.TransactionTypeId,
-            RequestId = transaction.RequestId,
+            BuildingAmount = (decimal)transaction.Request.BuildingAmount,
             Description = transaction.Description
             // ManagementBudgetId = transaction.ManagementBudgetId // si lo usas
         };
