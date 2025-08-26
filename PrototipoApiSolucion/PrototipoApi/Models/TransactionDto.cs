@@ -9,6 +9,7 @@
         public string Description { get; set; } = string.Empty;
         // Relaciones
         public decimal BuildingAmount { get; set; } // Relación con Request
+        public decimal Amount { get; set; }
         //public int ManagementBudgetId { get; set; }
     }
 }

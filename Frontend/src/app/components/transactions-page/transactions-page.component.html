@@ -56,7 +56,9 @@
                 {{ t.type }}
               </span>
             </td>
-            <td>{{ t.buildingAmount | currency:'EUR':'symbol':'1.0-0' }}</td>
+            <td>
+              {{ t.type === 'INGRESO' ? t.amount : t.buildingAmount | currency:'EUR':'symbol':'1.0-0' }}
+            </td>
             <td>{{ t.description }}</td>
             <td>
               <ng-container *ngIf="t.requestId">Solicitud #{{ t.requestId }}</ng-container>
