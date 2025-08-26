@@ -76,7 +76,8 @@ export class Budget implements OnInit {
 
   private loadMonthlyExpenses() {
     this.transactionsService.getTransactions({ size: 300 }).subscribe({
-      next: (transactions: Transaction[]) => {
+      next: (result: { items: Transaction[]; total: number }) => {
+        const transactions = result.items;
         const monthlyExpenses = Array(12).fill(0);
         const monthlyIncome = Array(12).fill(0);
         transactions.forEach(tx => {

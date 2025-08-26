@@ -15,6 +15,7 @@ import { Budget } from './pages/budget/budget';
 import { InfoCard } from './components/info-card/info-card';
 import { TransactionsPageComponent } from "./components/transactions-page/transactions-page.component";
 import { DetalleRequest } from './components/detalle-request/detalle-request';
+import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { DetalleRequest } from './components/detalle-request/detalle-request';
   Footer,
   Transactions,
   DetalleRequest,
+  ZoneGrafo,
     
     
   ],

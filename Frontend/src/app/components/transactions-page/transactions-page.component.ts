@@ -37,31 +37,65 @@ export class TransactionsPageComponent implements OnInit {
 
   years = Array.from({length: 5}, (_, i) => String(new Date().getFullYear() - i));
 
+  currentPage = 1;
+  totalPages = 1;
+  pageSize = 20;
+  totalItems = 0;
+
   constructor(private tx: TransactionsService) {}
 
   ngOnInit(): void {
     this.fetch();
   }
 
-  fetch(): void {
+  fetch(page: number = this.currentPage): void {
     this.loading = true;
     this.error = null;
+    this.currentPage = page;
 
     const { month, year, type } = this.filters;
-    const page = 1;
-    const size = 20;
     const transactionType = type === 'INGRESO' || type === 'GASTO' ? type : undefined;
 
     this.tx.getTransactions({
       transactionType,
-      page,
-      size,
+      page: this.currentPage,
+      size: this.pageSize,
       month: month || undefined,
       year: year || undefined
     }).subscribe({
-      next: (data: Transaction[]) => { this.transactions = data; this.loading = false; },
+      next: (result: { items: Transaction[]; total: number }) => {
+        this.transactions = result.items;
+        this.totalItems = result.total;
+        this.totalPages = Math.max(1, Math.ceil(this.totalItems / this.pageSize));
+        this.loading = false;
+      },
       error: (err: any) => { this.error = 'Error al cargar transacciones'; this.loading = false; }
     });
+  }
+
+  nextPage() {
+    if (this.currentPage < this.totalPages) {
+      this.fetch(this.currentPage + 1);
+    }
+  }
+
+  prevPage() {
+    if (this.currentPage > 1) {
+      this.fetch(this.currentPage - 1);
+    }
+  }
+
+  firstPage() {
+    this.fetch(1);
+  }
+
+  lastPage() {
+    this.fetch(this.totalPages);
+  }
+
+  applyFilters(): void {
+    this.currentPage = 1;
+    this.fetch(1);
   }
 
   resetFilters(): void {
@@ -70,6 +104,7 @@ export class TransactionsPageComponent implements OnInit {
       year: '',
       type: ''
     };
-    this.fetch();
+    this.currentPage = 1;
+    this.fetch(1);
   }
 }
