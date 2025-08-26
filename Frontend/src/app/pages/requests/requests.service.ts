@@ -74,4 +74,8 @@ export class RequestsService {
       fetchNextPage();
     });
   }
+
+  getResumenRequests(): Observable<any> {
+    return this.http.get<any>('https://localhost:7092/api/Ang/resumen-requests');
+  }
 }
