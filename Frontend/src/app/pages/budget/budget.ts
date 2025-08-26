@@ -136,8 +136,10 @@ export class Budget implements OnInit {
   private loadBuildings() {
     this.transactionsService.getTransactions({ size: 300 }).subscribe({
       next: (transactions: Transaction[]) => {
-        // Edificios comprados = número de transacciones de tipo 'GASTO'
-        this.buildingsCount = transactions.filter(tx => tx.type === 'GASTO').length;
+        const gastos = transactions.filter(tx => tx.type === 'GASTO');
+        this.buildingsCount = gastos.length;
+        // Sumar buildingAmount de cada gasto (si existe)
+        this.totalPatrimony = gastos.reduce((sum, tx) => sum + (tx.buildingAmount || 0), 0);
         this.loading = false;
       },
       error: () => {

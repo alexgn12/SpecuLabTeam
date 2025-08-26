@@ -11,6 +11,7 @@ export interface Transaction {
   description: string;
   requestId?: number;
   apartmentId?: number;
+  buildingAmount?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -51,12 +52,13 @@ export class TransactionsService {
    */
   private mapDtoToTransaction(dto: any): Transaction {
     // Toma valores en camelCase o PascalCase
-    const transactionId   = dto.transactionId ?? dto.TransactionId;
-    const transactionDate = dto.transactionDate ?? dto.TransactionDate;
-    const amount          = dto.amount ?? dto.Amount;
-    const description     = dto.description ?? dto.Description;
-    const requestId       = dto.requestId ?? dto.RequestId;
-    const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
+  const transactionId   = dto.transactionId ?? dto.TransactionId;
+  const transactionDate = dto.transactionDate ?? dto.TransactionDate;
+  const amount          = dto.amount ?? dto.Amount;
+  const description     = dto.description ?? dto.Description;
+  const requestId       = dto.requestId ?? dto.RequestId;
+  const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
+  const buildingAmount  = dto.buildingAmount ?? dto.BuildingAmount;
 
     // El backend tiene TransactionTypeId + TransactionType (entidad).
     // Intentamos derivar un string 'INGRESO'/'GASTO' de forma robusta.
@@ -78,7 +80,8 @@ export class TransactionsService {
       type,
       description,
       requestId,
-      apartmentId
+      apartmentId,
+      buildingAmount
     };
   }
 
