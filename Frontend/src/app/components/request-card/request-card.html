@@ -18,10 +18,6 @@
       Nombre del Edificio: <span class="text-primary">{{ building?.buildingName || 'N/A' }}</span>
     </h5>
     <p class="card-text mb-1"><strong>Dirección:</strong> {{ building?.street || 'N/A' }}</p>
-    <p class="card-text mb-1"><strong>Distrito:</strong> {{ building?.district || 'N/A' }}</p>
-    <p class="card-text mb-1"><strong>Altura (pisos):</strong> {{ building?.floorCount || 0 }}</p>
-    <p class="card-text mb-1"><strong>Año de Construcción:</strong> {{ building?.yearBuilt || 'N/A' }}</p>
-    <p class="card-text mb-1"><strong>Código del Edificio:</strong> {{ building?.buildingCode || 'N/A' }}</p>
 
     <ul class="list-group list-group-flush mb-2">
       <li class="list-group-item px-0 py-1">
@@ -46,8 +42,10 @@
           <sl-boton tipo="rechazar"></sl-boton>
         </ng-container>
         <!-- No buttons for 'Aprobado' or 'Rechazado' -->
+        <button class="btn btn-outline-info btn-sm" (click)="showDetails = !showDetails">Detalles</button>
       </div>
     </div>
+    <sl-detalle-request *ngIf="showDetails" [request]="request" [building]="building"></sl-detalle-request>
   </div>
 </div>
 

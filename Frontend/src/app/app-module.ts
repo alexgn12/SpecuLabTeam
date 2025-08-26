@@ -1,4 +1,3 @@
-
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
@@ -14,7 +13,6 @@ import { Budget } from './pages/budget/budget';
 
 import { InfoCard } from './components/info-card/info-card';
 import { TransactionsPageComponent } from "./components/transactions-page/transactions-page.component";
-import { DetalleRequest } from './components/detalle-request/detalle-request';
 import { ResumenRequestsComponent } from './components/resumen-requests/resumen-requests.component';
 import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
 
@@ -24,7 +22,6 @@ import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
   Header,
   Footer,
   Transactions,
-  DetalleRequest,
     
   ],
   imports: [
