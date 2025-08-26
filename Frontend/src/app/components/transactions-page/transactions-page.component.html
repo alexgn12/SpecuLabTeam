@@ -1,19 +1,19 @@
-
-
 <!-- Barra de filtros -->
 <div class="card mb-4">
   <div class="card-body">
     <form class="row g-3">
       <div class="col-md-3">
-        <label for="dateRange" class="form-label">Rango de fechas</label>
-        <input type="text" class="form-control" id="dateRange" placeholder="dd/mm/aaaa - dd/mm/aaaa">
+        <label for="month" class="form-label">Mes</label>
+        <select class="form-select" id="month" [(ngModel)]="filters.month" name="month">
+          <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
+        </select>
       </div>
       <div class="col-md-3">
         <label for="type" class="form-label">Tipo de transacción</label>
-        <select class="form-select" id="type">
-          <option selected>Todos</option>
-          <option>Ingreso</option>
-          <option>Gasto</option>
+        <select class="form-select" id="type" [(ngModel)]="filters.type" name="type">
+          <option value="">Todos</option>
+          <option value="INGRESO">Ingreso</option>
+          <option value="GASTO">Gasto</option>
         </select>
       </div>
       <div class="col-md-4">
@@ -21,7 +21,7 @@
         <input type="text" class="form-control" id="description" placeholder="Buscar por descripción">
       </div>
       <div class="col-md-2 d-flex align-items-end">
-        <button type="button" class="btn btn-primary w-100">Filtrar</button>
+        <button type="button" class="btn btn-primary w-100" (click)="fetch()">Filtrar</button>
       </div>
     </form>
     <!-- TODO: Añadir filtros avanzados -->
