@@ -33,17 +33,19 @@ public static class DbInitializer
             await context.SaveChangesAsync();
         }
 
-        // 2. Requests y Status únicos
-        if (!context.Requests.Any())
+        // 2. Statuses
+        if (!context.Statuses.Any())
         {
-            var (requests, statuses) = Seeder.GenerateRequestsWithStatuses(40, buildingList);
+            var statuses = Seeder.GenerateStatuses();
             context.Statuses.AddRange(statuses);
             await context.SaveChangesAsync();
-            // Asignar StatusId correcto a cada request
-            for (int i = 0; i < requests.Count; i++)
-            {
-                requests[i].StatusId = statuses[i].StatusId;
-            }
+        }
+        var statusList = await context.Statuses.ToListAsync();
+
+        // 2b. Requests
+        if (!context.Requests.Any())
+        {
+            var requests = Seeder.GenerateRequests(40, buildingList, statusList);
             context.Requests.AddRange(requests);
             await context.SaveChangesAsync();
         }

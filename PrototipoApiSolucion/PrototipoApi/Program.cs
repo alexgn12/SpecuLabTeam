@@ -52,6 +52,9 @@ builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, P
 // Registro del loguer
 builder.Services.AddSingleton<PrototipoApi.Logging.ILoguer, PrototipoApi.Logging.Loguer>();
 
+// Registro de AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
 // Construye la aplicación web
 var app = builder.Build();
 

@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
+import { Formulario } from '../../components/formulario/formulario';
 
 @Component({
   selector: 'sl-home',
-  standalone: false,
+  standalone: true,
   templateUrl: './home.html',
-  styleUrl: './home.css'
+  styleUrl: './home.css',
+  imports: [Formulario]
 })
 export class Home {
 

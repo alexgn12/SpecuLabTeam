@@ -17,11 +17,10 @@ import { TransactionsPageComponent } from "./components/transactions-page/transa
 
 @NgModule({
   declarations: [
-    App,
-    Header,
-    Footer,
-    Home,
-    Transactions,
+  App,
+  Header,
+  Footer,
+  Transactions,
     
     
   ],

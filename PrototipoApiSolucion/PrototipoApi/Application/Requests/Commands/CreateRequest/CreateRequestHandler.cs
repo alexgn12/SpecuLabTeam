@@ -89,8 +89,7 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
                 Description = r.Description,
                 StatusId = r.StatusId,
                 StatusType = r.Status.StatusType,
-                BuildingId = r.BuildingId,
-                BuildingStreet = r.Building.Street
+                BuildingId = r.BuildingId
             },
             cancellationToken
         );

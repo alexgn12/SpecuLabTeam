@@ -6,47 +6,49 @@ using PrototipoApi.Models;
 using PrototipoApi.Repositories.Interfaces;
 using System.Linq.Expressions;
 
-public class GetAllRequestsHandler : IRequestHandler<GetAllRequestsQuery, List<RequestDto>>
+namespace PrototipoApi.Application.Requests.Queries.GetAllRequests
 {
-    private readonly IRepository<Request> _repository;
-
-    public GetAllRequestsHandler(IRepository<Request> repository)
+    public class GetAllRequestsHandler : IRequestHandler<GetAllRequestsQuery, List<RequestDto>>
     {
-        _repository = repository;
-    }
+        private readonly IRepository<Request> _repository;
 
-    public async Task<List<RequestDto>> Handle(GetAllRequestsQuery request, CancellationToken ct)
-    {
-        var page = request.Page;
-
-        Expression<Func<Request, bool>>? filter = null;
-        if (!string.IsNullOrWhiteSpace(request.Status))
-            filter = r => r.Status.StatusType == request.Status;
-
-        Expression<Func<Request, RequestDto>> selector = r => new RequestDto
+        public GetAllRequestsHandler(IRepository<Request> repository)
         {
-            RequestId = r.RequestId,
-            BuildingAmount = r.BuildingAmount,
-            MaintenanceAmount = r.MaintenanceAmount,
-            Description = r.Description,
-            StatusId = r.StatusId,
-            StatusType = r.Status.StatusType,
-            BuildingId = r.BuildingId,
-            BuildingStreet = r.Building.Street
-        };
+            _repository = repository;
+        }
 
-        Func<IQueryable<Request>, IOrderedQueryable<Request>> orderBy = q =>
-            q.OrderByDescending(r => r.RequestDate).ThenBy(r => r.RequestId);
+        public async Task<List<RequestDto>> Handle(GetAllRequestsQuery request, CancellationToken ct)
+        {
+            var page = request.Page;
 
-        var items = await _repository.SelectListAsync(
-            filter: filter,
-            orderBy: orderBy,
-            selector: selector,
-            skip: (page - 1) * request.Size,
-            take: request.Size,
-            ct: ct
-        );
+            Expression<Func<Request, bool>>? filter = null;
+            if (!string.IsNullOrWhiteSpace(request.Status))
+                filter = r => r.Status.StatusType == request.Status;
 
-        return items;
+            Expression<Func<Request, RequestDto>> selector = r => new RequestDto
+            {
+                RequestId = r.RequestId,
+                BuildingAmount = r.BuildingAmount,
+                MaintenanceAmount = r.MaintenanceAmount,
+                Description = r.Description,
+                StatusId = r.StatusId,
+                StatusType = r.Status.StatusType,
+                BuildingId = r.BuildingId
+            };
+
+            Func<IQueryable<Request>, IOrderedQueryable<Request>> orderBy = q =>
+                q.OrderByDescending(r => r.RequestDate).ThenBy(r => r.RequestId);
+
+            var items = await _repository.SelectListAsync(
+                filter: filter,
+                orderBy: orderBy,
+                selector: selector,
+                skip: (page - 1) * request.Size,
+                take: request.Size,
+                ct: ct
+            );
+
+            return items;
+        }
     }
 }

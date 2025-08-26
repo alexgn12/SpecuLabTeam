@@ -57,31 +57,29 @@ namespace PrototipoApi.Data
         }
 
         // 2. Requests y Status únicos
-        public static (List<Request> requests, List<Status> statuses) GenerateRequestsWithStatuses(int count, List<Building> buildings)
+        public static List<Status> GenerateStatuses()
         {
-            var statuses = new List<Status>();
             var now = DateTime.UtcNow;
+            return StatusTypes.Select(type => new Status
+            {
+                StatusType = type,
+                Description = $"Estado {type}",
+                CreatedAt = now,
+                UpdatedAt = now
+            }).ToList();
+        }
+
+        public static List<Request> GenerateRequests(int count, List<Building> buildings, List<Status> statuses)
+        {
             var requestFaker = new Faker<Request>()
                 .RuleFor(r => r.BuildingAmount, f => (double)f.Finance.Amount(50000, 500000))
-                .RuleFor(r => r.MaintenanceAmount, f => (double)f.Finance.Amount(5000, 50000))
+                .RuleFor(r => r.MaintenanceAmount, f => 0) // MaintenanceAmount siempre será 0
                 .RuleFor(r => r.Description, f => f.Lorem.Sentence(6))
                 .RuleFor(r => r.RequestDate, f => f.Date.Past(1))
                 .RuleFor(r => r.BuildingId, f => f.PickRandom(buildings).BuildingId)
-                .RuleFor(r => r.Status, (f, r) => {
-                    var uniqueDesc = $"{f.Lorem.Sentence(4)} - {Guid.NewGuid()}";
-                    var status = new Status
-                    {
-                        StatusType = f.PickRandom(StatusTypes),
-                        Description = uniqueDesc,
-                        CreatedAt = now,
-                        UpdatedAt = now
-                    };
-                    statuses.Add(status);
-                    return status;
-                });
-            var requests = requestFaker.Generate(count);
-            // Asignar StatusId a cada request (después de guardar en DB)
-            return (requests, statuses);
+                .RuleFor(r => r.StatusId, f => f.PickRandom(statuses).StatusId);
+
+            return requestFaker.Generate(count);
         }
 
         // 3. ManagementBudgets

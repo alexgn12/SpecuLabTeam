@@ -1,0 +1,15 @@
+<form [formGroup]="form" (ngSubmit)="enviarPeticion()" class="formulario-form">
+  <h3>Solicitar evaluación de reforma</h3>
+  <div>
+    <label for="buildingCode">Código del edificio</label>
+    <input id="buildingCode" formControlName="buildingCode" type="text" required>
+  </div>
+  <div>
+    <label for="description">Descripción de la reforma</label>
+    <textarea id="description" formControlName="description" required></textarea>
+  </div>
+  <button type="submit">Enviar petición</button>
+
+  <div *ngIf="successMsg" class="success-msg">{{ successMsg }}</div>
+  <div *ngIf="errorMsg && enviado" class="error-msg">{{ errorMsg }}</div>
+</form>

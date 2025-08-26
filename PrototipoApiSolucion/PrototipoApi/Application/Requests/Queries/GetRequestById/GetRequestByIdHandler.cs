@@ -1,39 +1,37 @@
 using MediatR;
-using Microsoft.EntityFrameworkCore;
-using PrototipoApi.Application.Requests.Queries.GetRequestById;
-using PrototipoApi.BaseDatos;
-using PrototipoApi.Entities;
 using PrototipoApi.Models;
 using PrototipoApi.Repositories.Interfaces;
+using System.Threading;
+using System.Threading.Tasks;
 
-public class GetRequestsByIdHandler : IRequestHandler<GetRequestByIdQuery, RequestDto>
+namespace PrototipoApi.Application.Requests.Queries.GetRequestById
 {
-    private readonly IRepository<Request> _repository;
-
-    public GetRequestsByIdHandler(IRepository<Request> repository)
+    public class GetRequestByIdHandler : IRequestHandler<GetRequestByIdQuery, RequestDto?>
     {
-        _repository = repository;
-    }
+        private readonly IRepository<Entities.Request> _repository;
 
-    public async Task<RequestDto> Handle(GetRequestByIdQuery request, CancellationToken cancellationToken)
-    {
-        var requestDto = await _repository.SelectOneAsync(
-            filter: r => r.RequestId == request.id,
-            selector: r => new RequestDto
-            {
-                RequestId = r.RequestId,
-                BuildingAmount = r.BuildingAmount,
-                MaintenanceAmount = r.MaintenanceAmount,
-                Description = r.Description,
-                StatusId = r.StatusId,
-                StatusType = r.Status.StatusType,
-                BuildingId = r.BuildingId,
-                BuildingStreet = r.Building.Street
-            },
-            ct: cancellationToken
-        );
+        public GetRequestByIdHandler(IRepository<Entities.Request> repository)
+        {
+            _repository = repository;
+        }
 
-
-        return requestDto;
+        public async Task<RequestDto?> Handle(GetRequestByIdQuery request, CancellationToken cancellationToken)
+        {
+            var dto = await _repository.SelectOneAsync(
+                r => r.RequestId == request.id,
+                r => new RequestDto
+                {
+                    RequestId = r.RequestId,
+                    BuildingAmount = r.BuildingAmount,
+                    MaintenanceAmount = r.MaintenanceAmount,
+                    Description = r.Description,
+                    StatusId = r.StatusId,
+                    StatusType = r.Status.StatusType,
+                    BuildingId = r.BuildingId
+                },
+                cancellationToken
+            );
+            return dto;
+        }
     }
 }
