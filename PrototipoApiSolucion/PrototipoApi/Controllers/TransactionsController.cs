@@ -4,6 +4,7 @@ using PrototipoApi.Models;
 using PrototipoApi.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using PrototipoApi.Application.Transaction.Queries.GetAllTransaction.ListResult;
 using Microsoft.AspNetCore.Http.Features;
 
 namespace PrototipoApi.Controllers
@@ -23,7 +24,7 @@ namespace PrototipoApi.Controllers
 
         // GET: api/transactions
         [HttpGet]
-        public async Task<ActionResult<TransactionListResultDto>> GetTransactions(
+        public async Task<ActionResult<object>> GetTransactions(
             [FromQuery] string? transactionType,
             [FromQuery] int page = 1,
             [FromQuery] int size = 10,
@@ -32,8 +33,8 @@ namespace PrototipoApi.Controllers
         {
             _loguer.LogInfo($"Obteniendo transacciones. Tipo: {transactionType}, Página: {page}, Tamaño: {size}, Año: {year}, Mes: {month}");
             var query = new GetAllTransactionsQuery(transactionType, page, size, year, month);
-            var (items, total) = await _mediator.Send(query);
-            return Ok(new { items, total });
+            var result = await _mediator.Send(query);
+            return Ok(new { items = result.Items, total = result.Total });
         }
 
         // GET: api/transactions/{id}
@@ -63,5 +64,4 @@ namespace PrototipoApi.Controllers
         }
 
     }
-
 }
