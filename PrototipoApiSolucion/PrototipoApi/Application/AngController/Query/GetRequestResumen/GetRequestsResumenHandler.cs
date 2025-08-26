@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using PrototipoApi.Application.AngController.Query;
 using PrototipoApi.BaseDatos;
 using PrototipoApi.Entities;
 using System.Collections.Generic;
@@ -8,18 +7,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PrototipoApi.Application.Requests.Queries.GetRequestsResumen
+namespace PrototipoApi.Application.AngController.Query.GetRequestResumen
 {
-    public class AngControllerHandler : IRequestHandler<AngContollerQuery, Dictionary<string, int>>
+    public class GetRequestsResumenHandler : IRequestHandler<GetRequestsResumenQuery, Dictionary<string, int>>
     {
         private readonly ContextoBaseDatos _context;
 
-        public AngControllerHandler(ContextoBaseDatos context)
+        public GetRequestsResumenHandler(ContextoBaseDatos context)
         {
             _context = context;
         }
 
-        public async Task<Dictionary<string, int>> Handle(AngContollerQuery request, CancellationToken cancellationToken)
+        public async Task<Dictionary<string, int>> Handle(GetRequestsResumenQuery request, CancellationToken cancellationToken)
         {
             var resumen = await _context.Requests
                 .GroupBy(r => r.Status.StatusType)
@@ -27,7 +26,7 @@ namespace PrototipoApi.Application.Requests.Queries.GetRequestsResumen
                 .ToListAsync(cancellationToken);
 
             // Asegura que todos los estados estén presentes
-            var estados = new[] { "Recibido", "Pendiente", "Aprobado", "Rechazado" };
+            var estados = new[] { "Recibido", "Pendiente", "Aceptado", "Rechazado" };
             var resultado = estados.ToDictionary(
                 e => e,
                 e => resumen.FirstOrDefault(x => x.Estado == e)?.Total ?? 0

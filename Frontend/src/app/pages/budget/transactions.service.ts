@@ -11,6 +11,7 @@ export interface Transaction {
   description: string;
   requestId?: number;
   apartmentId?: number;
+  buildingAmount?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -79,7 +80,8 @@ export class TransactionsService {
       type,
       description,
       requestId,
-      apartmentId
+      apartmentId,
+      buildingAmount
     };
   }
 
