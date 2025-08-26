@@ -1,0 +1,32 @@
+.resumen-requests-container { padding: 1rem; }
+table { background: #fff; }
+th, td { text-align: center; }
+
+.total-general-box {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	background: #f8fafc;
+	border-radius: 1rem;
+	padding: 1.2rem 2rem;
+	font-size: 1.3rem;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+	margin-bottom: 1.5rem;
+}
+.total-label {
+	font-weight: 500;
+	color: #64748b;
+	margin-right: 1.2rem;
+}
+.total-value {
+	font-size: 2.2rem;
+	font-weight: 700;
+	color: #2563eb;
+}
+.resumen-estado-table th {
+	background: #f1f5f9;
+	font-weight: 600;
+}
+.resumen-estado-table td {
+	font-size: 1.1rem;
+}

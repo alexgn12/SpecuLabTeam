@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
 
-public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery, List<TransactionDto>>
+public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery, (List<TransactionDto> Items, int Total)>
 {
     private readonly IRepository<Transaction> _repository;
 
@@ -17,7 +17,7 @@ public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery
         _repository = repository;
     }
 
-    public async Task<List<TransactionDto>> Handle(GetAllTransactionsQuery request, CancellationToken cancellationToken)
+    public async Task<(List<TransactionDto> Items, int Total)> Handle(GetAllTransactionsQuery request, CancellationToken cancellationToken)
     {
         var page = request.Page;
 
@@ -37,13 +37,16 @@ public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery
             TransactionDate = t.TransactionDate,
             TransactionType = t.TransactionsType.TransactionName,
             TransactionTypeId = t.TransactionTypeId,
-            BuildingAmount = (decimal)t.Request.BuildingAmount,
-            Description = t.Description
+            Description = t.Description,
+            BuildingAmount = t.Request != null ? (decimal)t.Request.BuildingAmount : 0
         };
 
         Func<IQueryable<Transaction>, IOrderedQueryable<Transaction>> orderBy = q =>
             q.OrderByDescending(t => t.TransactionDate).ThenBy(t => t.TransactionId);
 
+        // Obtener total
+        var total = await _repository.CountAsync(filter, cancellationToken);
+        // Obtener items paginados
         var items = await _repository.SelectListAsync(
             filter: filter,
             orderBy: orderBy,
@@ -53,7 +56,7 @@ public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery
             ct: cancellationToken
         );
 
-        return items;
+        return (items, total);
     }
 }
 

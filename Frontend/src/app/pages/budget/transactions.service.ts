@@ -6,7 +6,7 @@ import { Observable, map } from 'rxjs';
 export interface Transaction {
   transactionId: number;
   transactionDate: string;   // ISO string
-  amount: number;
+  buildingAmount: number;
   type: 'INGRESO' | 'GASTO';
   description: string;
   requestId?: number;
@@ -30,7 +30,7 @@ export class TransactionsService {
     size?: number;
     month?: string;
     year?: string;
-  }): Observable<Transaction[]> {
+  }): Observable<{ items: Transaction[]; total: number }> {
     let params = new HttpParams();
 
     if (opts?.transactionType) params = params.set('transactionType', opts.transactionType);
@@ -39,10 +39,11 @@ export class TransactionsService {
     if (opts?.month) params = params.set('month', opts.month);
     if (opts?.year) params = params.set('year', opts.year);
 
-    // Ajusta el tipo genérico al DTO que devuelva tu API.
-    // Aquí supongo un DTO cercano a tu entity (PascalCase o camelCase).
-    return this.http.get<any[]>(this.baseUrl, { params }).pipe(
-      map(rows => rows.map(dto => this.mapDtoToTransaction(dto)))
+    return this.http.get<any>(this.baseUrl, { params }).pipe(
+      map(result => ({
+        items: (result.items || []).map((dto: any) => this.mapDtoToTransaction(dto)),
+        total: result.total || 0
+      }))
     );
   }
 
@@ -52,13 +53,12 @@ export class TransactionsService {
    */
   private mapDtoToTransaction(dto: any): Transaction {
     // Toma valores en camelCase o PascalCase
-  const transactionId   = dto.transactionId ?? dto.TransactionId;
-  const transactionDate = dto.transactionDate ?? dto.TransactionDate;
-  const amount          = dto.amount ?? dto.Amount;
-  const description     = dto.description ?? dto.Description;
-  const requestId       = dto.requestId ?? dto.RequestId;
-  const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
-  const buildingAmount  = dto.buildingAmount ?? dto.BuildingAmount;
+    const transactionId   = dto.transactionId ?? dto.TransactionId;
+    const transactionDate = dto.transactionDate ?? dto.TransactionDate;
+    const buildingAmount  = dto.buildingAmount ?? dto.BuildingAmount;
+    const description     = dto.description ?? dto.Description;
+    const requestId       = dto.requestId ?? dto.RequestId;
+    const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
 
     // El backend tiene TransactionTypeId + TransactionType (entidad).
     // Intentamos derivar un string 'INGRESO'/'GASTO' de forma robusta.
@@ -76,7 +76,7 @@ export class TransactionsService {
     return {
       transactionId,
       transactionDate, // deja ISO string
-      amount,
+      buildingAmount,
       type,
       description,
       requestId,
