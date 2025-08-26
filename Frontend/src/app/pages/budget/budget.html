@@ -41,23 +41,13 @@
       </sl-info-card>
     </div>
 
-      <!-- Gráfico de barras de gasto mensual -->
+  <!-- Gasto mensual como componente -->
   <div class="row mt-5">
     <div class="col-12">
-      <div class="card shadow-sm">
-        <div class="card-header bg-white fw-bold">Gasto mensual</div>
-        <div class="card-body">
-          <canvas baseChart
-            [data]="barChartData"
-            [options]="barChartOptions"
-            [type]="barChartType"
-            height="80">
-          </canvas>
-        </div>
-      </div>
+      <gasto-mensual></gasto-mensual>
       <div class="my-5"><transactions-page></transactions-page></div>
     </div>
   </div>
-  
+
   </div>
     </div>

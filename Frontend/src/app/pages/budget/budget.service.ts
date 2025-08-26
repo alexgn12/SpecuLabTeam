@@ -1,3 +1,9 @@
+export interface MonthlyGastoIngreso {
+  año: number;
+  mes: number;
+  transactionType: 'GASTO' | 'INGRESO';
+  totalGasto: number;
+}
 export interface Transaction {
   transactionId: number;
   transactionDate: string;
@@ -30,6 +36,15 @@ export class BudgetService {
 
   getBudgets(): Observable<ManagementBudget[]> {
     return this.https.get<ManagementBudget[]>(this.apiUrlBudget);
+  }
+
+  /**
+   * Obtiene los datos de gasto e ingreso mensual desde el nuevo endpoint.
+   */
+  getMonthlyGastoIngreso(): Observable<MonthlyGastoIngreso[]> {
+    return this.https.get<MonthlyGastoIngreso[]>(
+      'https://localhost:7092/api/Ang/gasto-mensual'
+    );
   }
 
   getStatus(): Observable<ManagementBudget[]> {
