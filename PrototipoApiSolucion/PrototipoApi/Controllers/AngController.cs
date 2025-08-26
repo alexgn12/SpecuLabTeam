@@ -4,6 +4,7 @@ using MediatR;
 using PrototipoApi.Application.Requests.Queries.GetAllRequests;
 using System.Linq;
 using System.Threading.Tasks;
+using PrototipoApi.Application.AngController.Query;
 
 namespace PrototipoApi.Controllers
 {
@@ -21,34 +22,14 @@ namespace PrototipoApi.Controllers
         [HttpGet("resumen-requests")]
         public async Task<IActionResult> GetResumenRequests()
         {
-            // Obtener todas las solicitudes (sin paginación ni filtro de estado)
-            var requests = await _mediator.Send(new GetAllRequestsQuery(Page: 1, Size: int.MaxValue));
+            var resumen = await _mediator.Send(new AngContollerQuery());
 
-            // Agrupar por tipo de estado y contar
-            var resumen = requests
-                .GroupBy(r => r.StatusType)
-                .Select(g => new
-                {
-                    Estado = g.Key,
-                    Total = g.Count()
-                })
-                .ToList();
-
-            // Para asegurar que todos los estados estén presentes en el resumen
-            var estados = new[] { "Recibido", "Pendiente", "Aceptado", "Rechazado" };
-            var resultado = estados.Select(e => new
-            {
-                Estado = e,
-                Total = resumen.FirstOrDefault(x => x.Estado == e)?.Total ?? 0
-            });
-
-            // Total general
-            var totalGeneral = requests.Count;
+            var totalGeneral = resumen.Values.Sum();
 
             return Ok(new
             {
                 TotalGeneral = totalGeneral,
-                PorEstado = resultado
+                PorEstado = resumen.Select(x => new { Estado = x.Key, Total = x.Value })
             });
         }
     }
