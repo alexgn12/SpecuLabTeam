@@ -1,4 +1,5 @@
 using FluentValidation;
+using PrototipoApi.Application.Transaction.Queries.GetAllTransaction.ListResult;
 
 public class GetAllTransactionsQueryValidator : AbstractValidator<GetAllTransactionsQuery>
 {

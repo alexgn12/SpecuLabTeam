@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using PrototipoApi.Application.AngController.Query;
 using PrototipoApi.Application.AngController.Query.GetRequestResumen;
+using PrototipoApi.Application.AngController.Query.GetBuildingsCountByDistrict;
 
 namespace PrototipoApi.Controllers
 {
@@ -39,6 +40,13 @@ namespace PrototipoApi.Controllers
         {
             var resultado = await _mediator.Send(new GastoMensualPorTipoQuery());
             return Ok(resultado);
+        }
+
+        [HttpGet("buildings-count-by-district")]
+        public async Task<IActionResult> GetBuildingsCountByDistrict()
+        {
+            var result = await _mediator.Send(new GetBuildingsCountByDistrictQuery());
+            return Ok(result);
         }
     }
 }

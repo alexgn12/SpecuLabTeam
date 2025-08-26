@@ -26,7 +26,8 @@ namespace PrototipoApi.Application.AngController.Query.GetRequestResumen
                 .ToListAsync(cancellationToken);
 
             // Asegura que todos los estados estén presentes
-            var estados = new[] { "Recibido", "Pendiente", "Aceptado", "Rechazado" };
+
+            var estados = new[] { "Recibido", "Pendiente", "Aprobado", "Rechazado" };
             var resultado = estados.ToDictionary(
                 e => e,
                 e => resumen.FirstOrDefault(x => x.Estado == e)?.Total ?? 0

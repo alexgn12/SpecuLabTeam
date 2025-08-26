@@ -7,16 +7,15 @@ import { TransactionsService, Transaction } from './transactions.service';
 import { CommonModule } from '@angular/common';
 
 import { InfoCard } from '../../components/info-card/info-card';
-import { ChartConfiguration } from 'chart.js';
 import { TransactionsPageComponent } from "../../components/transactions-page/transactions-page.component";
-import { BaseChartDirective } from 'ng2-charts';
+import { GastoMensualComponent } from '../../components/gasto-mensual/gasto-mensual.component';
 
 @Component({
   selector: 'sl-budget',
   templateUrl: './budget.html',
   styleUrls: ['./budget.css'],
   standalone: true,
-  imports: [CommonModule, InfoCard, TransactionsPageComponent, BaseChartDirective]
+  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent]
 })
 
 export class Budget implements OnInit {
@@ -27,93 +26,15 @@ export class Budget implements OnInit {
   loading = true;
   error: string | null = null;
 
-  // Datos para el gráfico de barras de gasto mensual
-  monthlyExpensesLabels: string[] = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
-  ];
-  monthlyExpensesData: number[] = Array(12).fill(0);
-  monthlyIncomeData: number[] = Array(12).fill(0);
-
-  barChartData: ChartConfiguration<'bar'>['data'] = {
-    labels: this.monthlyExpensesLabels,
-    datasets: [
-      {
-        data: this.monthlyExpensesData,
-        label: 'Gastos',
-        backgroundColor: '#dc2626', // rojo
-        borderRadius: 6
-      },
-      {
-        data: this.monthlyIncomeData,
-        label: 'Ingresos',
-        backgroundColor: '#16a34a', // verde
-        borderRadius: 6
-      }
-    ]
-  };
-  barChartOptions: ChartConfiguration<'bar'>['options'] = {
-    responsive: true,
-    plugins: {
-      legend: { display: false },
-      title: { display: true, text: 'Gasto a lo largo de los meses' }
-    },
-    scales: {
-      x: {},
-      y: { beginAtZero: true }
-    }
-  };
-  barChartType: 'bar' = 'bar';
 
   constructor(private budgetService: BudgetService, private transactionsService: TransactionsService) {}
 
   ngOnInit(): void {
     this.loadBudgets();
     this.loadBuildings();
-    this.loadMonthlyExpenses();
     this.loading = false;
   }
 
-  private loadMonthlyExpenses() {
-    this.transactionsService.getTransactions({ size: 300 }).subscribe({
-      next: (result: { items: Transaction[]; total: number }) => {
-        const transactions = result.items;
-        const monthlyExpenses = Array(12).fill(0);
-        const monthlyIncome = Array(12).fill(0);
-        transactions.forEach(tx => {
-          const date = new Date(tx.transactionDate);
-          const month = date.getMonth();
-          if (tx.type === 'GASTO') {
-            monthlyExpenses[month] += 1;
-          } else if (tx.type === 'INGRESO') {
-            monthlyIncome[month] += 1;
-          }
-        });
-        this.monthlyExpensesData = monthlyExpenses;
-        this.monthlyIncomeData = monthlyIncome;
-        this.barChartData = {
-          labels: this.monthlyExpensesLabels,
-          datasets: [
-            {
-              data: this.monthlyExpensesData,
-              label: 'Gastos',
-              backgroundColor: '#dc2626',
-              borderRadius: 6
-            },
-            {
-              data: this.monthlyIncomeData,
-              label: 'Ingresos',
-              backgroundColor: '#16a34a',
-              borderRadius: 6
-            }
-          ]
-        };
-      },
-      error: () => {
-        this.error = 'Error al cargar transacciones';
-      }
-    });
-  }
 
   private loadBudgets() {
     this.budgetService.getBudgets().subscribe({
@@ -136,8 +57,8 @@ export class Budget implements OnInit {
 
   private loadBuildings() {
     this.transactionsService.getTransactions({ size: 300 }).subscribe({
-      next: (transactions: Transaction[]) => {
-        const gastos = transactions.filter(tx => tx.type === 'GASTO');
+      next: (result: { items: Transaction[]; total: number }) => {
+        const gastos = result.items.filter(tx => tx.type === 'GASTO');
         this.buildingsCount = gastos.length;
         // Sumar buildingAmount de cada gasto (si existe)
         this.totalPatrimony = gastos.reduce((sum, tx) => sum + (tx.buildingAmount || 0), 0);
