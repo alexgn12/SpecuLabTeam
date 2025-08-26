@@ -16,6 +16,7 @@ export class TransactionsPageComponent implements OnInit {
 
   filters = {
     month: '',
+    year: '',
     type: ''
   };
 
@@ -34,6 +35,8 @@ export class TransactionsPageComponent implements OnInit {
     { value: '12', label: 'Diciembre' }
   ];
 
+  years = Array.from({length: 5}, (_, i) => String(new Date().getFullYear() - i));
+
   constructor(private tx: TransactionsService) {}
 
   ngOnInit(): void {
@@ -44,7 +47,7 @@ export class TransactionsPageComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    const { month, type } = this.filters;
+    const { month, year, type } = this.filters;
     const page = 1;
     const size = 20;
     const transactionType = type === 'INGRESO' || type === 'GASTO' ? type : undefined;
@@ -52,10 +55,21 @@ export class TransactionsPageComponent implements OnInit {
     this.tx.getTransactions({
       transactionType,
       page,
-      size
+      size,
+      month: month || undefined,
+      year: year || undefined
     }).subscribe({
       next: (data: Transaction[]) => { this.transactions = data; this.loading = false; },
       error: (err: any) => { this.error = 'Error al cargar transacciones'; this.loading = false; }
     });
+  }
+
+  resetFilters(): void {
+    this.filters = {
+      month: '',
+      year: '',
+      type: ''
+    };
+    this.fetch();
   }
 }
