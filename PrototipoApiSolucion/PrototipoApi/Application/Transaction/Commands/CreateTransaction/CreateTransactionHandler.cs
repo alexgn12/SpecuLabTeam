@@ -27,12 +27,13 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
         await _repository.AddAsync(transaction);
         await _repository.SaveChangesAsync();
 
+
         return new TransactionDto
         {
             TransactionId = transaction.TransactionId,
             TransactionDate = transaction.TransactionDate,
             TransactionTypeId = transaction.TransactionTypeId,
-            BuildingAmount = (decimal)transaction.Request.BuildingAmount 
+            BuildingAmount = (decimal) transaction.Request.BuildingAmount
             // ManagementBudgetId = transaction.ManagementBudgetId
         };
     }
