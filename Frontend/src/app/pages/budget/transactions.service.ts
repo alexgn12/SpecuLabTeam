@@ -5,8 +5,7 @@ import { Observable, map } from 'rxjs';
 
 export interface Transaction {
   transactionId: number;
-  transactionDate: string;   // ISO string
-  buildingAmount: number;
+  transactionDate: string;
   type: 'INGRESO' | 'GASTO';
   description: string;
   requestId?: number;
@@ -81,7 +80,6 @@ export class TransactionsService {
       description,
       requestId,
       apartmentId,
-      buildingAmount
     };
   }
 

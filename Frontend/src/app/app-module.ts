@@ -25,8 +25,6 @@ import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
   Footer,
   Transactions,
   DetalleRequest,
-  ZoneGrafo,
-    
     
   ],
   imports: [
@@ -37,7 +35,8 @@ import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
   Budget,
   InfoCard,
   TransactionsPageComponent,
-  ResumenRequestsComponent
+  ResumenRequestsComponent,
+  ZoneGrafo
 ],
   providers: [
     provideBrowserGlobalErrorListeners()

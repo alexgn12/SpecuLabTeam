@@ -8,8 +8,7 @@ import { ResumenRequestsComponent } from '../../components/resumen-requests/resu
   standalone: true,
   templateUrl: './home.html',
   styleUrl: './home.css',
-  imports: [Formulario, ZoneGrafo]
-  imports: [Formulario, ResumenRequestsComponent]
+  imports: [Formulario, ZoneGrafo, ResumenRequestsComponent]
 })
 export class Home {
 
