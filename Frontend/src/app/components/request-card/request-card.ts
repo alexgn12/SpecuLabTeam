@@ -15,8 +15,21 @@ export class RequestCard {
   @Input()
   request!: IRequest;
 
+  @Input()
+  building?: {
+    buildingName: string;
+    street: string;
+    district: string;
+    floorCount: number;
+    yearBuilt: number;
+    buildingCode: string;
+  };
+
   get totalAmount(): number {
     return (this.request?.buildingAmount || 0) + (this.request?.maintenanceAmount || 0);
   }
+
+  get buildingName(): string {
+    return this.building?.buildingName || 'N/A';
+  }
 }
-  

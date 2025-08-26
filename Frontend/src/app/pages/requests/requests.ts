@@ -36,10 +36,34 @@ export class Requests implements OnInit, OnDestroy {
   loadRequests() {
     this.subscription = this.requestsService.getRequests(this.selectedStatus)
       .subscribe({
-        next: (response: IRequest[]) => {
-          this.allRequests = Array.isArray(response) ? response : [];
-          this.total = this.allRequests.length;
-          this.updatePage();
+        next: (requests: IRequest[]) => {
+          this.requestsService.getAllBuildings().subscribe({
+            next: (buildings: any[]) => {
+              const buildingsMap = new Map(
+                buildings.map(building => [Number(building.buildingId), building])
+              );
+
+              const missingBuildings = requests
+                .map(r => r.buildingId)
+                .filter(id => !buildingsMap.has(id));
+
+              this.allRequests = requests.map(request => ({
+                ...request,
+                building: buildingsMap.get(Number(request.buildingId)) || {
+                  buildingName: 'N/A',
+                  street: 'N/A',
+                  district: 'N/A',
+                  floorCount: 0,
+                  yearBuilt: 0,
+                  buildingCode: 'N/A'
+                }
+              }));
+
+              this.total = this.allRequests.length;
+              this.updatePage();
+            },
+            error: err => console.error('Error al cargar buildings:', err)
+          });
         },
         error: err => console.error('Error al cargar requests:', err)
       });
@@ -51,8 +75,8 @@ export class Requests implements OnInit, OnDestroy {
     this.requestsData = this.allRequests.slice(start, end);
   }
 
-  get totalPages() {
-    return Math.ceil(this.total / this.size) || 1;
+  get totalPages(): number {
+    return Math.ceil(this.total / this.size);
   }
 
   prevPage() {
