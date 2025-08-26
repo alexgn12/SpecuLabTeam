@@ -27,8 +27,9 @@ namespace PrototipoApi.Data
         // 1. Buildings
         public static List<Building> GenerateBuildings(int count)
         {
+            var buildingCodes = Enumerable.Range(1, 20).Select(i => $"BLD{i:D3}").ToList();
             var faker = new Faker<Building>()
-                .RuleFor(b => b.BuildingCode, f => f.Random.String2(6, "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+                .RuleFor(b => b.BuildingCode, f => f.PickRandom(buildingCodes))
                 .RuleFor(b => b.BuildingName, f => f.Company.CompanyName())
                 .RuleFor(b => b.Street, f => f.Address.StreetAddress())
                 .RuleFor(b => b.District, f => f.Address.City())
@@ -71,13 +72,16 @@ namespace PrototipoApi.Data
 
         public static List<Request> GenerateRequests(int count, List<Building> buildings, List<Status> statuses)
         {
+            // Crear un diccionario para mapear BuildingCode a BuildingId
+            var buildingCodeToId = buildings.ToDictionary(b => b.BuildingCode, b => b.BuildingId);
+
             var requestFaker = new Faker<Request>()
                 .RuleFor(r => r.BuildingAmount, f => (double)f.Finance.Amount(50000, 500000))
                 .RuleFor(r => r.MaintenanceAmount, f => 0) // MaintenanceAmount siempre será 0
                 .RuleFor(r => r.Description, f => f.Lorem.Sentence(6))
                 .RuleFor(r => r.RequestDate, f => f.Date.Past(1))
-                .RuleFor(r => r.BuildingId, f => f.PickRandom(buildings).BuildingId)
-                .RuleFor(r => r.StatusId, f => f.PickRandom(statuses).StatusId);
+                .RuleFor(r => r.BuildingId, (f, r) => f.PickRandom(buildingCodeToId.Values.ToList())) // Seleccionar un único valor de la colección
+                .RuleFor(r => r.StatusId, (f, r) => f.PickRandom(statuses).StatusId);
 
             return requestFaker.Generate(count);
         }
