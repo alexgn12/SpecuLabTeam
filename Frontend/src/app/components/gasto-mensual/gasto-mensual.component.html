@@ -1,0 +1,15 @@
+<div *ngIf="loading" class="alert alert-info text-center">Cargando datos de gasto mensual...</div>
+<div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+<div *ngIf="!loading && !error">
+	<div class="card shadow-sm">
+		<div class="card-header bg-white fw-bold">Gasto mensual</div>
+		<div class="card-body">
+			<canvas baseChart
+				[data]="barChartData"
+				[options]="barChartOptions"
+				[type]="barChartType"
+				height="80">
+			</canvas>
+		</div>
+	</div>
+</div>

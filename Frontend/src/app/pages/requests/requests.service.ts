@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-
+import { tap, map } from 'rxjs/operators';
 
 export interface IRequest {
   requestId: number;
@@ -12,6 +12,14 @@ export interface IRequest {
   buildingStreet: string;
   statusId: number;
   buildingId: number;
+  building?: {
+    buildingName: string;
+    street: string;
+    district: string;
+    floorCount: number;
+    yearBuilt: number;
+    buildingCode: string;
+  };
 }
 
 export interface IPaginatedRequests {
@@ -27,9 +35,43 @@ export class RequestsService {
 
   constructor(private http: HttpClient) {}
 
-  getRequests(status = ''): Observable<IRequest[]> {
-    let params: any = {};
-    if (status) params.status = status;
+  getRequests(page: number = 1, size: number = 10, status: string = '', sortBy: string = '', desc: boolean = true): Observable<IRequest[]> {
+    let params: any = { Page: page, Size: size, Status: status, SortBy: sortBy, Desc: desc };
     return this.http.get<IRequest[]>(this.apiUrl, { params });
+  }
+
+  getBuildingById(buildingId: number): Observable<any> {
+    const url = `https://localhost:7092/api/Building/${buildingId}`;
+    return this.http.get<any>(url);
+  }
+
+  getAllBuildings(): Observable<any[]> {
+    const pageSize = 100; // Ajusta según el límite del backend
+    let allBuildings: any[] = [];
+    let currentPage = 1;
+
+    const fetchPage = (page: number): Observable<any[]> => {
+      const url = `https://localhost:7092/api/Building?page=${page}&size=${pageSize}`;
+      return this.http.get<any[]>(url);
+    };
+
+    return new Observable(observer => {
+      const fetchNextPage = () => {
+        fetchPage(currentPage).subscribe({
+          next: (buildings) => {
+            allBuildings = [...allBuildings, ...buildings];
+            if (buildings.length === pageSize) {
+              currentPage++;
+              fetchNextPage();
+            } else {
+              observer.next(allBuildings);
+              observer.complete();
+            }
+          },
+          error: (err) => observer.error(err),
+        });
+      };
+      fetchNextPage();
+    });
   }
 }

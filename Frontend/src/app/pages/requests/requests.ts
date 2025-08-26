@@ -14,9 +14,7 @@ import { RequestCard } from '../../components/request-card/request-card';
   imports: [CommonModule, FormsModule, RequestCard]
 })
 export class Requests implements OnInit, OnDestroy {
-  allRequests: IRequest[] = [];
   requestsData: IRequest[] = [];
-  total = 0;
   page = 1;
   size = 10;
   selectedStatus: string = 'Recibido';
@@ -34,38 +32,44 @@ export class Requests implements OnInit, OnDestroy {
   }
 
   loadRequests() {
-    this.subscription = this.requestsService.getRequests(this.selectedStatus)
+    this.subscription = this.requestsService.getRequests(this.page, this.size, this.selectedStatus)
       .subscribe({
-        next: (response: IRequest[]) => {
-          this.allRequests = Array.isArray(response) ? response : [];
-          this.total = this.allRequests.length;
-          this.updatePage();
+        next: (requests: IRequest[]) => {
+          this.requestsService.getAllBuildings().subscribe({
+            next: (buildings: any[]) => {
+              const buildingsMap = new Map(
+                buildings.map(building => [Number(building.buildingId), building])
+              );
+              this.requestsData = requests.map(request => ({
+                ...request,
+                building: buildingsMap.get(Number(request.buildingId)) || {
+                  buildingName: 'N/A',
+                  street: 'N/A',
+                  district: 'N/A',
+                  floorCount: 0,
+                  yearBuilt: 0,
+                  buildingCode: 'N/A'
+                }
+              }));
+            },
+            error: err => console.error('Error al cargar buildings:', err)
+          });
         },
         error: err => console.error('Error al cargar requests:', err)
       });
   }
 
-  updatePage() {
-    const start = (this.page - 1) * this.size;
-    const end = start + this.size;
-    this.requestsData = this.allRequests.slice(start, end);
-  }
-
-  get totalPages() {
-    return Math.ceil(this.total / this.size) || 1;
-  }
-
   prevPage() {
     if (this.page > 1) {
       this.page--;
-      this.updatePage();
+      this.loadRequests();
     }
   }
 
   nextPage() {
-    if (this.page < this.totalPages) {
+    if (this.requestsData.length === this.size) {
       this.page++;
-      this.updatePage();
+      this.loadRequests();
     }
   }
 
