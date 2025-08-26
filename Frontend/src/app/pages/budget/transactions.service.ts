@@ -24,25 +24,15 @@ export class TransactionsService {
    * @param opts filtros/paginación
    */
   getTransactions(opts?: {
-    fromDate?: string;      // '2025-08-01'
-    toDate?: string;        // '2025-08-31'
-    type?: 'INGRESO' | 'GASTO';
-    requestId?: number;
-    apartmentId?: number;
-    page?: number;          // 1-based
-    pageSize?: number;      // ej: 10, 20...
-    search?: string;        // por descripción
+    transactionType?: 'INGRESO' | 'GASTO';
+    page?: number;
+    size?: number;
   }): Observable<Transaction[]> {
     let params = new HttpParams();
 
-    if (opts?.fromDate)    params = params.set('fromDate', opts.fromDate);
-    if (opts?.toDate)      params = params.set('toDate', opts.toDate);
-    if (opts?.type)        params = params.set('type', opts.type);
-    if (opts?.requestId)   params = params.set('requestId', opts.requestId);
-    if (opts?.apartmentId) params = params.set('apartmentId', opts.apartmentId);
-    if (opts?.page)        params = params.set('page', String(opts.page));
-    if (opts?.pageSize)    params = params.set('pageSize', String(opts.pageSize));
-    if (opts?.search)      params = params.set('search', opts.search);
+    if (opts?.transactionType) params = params.set('transactionType', opts.transactionType);
+    if (opts?.page) params = params.set('page', String(opts.page));
+    if (opts?.size) params = params.set('size', String(opts.size));
 
     // Ajusta el tipo genérico al DTO que devuelva tu API.
     // Aquí supongo un DTO cercano a tu entity (PascalCase o camelCase).
