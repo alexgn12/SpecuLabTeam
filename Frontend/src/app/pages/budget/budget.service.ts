@@ -33,8 +33,10 @@ export class BudgetService {
     return this.https.get<ManagementBudget[]>(this.apiUrlBudget);
   }
 
-  getTransactions(): Observable<Transaction[]> {
-    return this.https.get<Transaction[]>(this.apiUrlTransactions);
+  getTransactions(size: number = 300): Observable<Transaction[]> {
+    // Añade el parámetro size a la URL para obtener más resultados
+    const url = `${this.apiUrlTransactions}?size=${size}`;
+    return this.https.get<Transaction[]>(url);
   }
 
   getStatus(): Observable<ManagementBudget[]> {
