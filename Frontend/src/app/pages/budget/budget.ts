@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { BudgetService, ManagementBudget, Transaction } from './budget.service';
+
+import { BudgetService, ManagementBudget } from './budget.service';
+import { TransactionsService, Transaction } from './transactions.service';
 
 
 import { CommonModule } from '@angular/common';
@@ -63,7 +65,7 @@ export class Budget implements OnInit {
   };
   barChartType: 'bar' = 'bar';
 
-  constructor(private budgetService: BudgetService) {}
+  constructor(private budgetService: BudgetService, private transactionsService: TransactionsService) {}
 
   ngOnInit(): void {
     this.loadBudgets();
@@ -73,16 +75,16 @@ export class Budget implements OnInit {
   }
 
   private loadMonthlyExpenses() {
-  this.budgetService.getTransactions(300).subscribe({
+    this.transactionsService.getTransactions({ size: 300 }).subscribe({
       next: (transactions: Transaction[]) => {
         const monthlyExpenses = Array(12).fill(0);
         const monthlyIncome = Array(12).fill(0);
         transactions.forEach(tx => {
           const date = new Date(tx.transactionDate);
           const month = date.getMonth();
-          if (tx.transactionType === 'GASTO') {
+          if (tx.type === 'GASTO') {
             monthlyExpenses[month] += 1;
-          } else if (tx.transactionType === 'INGRESO') {
+          } else if (tx.type === 'INGRESO') {
             monthlyIncome[month] += 1;
           }
         });
