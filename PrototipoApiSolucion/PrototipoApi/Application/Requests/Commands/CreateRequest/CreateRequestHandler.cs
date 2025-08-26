@@ -26,8 +26,7 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         IRepository<Building> buildings,
         IRepository<Status> statuses,
         IExternalBuildingService externalBuildingService,
-        IRepository<RequestStatusHistory> requestStatusHistory)
-        IExternalBuildingService externalBuildingService,
+        IRepository<RequestStatusHistory> requestStatusHistory,
         ILoguer loguer)
     {
         _requests = requests;
