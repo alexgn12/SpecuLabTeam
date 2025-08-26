@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 export interface IRequest {
   requestId: number;
@@ -35,9 +35,8 @@ export class RequestsService {
 
   constructor(private http: HttpClient) {}
 
-  getRequests(status = ''): Observable<IRequest[]> {
-    let params: any = {};
-    if (status) params.status = status;
+  getRequests(page: number = 1, size: number = 10, status: string = '', sortBy: string = '', desc: boolean = true): Observable<IRequest[]> {
+    let params: any = { Page: page, Size: size, Status: status, SortBy: sortBy, Desc: desc };
     return this.http.get<IRequest[]>(this.apiUrl, { params });
   }
 

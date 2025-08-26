@@ -34,36 +34,12 @@ export class Requests implements OnInit, OnDestroy {
   }
 
   loadRequests() {
-    this.subscription = this.requestsService.getRequests(this.selectedStatus)
+    this.subscription = this.requestsService.getRequests(this.page, this.size, this.selectedStatus)
       .subscribe({
         next: (requests: IRequest[]) => {
-          this.requestsService.getAllBuildings().subscribe({
-            next: (buildings: any[]) => {
-              const buildingsMap = new Map(
-                buildings.map(building => [Number(building.buildingId), building])
-              );
-
-              const missingBuildings = requests
-                .map(r => r.buildingId)
-                .filter(id => !buildingsMap.has(id));
-
-              this.allRequests = requests.map(request => ({
-                ...request,
-                building: buildingsMap.get(Number(request.buildingId)) || {
-                  buildingName: 'N/A',
-                  street: 'N/A',
-                  district: 'N/A',
-                  floorCount: 0,
-                  yearBuilt: 0,
-                  buildingCode: 'N/A'
-                }
-              }));
-
-              this.total = this.allRequests.length;
-              this.updatePage();
-            },
-            error: err => console.error('Error al cargar buildings:', err)
-          });
+          this.allRequests = requests;
+          this.total = requests.length < this.size ? (this.page - 1) * this.size + requests.length : this.page * this.size;
+          this.updatePage();
         },
         error: err => console.error('Error al cargar requests:', err)
       });
@@ -82,6 +58,7 @@ export class Requests implements OnInit, OnDestroy {
   prevPage() {
     if (this.page > 1) {
       this.page--;
+      console.log('Navigated to previous page:', this.page);
       this.updatePage();
     }
   }
@@ -89,6 +66,7 @@ export class Requests implements OnInit, OnDestroy {
   nextPage() {
     if (this.page < this.totalPages) {
       this.page++;
+      console.log('Navigated to next page:', this.page);
       this.updatePage();
     }
   }
