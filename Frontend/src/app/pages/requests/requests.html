@@ -66,10 +66,10 @@
       <button class="page-link" (click)="prevPage()" [disabled]="page === 1">Anterior</button>
     </li>
     <li class="page-item disabled">
-      <span class="page-link">Página {{ page }} de {{ totalPages }}</span>
+      <span class="page-link">Página {{ page }}</span>
     </li>
-    <li class="page-item" [class.disabled]="page === totalPages">
-      <button class="page-link" (click)="nextPage()" [disabled]="page === totalPages">Siguiente</button>
+    <li class="page-item" [class.disabled]="requestsData.length < size">
+      <button class="page-link" (click)="nextPage()" [disabled]="requestsData.length < size">Siguiente</button>
     </li>
   </ul>
 </nav>
