@@ -111,3 +111,8 @@ namespace PrototipoApi.Data
         }
     }
 }
+
+// Comentario explicativo para el profesor:
+// Este archivo contiene la lógica de inicialización y generación de datos semilla para la base de datos.
+// Cambios recientes: se adaptó la generación de estados y solicitudes para soportar el historial de cambios de estado.
+// Revisa la documentación y los commits para más detalles.

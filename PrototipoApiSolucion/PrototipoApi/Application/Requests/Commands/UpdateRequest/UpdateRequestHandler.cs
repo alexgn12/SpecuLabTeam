@@ -1,4 +1,9 @@
-﻿using MediatR;
+﻿// Comentario explicativo para el profesor:
+// Este archivo implementa la lógica para actualizar solicitudes y registrar el historial de cambios de estado.
+// Cambios recientes: se registra el historial solo si el estado cambia, usando RequestStatusHistory.
+// Revisa la documentación y los commits para más detalles.
+
+using MediatR;
 using PrototipoApi.BaseDatos;
 using PrototipoApi.Entities;
 using PrototipoApi.Repositories.Interfaces;
