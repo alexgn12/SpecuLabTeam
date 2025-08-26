@@ -5,6 +5,7 @@ using PrototipoApi.Application.Requests.Queries.GetAllRequests;
 using System.Linq;
 using System.Threading.Tasks;
 using PrototipoApi.Application.AngController.Query;
+using PrototipoApi.Application.AngController.Query.GetRequestResumen;
 
 namespace PrototipoApi.Controllers
 {
@@ -22,7 +23,7 @@ namespace PrototipoApi.Controllers
         [HttpGet("resumen-requests")]
         public async Task<IActionResult> GetResumenRequests()
         {
-            var resumen = await _mediator.Send(new AngContollerQuery());
+            var resumen = await _mediator.Send(new GetRequestsResumenQuery());
 
             var totalGeneral = resumen.Values.Sum();
 
@@ -31,6 +32,13 @@ namespace PrototipoApi.Controllers
                 TotalGeneral = totalGeneral,
                 PorEstado = resumen.Select(x => new { Estado = x.Key, Total = x.Value })
             });
+        }
+
+        [HttpGet("gasto-mensual")]
+        public async Task<IActionResult> GetGastoMensual()
+        {
+            var resultado = await _mediator.Send(new GastoMensualPorTipoQuery());
+            return Ok(resultado);
         }
     }
 }
