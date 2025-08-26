@@ -19,7 +19,6 @@ namespace PrototipoApi.Application.AngController.Query
 
         public async Task<List<GastoMensualPorTipoDto>> Handle(GastoMensualPorTipoQuery request, CancellationToken cancellationToken)
         {
-            // Agrupa tanto "GASTO" como "INGRESO"
             var query = from t in _context.Transactions
                         where t.TransactionsType.TransactionName == "GASTO" || t.TransactionsType.TransactionName == "INGRESO"
                         group t by new { t.TransactionDate.Year, t.TransactionDate.Month, t.TransactionsType.TransactionName } into g
@@ -28,10 +27,16 @@ namespace PrototipoApi.Application.AngController.Query
                             Año = g.Key.Year,
                             Mes = g.Key.Month,
                             TransactionType = g.Key.TransactionName,
-                            TotalGasto = g.Sum(x => x.Request.BuildingAmount)
+                            TotalGasto = g.Key.TransactionName == "INGRESO"
+                                ? g.Sum(x => x.Amount)
+                                : g.Sum(x => x.Request.BuildingAmount)
                         };
 
-            return await query.OrderBy(x => x.Año).ThenBy(x => x.Mes).ThenBy(x => x.TransactionType).ToListAsync(cancellationToken);
+            return await query
+                .OrderBy(x => x.Año)
+                .ThenBy(x => x.Mes)
+                .ThenBy(x => x.TransactionType)
+                .ToListAsync(cancellationToken);
         }
     }
 }
