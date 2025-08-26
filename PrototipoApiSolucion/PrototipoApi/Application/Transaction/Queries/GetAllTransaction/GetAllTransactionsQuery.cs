@@ -2,5 +2,12 @@
 using PrototipoApi.Models;
 using System.Collections.Generic;
 
-public record GetAllTransactionsQuery(string? TransactionType, int Page, int Size) : IRequest<List<TransactionDto>>;
+// Añadimos Year y Month como parámetros opcionales para el filtro
+public record GetAllTransactionsQuery(
+    string? TransactionType,
+    int Page,
+    int Size,
+    int? Year = null,
+    int? Month = null
+) : IRequest<List<TransactionDto>>;
 

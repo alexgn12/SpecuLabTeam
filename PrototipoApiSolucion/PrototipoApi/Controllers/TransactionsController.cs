@@ -22,10 +22,15 @@ namespace PrototipoApi.Controllers
 
         // GET: api/transactions
         [HttpGet]
-        public async Task<ActionResult<List<TransactionDto>>> GetTransactions([FromQuery] string? transactionType, [FromQuery] int page = 1, [FromQuery] int size = 10)
+        public async Task<ActionResult<List<TransactionDto>>> GetTransactions(
+            [FromQuery] string? transactionType,
+            [FromQuery] int page = 1,
+            [FromQuery] int size = 10,
+            [FromQuery] int? year = null,
+            [FromQuery] int? month = null)
         {
-            _loguer.LogInfo($"Obteniendo transacciones. Tipo: {transactionType}, Página: {page}, Tamaño: {size}");
-            var query = new GetAllTransactionsQuery(transactionType, page, size);
+            _loguer.LogInfo($"Obteniendo transacciones. Tipo: {transactionType}, Página: {page}, Tamaño: {size}, Año: {year}, Mes: {month}");
+            var query = new GetAllTransactionsQuery(transactionType, page, size, year, month);
             var transactions = await _mediator.Send(query);
             return Ok(transactions);
         }
