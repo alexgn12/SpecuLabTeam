@@ -12,13 +12,13 @@ using PrototipoApi.Application.Requests.Commands.CreateRequest;
 using PrototipoApi.Services;
 using PrototipoApi.Logging;
 
-// Handler que usa CreateRequestDto, pero mantiene el patrón MediatR con CreateRequestCommand
 public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, RequestDto>
 {
     private readonly IRepository<Request> _requests;
     private readonly IRepository<Building> _buildings;
     private readonly IRepository<Status> _statuses;
     private readonly IExternalBuildingService _externalBuildingService;
+    private readonly IRepository<RequestStatusHistory> _requestStatusHistory;
     private readonly ILoguer _loguer;
 
     public CreateRequestCommandHandler(
@@ -26,12 +26,15 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         IRepository<Building> buildings,
         IRepository<Status> statuses,
         IExternalBuildingService externalBuildingService,
+        IRepository<RequestStatusHistory> requestStatusHistory)
+        IExternalBuildingService externalBuildingService,
         ILoguer loguer)
     {
         _requests = requests;
         _buildings = buildings;
         _statuses = statuses;
         _externalBuildingService = externalBuildingService;
+        _requestStatusHistory = requestStatusHistory;
         _loguer = loguer;
     }
 
@@ -77,6 +80,18 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         await _requests.AddAsync(entity);
         await _requests.SaveChangesAsync();
         _loguer.LogInfo($"Request creada con id {entity.RequestId}");
+
+        // Registrar historial de estado inicial
+        var statusHistory = new RequestStatusHistory
+        {
+            RequestId = entity.RequestId,
+            OldStatusId = null, // No hay estado anterior
+            NewStatusId = status.StatusId,
+            ChangeDate = DateTime.UtcNow,
+            Comment = "Solicitud creada con estado 'Recibido'"
+        };
+        await _requestStatusHistory.AddAsync(statusHistory);
+        await _requestStatusHistory.SaveChangesAsync();
 
         // Proyección directa a DTO
         var created = await _requests.SelectOneAsync<RequestDto>(

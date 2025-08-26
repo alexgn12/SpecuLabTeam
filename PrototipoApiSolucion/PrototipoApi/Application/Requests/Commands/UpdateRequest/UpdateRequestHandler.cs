@@ -8,10 +8,12 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequest
     public class UpdateRequestHandler : IRequestHandler<UpdateRequestCommand, bool>
     {
         private readonly IRepository<Request> _repository;
+        private readonly IRepository<RequestStatusHistory> _requestStatusHistory;
 
-        public UpdateRequestHandler(IRepository<Request> repository)
+        public UpdateRequestHandler(IRepository<Request> repository, IRepository<RequestStatusHistory> requestStatusHistory)
         {
             _repository = repository;
+            _requestStatusHistory = requestStatusHistory;
         }
 
         public async Task<bool> Handle(UpdateRequestCommand request, CancellationToken cancellationToken)
@@ -21,26 +23,25 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequest
             if (entity == null)
                 return false;
 
-            // Guardar el estado anterior antes de modificarlo
             int oldStatusId = entity.StatusId;
 
             entity.MaintenanceAmount = request.Dto.MaintenanceAmount;
-            // Supón que aquí también cambias el estado si es necesario
-            // entity.StatusId = request.Dto.NewStatusId;
-
-            await _repository.UpdateAsync(entity, () =>
+            // Si el estado cambia, registrar el historial
+            if (request.Dto.NewStatusId != 0 && request.Dto.NewStatusId != entity.StatusId)
             {
-                // Actualiza el historial solo en la entidad (no en la base de datos directamente)
-                entity.StatusHistory.Add(new RequestStatusHistory
+                entity.StatusId = request.Dto.NewStatusId;
+                await _requestStatusHistory.AddAsync(new RequestStatusHistory
                 {
                     RequestId = entity.RequestId,
                     OldStatusId = oldStatusId,
                     NewStatusId = entity.StatusId,
                     ChangeDate = DateTime.UtcNow,
-                    Comment = "Actualización de mantenimiento"
+                    Comment = "Cambio de estado de la solicitud"
                 });
-            });
+                await _requestStatusHistory.SaveChangesAsync();
+            }
 
+            await _repository.UpdateAsync(entity);
             await _repository.SaveChangesAsync();
             return true;
         }
