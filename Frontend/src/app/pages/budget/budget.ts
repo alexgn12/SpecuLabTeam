@@ -134,14 +134,14 @@ export class Budget implements OnInit {
   }
 
   private loadBuildings() {
-    this.budgetService.getRequests().subscribe({
-      next: (requests: any[]) => {
-        this.totalPatrimony = requests.reduce((sum, r) => sum + (r.buildingAmount || 0), 0);
-        this.buildingsCount = new Set(requests.map(r => r.buildingId)).size;
+    this.transactionsService.getTransactions({ size: 300 }).subscribe({
+      next: (transactions: Transaction[]) => {
+        // Edificios comprados = número de transacciones de tipo 'GASTO'
+        this.buildingsCount = transactions.filter(tx => tx.type === 'GASTO').length;
         this.loading = false;
       },
       error: () => {
-        this.error = 'Error al cargar requests';
+        this.error = 'Error al cargar transacciones de edificios';
         this.loading = false;
       }
     });

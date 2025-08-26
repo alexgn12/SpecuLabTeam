@@ -36,8 +36,9 @@ export class BudgetService {
     return this.https.get<ManagementBudget[]>(this.apiUrlStatus);
   }
 
-  getRequests(): Observable<ManagementBudget[]> {
-    return this.https.get<ManagementBudget[]>(this.apiUrlRequest);
+  getRequests(size: number = 300): Observable<ManagementBudget[]> {
+    const url = `${this.apiUrlRequest}?size=${size}`;
+    return this.https.get<ManagementBudget[]>(url);
   }
 
   getBuildings(): Observable<any[]> {
