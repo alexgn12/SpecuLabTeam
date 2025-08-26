@@ -27,12 +27,16 @@ export class TransactionsService {
     transactionType?: 'INGRESO' | 'GASTO';
     page?: number;
     size?: number;
+    month?: string;
+    year?: string;
   }): Observable<Transaction[]> {
     let params = new HttpParams();
 
     if (opts?.transactionType) params = params.set('transactionType', opts.transactionType);
     if (opts?.page) params = params.set('page', String(opts.page));
     if (opts?.size) params = params.set('size', String(opts.size));
+    if (opts?.month) params = params.set('month', opts.month);
+    if (opts?.year) params = params.set('year', opts.year);
 
     // Ajusta el tipo genérico al DTO que devuelva tu API.
     // Aquí supongo un DTO cercano a tu entity (PascalCase o camelCase).

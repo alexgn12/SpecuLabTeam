@@ -32,7 +32,7 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
             TransactionId = transaction.TransactionId,
             TransactionDate = transaction.TransactionDate,
             TransactionTypeId = transaction.TransactionTypeId,
-            RequestId = transaction.RequestId
+            BuildingAmount = (decimal)transaction.Request.BuildingAmount 
             // ManagementBudgetId = transaction.ManagementBudgetId
         };
     }

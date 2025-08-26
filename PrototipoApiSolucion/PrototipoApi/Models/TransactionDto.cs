@@ -8,7 +8,7 @@
         public string TransactionType { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         // Relaciones
-        public int RequestId { get; set; } // Relación con Request
+        public decimal BuildingAmount { get; set; } // Relación con Request
         //public int ManagementBudgetId { get; set; }
     }
 }

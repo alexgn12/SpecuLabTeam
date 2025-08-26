@@ -22,8 +22,14 @@ public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery
         var page = request.Page;
 
         Expression<Func<Transaction, bool>>? filter = null;
-        if (!string.IsNullOrWhiteSpace(request.TransactionType))
-            filter = t => t.TransactionsType.TransactionName == request.TransactionType;
+        // Filtro compuesto por tipo, año y mes
+        if (!string.IsNullOrWhiteSpace(request.TransactionType) || request.Year.HasValue || request.Month.HasValue)
+        {
+            filter = t =>
+                (string.IsNullOrWhiteSpace(request.TransactionType) || t.TransactionsType.TransactionName == request.TransactionType) &&
+                (!request.Year.HasValue || t.TransactionDate.Year == request.Year.Value) &&
+                (!request.Month.HasValue || t.TransactionDate.Month == request.Month.Value);
+        }
 
         Expression<Func<Transaction, TransactionDto>> selector = t => new TransactionDto
         {
@@ -31,7 +37,7 @@ public class GetAllTransactionsHandler : IRequestHandler<GetAllTransactionsQuery
             TransactionDate = t.TransactionDate,
             TransactionType = t.TransactionsType.TransactionName,
             TransactionTypeId = t.TransactionTypeId,
-            RequestId = t.RequestId,
+            BuildingAmount = (decimal)t.Request.BuildingAmount,
             Description = t.Description
         };
 

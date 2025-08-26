@@ -3,8 +3,16 @@
   <div class="card-body">
     <form class="row g-3">
       <div class="col-md-3">
+        <label for="year" class="form-label">Año</label>
+        <select class="form-select" id="year" [(ngModel)]="filters.year" name="year">
+          <option value="">Todos</option>
+          <option *ngFor="let y of years" [value]="y">{{ y }}</option>
+        </select>
+      </div>
+      <div class="col-md-3">
         <label for="month" class="form-label">Mes</label>
         <select class="form-select" id="month" [(ngModel)]="filters.month" name="month">
+          <option value="">Todos</option>
           <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
         </select>
       </div>
@@ -16,12 +24,9 @@
           <option value="GASTO">Gasto</option>
         </select>
       </div>
-      <div class="col-md-4">
-        <label for="description" class="form-label">Descripción</label>
-        <input type="text" class="form-control" id="description" placeholder="Buscar por descripción">
-      </div>
       <div class="col-md-2 d-flex align-items-end">
         <button type="button" class="btn btn-primary w-100" (click)="fetch()">Filtrar</button>
+        <button type="button" class="btn btn-secondary w-100 ms-2" (click)="resetFilters()">Resetear</button>
       </div>
     </form>
     <!-- TODO: Añadir filtros avanzados -->
