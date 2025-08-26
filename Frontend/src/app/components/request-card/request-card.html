@@ -1,7 +1,10 @@
-<div class="card m-2 shadow-sm bg-light border-primary" style="width: auto;">
+<div class="card m-2 shadow-sm bg-light" style="width: auto">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span>Edificio ID: <strong>{{ request.buildingId }}</strong></span>
-    <span class="badge"
+    <span
+      >Edificio ID: <strong>{{ request.buildingId }}</strong></span
+    >
+    <span
+      class="badge"
       [ngClass]="{
         'bg-success': request.statusType === 'Aprobado',
         'bg-warning text-dark': request.statusType === 'Pendiente',
@@ -15,9 +18,12 @@
 
   <div class="card-body">
     <h5 class="card-title mb-2">
-      Nombre del Edificio: <span class="text-primary">{{ building?.buildingName || 'N/A' }}</span>
+      Nombre del Edificio:
+      <span class="text-primary">{{ building?.buildingName || "N/A" }}</span>
     </h5>
-    <p class="card-text mb-1"><strong>Dirección:</strong> {{ building?.street || 'N/A' }}</p>
+    <p class="card-text mb-1">
+      <strong>Dirección:</strong> {{ building?.street || "N/A" }}
+    </p>
 
     <ul class="list-group list-group-flush mb-2">
       <li class="list-group-item px-0 py-1">
@@ -42,10 +48,20 @@
           <sl-boton tipo="rechazar"></sl-boton>
         </ng-container>
         <!-- No buttons for 'Aprobado' or 'Rechazado' -->
-        <button class="btn btn-outline-info btn-sm" (click)="showDetails = !showDetails">Detalles</button>
       </div>
     </div>
-    <sl-detalle-request *ngIf="showDetails" [request]="request" [building]="building"></sl-detalle-request>
+    <div class="text-center">
+            <button
+        class="btn btn-outline-info btn-sm"
+        (click)="showDetails = !showDetails"
+      >
+        Detalles
+      </button>
+    </div>
+    <sl-detalle-request
+      *ngIf="showDetails"
+      [request]="request"
+      [building]="building"
+    ></sl-detalle-request>
   </div>
 </div>
-
