@@ -43,7 +43,8 @@ export class GastoMensualComponent implements OnInit {
 		responsive: true,
 		plugins: {
 			legend: { display: false },
-			title: { display: true, text: 'Gasto a lo largo de los meses' }
+			title: { display: true, text: 'Gasto a lo largo de los meses' },
+			datalabels: { display: false } // Desactiva los datalabels sobre las barras
 		},
 		scales: {
 			x: {},
