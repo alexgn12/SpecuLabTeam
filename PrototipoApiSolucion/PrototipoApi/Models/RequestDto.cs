@@ -8,8 +8,11 @@ namespace PrototipoApi.Models
         public double BuildingAmount { get; set; }
         public double MaintenanceAmount { get; set; }
         public string Description { get; set; } = string.Empty;
-        public string StatusType { get; set; } = null!; // Relación con Status
-        public int StatusId { get; set; } // Relación con Status
-        public int BuildingId { get; set; } // Relación con Building
+        public DateTime RequestDate { get; set; }
+        public string RequestDateFormatted => Helpers.DateFormatHelper.ToExternalFormat(RequestDate);
+        public int StatusId { get; set; }
+        public string StatusType { get; set; } = string.Empty;
+        public int BuildingId { get; set; }
+        public string? BuildingStreet { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using PrototipoApi.Helpers;
 
 namespace PrototipoApi.Models
 {
@@ -11,6 +12,7 @@ namespace PrototipoApi.Models
         public double CurrentAmount { get; set; }
 
         public DateTime LastUpdatedDate { get; set; }
+        public string LastUpdatedDateFormatted => DateFormatHelper.ToExternalFormat(LastUpdatedDate);
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

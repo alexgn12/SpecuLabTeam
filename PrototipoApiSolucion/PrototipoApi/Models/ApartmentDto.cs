@@ -13,5 +13,6 @@ namespace PrototipoApi.Models
         public bool HasLift { get; set; }
         public bool HasGarage { get; set; }
         public DateTime CreatedDate { get; set; }
+        public string CreatedDateFormatted => Helpers.DateFormatHelper.ToExternalFormat(CreatedDate);
     }
 }
