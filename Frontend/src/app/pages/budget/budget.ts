@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
 import { BudgetService, ManagementBudget } from './budget.service';
 import { TransactionsService, Transaction } from './transactions.service';
-
-
 import { CommonModule } from '@angular/common';
-
 import { InfoCard } from '../../components/info-card/info-card';
 import { TransactionsPageComponent } from "../../components/transactions-page/transactions-page.component";
 import { GastoMensualComponent } from '../../components/gasto-mensual/gasto-mensual.component';
