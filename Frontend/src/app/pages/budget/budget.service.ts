@@ -28,9 +28,6 @@ export interface ManagementBudget {
 })
 export class BudgetService {
   private apiUrlBudget = 'https://localhost:7092/api/managementbudgets';
-  private apiUrlStatus = 'https://localhost:7092/api/status';
-  private apiUrlRequest = 'https://localhost:7092/api/requests';
-  private apiUrlBuildings =  'https://localhost:7092/api/Building';
 
   constructor(private https: HttpClient) {}
 
@@ -47,17 +44,8 @@ export class BudgetService {
     );
   }
 
-  getStatus(): Observable<ManagementBudget[]> {
-    return this.https.get<ManagementBudget[]>(this.apiUrlStatus);
-  }
 
-  getRequests(size: number = 300): Observable<ManagementBudget[]> {
-    const url = `${this.apiUrlRequest}?size=${size}`;
-    return this.https.get<ManagementBudget[]>(url);
-  }
 
-  getBuildings(): Observable<any[]> {
-    return this.https.get<any[]>(this.apiUrlBuildings);
-  }
+
 }
 
