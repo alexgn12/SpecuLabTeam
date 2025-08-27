@@ -10,8 +10,8 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
     public class UpdateRequestStatusHandler : IRequestHandler<UpdateRequestStatusCommand, bool?>
     {
         private readonly IRepository<Request> _requests;
-        private readonly IRepository<Status> _statuses;
-        public UpdateRequestStatusHandler(IRepository<Request> requests, IRepository<Status> statuses)
+        private readonly IRepository<PrototipoApi.Entities.Status> _statuses;
+        public UpdateRequestStatusHandler(IRepository<Request> requests, IRepository<PrototipoApi.Entities.Status> statuses)
         {
             _requests = requests;
             _statuses = statuses;

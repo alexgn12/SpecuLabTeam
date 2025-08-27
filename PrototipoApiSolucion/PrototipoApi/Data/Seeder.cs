@@ -90,7 +90,15 @@ namespace PrototipoApi.Data
                 .RuleFor(r => r.BuildingId, (f, r) => f.PickRandom(buildingCodeToId.Values.ToList())) // Seleccionar un único valor de la colección
                 .RuleFor(r => r.StatusId, (f, r) => f.PickRandom(statuses).StatusId);
 
-            return requestFaker.Generate(count);
+            var requests = requestFaker.Generate(count);
+            // Refuerza la fecha válida y loguea el valor
+            foreach (var req in requests)
+            {
+                if (req.RequestDate == default)
+                    req.RequestDate = DateTime.UtcNow;
+                Console.WriteLine($"RequestId: {req.RequestId}, RequestDate: {req.RequestDate}");
+            }
+            return requests;
         }
 
         // 3. ManagementBudgets

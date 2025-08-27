@@ -12,7 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Agrega servicios a la aplicación
 
-builder.Services.AddControllers(); // Habilita el patrón Modelo-Vista-Controlador (MVC) para exponer controladores de API
+builder.Services.AddControllers()
+    .AddNewtonsoftJson(); // <-- Necesario para PATCH con JsonPatchDocument // Habilita el patrón Modelo-Vista-Controlador (MVC) para exponer controladores de API
 
 // Configura Swagger/OpenAPI para documentar y probar la API
 builder.Services.AddEndpointsApiExplorer();

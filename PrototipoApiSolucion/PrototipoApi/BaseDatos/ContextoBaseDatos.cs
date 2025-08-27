@@ -17,6 +17,7 @@ namespace PrototipoApi.BaseDatos
         public DbSet<Transaction> Transactions { get; set; } = default!;
         public DbSet<TransactionType> TransactionsTypes { get; set; } = default!;
         public DbSet<Apartment> Apartments { get; set; } = default!;
+        public DbSet<RequestStatusHistory> RequestStatusHistories { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
