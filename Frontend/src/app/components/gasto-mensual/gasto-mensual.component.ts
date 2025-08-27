@@ -96,7 +96,7 @@ export class GastoMensualComponent implements OnInit {
 		const monthlyIncome = Array(12).fill(0);
 		gastos.forEach(g => {
 			if (g.mes >= 1 && g.mes <= 12) {
-				monthlyExpenses[g.mes - 1] = (g as any).buildingAmount ?? g.totalGasto ?? 0;
+				monthlyExpenses[g.mes - 1] = (g as any).amount ?? g.totalGasto ?? 0;
 			}
 		});
 		ingresos.forEach(i => {

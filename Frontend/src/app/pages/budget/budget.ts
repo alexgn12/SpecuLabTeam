@@ -57,8 +57,8 @@ export class Budget implements OnInit {
       next: (result: { items: Transaction[]; total: number }) => {
         const gastos = result.items.filter(tx => tx.type === 'GASTO');
         this.buildingsCount = gastos.length;
-        // Sumar buildingAmount de cada gasto (si existe)
-        this.totalPatrimony = gastos.reduce((sum, tx) => sum + (tx.buildingAmount || 0), 0);
+        // Sumar amount de cada gasto (si existe)
+        this.totalPatrimony = gastos.reduce((sum, tx) => sum + (tx.amount || 0), 0);
         this.loading = false;
       },
       error: () => {
