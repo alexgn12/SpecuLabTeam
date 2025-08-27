@@ -16,6 +16,7 @@ const routes: Routes = [
     { path: 'history', component: History }, // /history
   { path: 'formulario', component: Formulario }, // /formulario
   { path: 'formulario/:buildingCode', component: Formulario }, // /formulario/:buildingCode
+  { path: 'formulario/:buildingCode/:requestId', component: Formulario }, // /formulario/:buildingCode/:requestId
 
   // Si quieres manejar rutas no encontradas (404)
   { path: '**', redirectTo: '', pathMatch: 'full' }    // Redirige a Home

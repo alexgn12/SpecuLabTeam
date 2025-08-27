@@ -44,7 +44,7 @@
           <button class="btn btn-outline-danger w-100 mt-2" (click)="rechazarRequest()">Rechazar</button>
         </ng-container>
         <ng-container *ngIf="request.statusType === 'Recibido'">
-          <a [routerLink]="['/formulario', building?.buildingCode]" class="btn btn-outline-warning w-100 mt-2">Solicitar Presupuesto</a>
+          <a [routerLink]="['/formulario', building?.buildingCode, request.requestId]" class="btn btn-outline-warning w-100 mt-2">Solicitar Presupuesto</a>
           <sl-boton tipo="rechazar"></sl-boton>
         </ng-container>
         <!-- No buttons for 'Aprobado' o 'Rechazado' -->
