@@ -34,6 +34,14 @@ export class Requests implements OnInit, OnDestroy {
     this.loadRequests();
   }
 
+  onStatusChanged() {
+    this.loadRequests();
+    this.requestsService.getResumenRequests().subscribe({
+      next: (data) => this.resumen = data,
+      error: err => console.error('Error al cargar resumen:', err)
+    });
+  }
+
   constructor(private requestsService: RequestsService) {}
 
   ngOnInit() {

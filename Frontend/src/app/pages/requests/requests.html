@@ -34,6 +34,7 @@
     <sl-request-card 
       [request]="request" 
       [building]="request.building" 
+      (statusChanged)="onStatusChanged()"
       class="w-100" 
       style="max-width: 80vw; min-width: 80vw;">
     </sl-request-card>

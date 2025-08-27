@@ -78,4 +78,9 @@ export class RequestsService {
   getResumenRequests(): Observable<any> {
     return this.http.get<any>('https://localhost:7092/api/Ang/resumen-requests');
   }
+
+  updateRequestStatus(requestId: number, statusType: string): Observable<any> {
+    const url = `${this.apiUrl}/${requestId}/status`;
+    return this.http.put(url, { statusType });
+  }
 }

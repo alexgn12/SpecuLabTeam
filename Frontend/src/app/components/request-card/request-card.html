@@ -1,7 +1,7 @@
 <div class="card m-2 shadow-sm bg-light" style="width: auto">
   <div class="card-header d-flex justify-content-between align-items-center">
     <span
-      >Edificio ID: <strong>{{ request.buildingId }}</strong></span
+      >Edificio ID: <strong>{{ building?.buildingCode }}</strong></span
     >
     <span
       class="badge"
@@ -37,17 +37,17 @@
     </ul>
 
     <div class="d-flex justify-content-between align-items-center mt-3">
-      <span class="fw-bold h4 ms-2">Total Amount: {{ totalAmount }}</span>
+      <span class="fw-bold h4 ms-2">Total Amount: {{ totalAmountText }}</span>
       <div class="d-flex gap-4">
         <ng-container *ngIf="request.statusType === 'Pendiente'">
-          <sl-boton tipo="aceptar"></sl-boton>
-          <sl-boton tipo="rechazar"></sl-boton>
+          <button class="btn btn-outline-success w-100 mt-2" (click)="aceptarRequest()">Aceptar</button>
+          <button class="btn btn-outline-danger w-100 mt-2" (click)="rechazarRequest()">Rechazar</button>
         </ng-container>
         <ng-container *ngIf="request.statusType === 'Recibido'">
           <a [routerLink]="['/formulario', building?.buildingCode]" class="btn btn-outline-warning w-100 mt-2">Solicitar Presupuesto</a>
           <sl-boton tipo="rechazar"></sl-boton>
         </ng-container>
-        <!-- No buttons for 'Aprobado' or 'Rechazado' -->
+        <!-- No buttons for 'Aprobado' o 'Rechazado' -->
       </div>
     </div>
     <div class="text-center">
