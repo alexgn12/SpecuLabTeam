@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { Boton } from '../boton/boton';
 import { IRequest } from '../../pages/requests/requests.service';
 import { DetalleRequest } from '../detalle-request/detalle-request';
@@ -9,7 +10,7 @@ import { DetalleRequest } from '../detalle-request/detalle-request';
   templateUrl: './request-card.html',
   styleUrls: ['./request-card.css'],
   standalone: true,
-  imports: [CommonModule, Boton, DetalleRequest]
+  imports: [CommonModule, RouterModule, Boton, DetalleRequest]
 })
 export class RequestCard {
   // Recibo el objeto completo para mayor comodidad

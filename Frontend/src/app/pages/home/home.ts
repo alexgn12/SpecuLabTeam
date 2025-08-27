@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Formulario } from '../../components/formulario/formulario';
+import { Formulario } from '../formulario/formulario';
 import { ZoneGrafo } from '../../components/zone-grafo/zone-grafo';
 import { ResumenRequestsComponent } from '../../components/resumen-requests/resumen-requests.component';
 

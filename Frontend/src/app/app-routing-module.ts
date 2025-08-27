@@ -6,6 +6,7 @@ import { Home } from './pages/home/home';
 import { Requests } from './pages/requests/requests';
 import { Budget } from './pages/budget/budget';
 import { Transactions } from './pages/transactions/transactions';
+import { Formulario } from './pages/formulario/formulario';
 
 // Definición de rutas
 const routes: Routes = [
@@ -13,6 +14,8 @@ const routes: Routes = [
   { path: 'requests', component: Requests }, // /requests
   { path: 'budget', component: Budget},     // /budget
   { path: 'transactions', component: Transactions }, // /transactions
+  { path: 'formulario', component: Formulario }, // /formulario
+  { path: 'formulario/:buildingCode', component: Formulario }, // /formulario/:buildingCode
 
   // Si quieres manejar rutas no encontradas (404)
   { path: '**', redirectTo: '', pathMatch: 'full' }    // Redirige a Home

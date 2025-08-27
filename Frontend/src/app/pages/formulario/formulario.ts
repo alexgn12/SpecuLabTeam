@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RouterModule, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -8,7 +9,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './formulario.html',
   styleUrls: ['./formulario.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, RouterModule]
 })
 export class Formulario {
   form: FormGroup;
@@ -16,10 +17,17 @@ export class Formulario {
   successMsg = '';
   errorMsg = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.form = this.fb.group({
       buildingCode: ['', Validators.required],
       description: ['', Validators.required]
+    });
+
+    this.route.paramMap.subscribe(params => {
+      const code = params.get('buildingCode');
+      if (code) {
+        this.form.patchValue({ buildingCode: code });
+      }
     });
   }
 
