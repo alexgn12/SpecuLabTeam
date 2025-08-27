@@ -1,5 +1,7 @@
+<div class="formulario-container">
+  <h2 class="text-center">Formulario de solicitud de presupuesto</h2>
 <form [formGroup]="form" (ngSubmit)="enviarPeticion()" class="formulario-form">
-  <h3>Solicitar evaluación de reforma</h3>
+  <h4>Solicitar presupuesto de mantenimiento</h4>
   <div>
     <label for="buildingCode">Código del edificio</label>
     <input id="buildingCode" formControlName="buildingCode" type="text" required>
@@ -13,3 +15,7 @@
   <div *ngIf="successMsg" class="success-msg">{{ successMsg }}</div>
   <div *ngIf="errorMsg && enviado" class="error-msg">{{ errorMsg }}</div>
 </form>
+  <button class="btn btn-secondary mb-3" routerLink="/requests">&larr; Volver al listado</button>
+
+</div>
+
