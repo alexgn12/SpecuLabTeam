@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-// import { RequestsService } from '../requests/requests.service';
+import { RequestsService } from '../requests/requests.service';
 
 @Component({
   selector: 'sl-formulario',
@@ -19,11 +19,13 @@ export class Formulario {
   successMsg = '';
   errorMsg = '';
 
+  requestId?: number;
+
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-  // private requestsService: RequestsService
+    private requestsService: RequestsService
   ) {
     this.form = this.fb.group({
       buildingCode: ['', Validators.required],
@@ -35,6 +37,10 @@ export class Formulario {
       if (code) {
         this.form.patchValue({ buildingCode: code });
       }
+      const reqId = params.get('requestId');
+      if (reqId) {
+        this.requestId = +reqId;
+      }
     });
   }
 
@@ -45,12 +51,31 @@ export class Formulario {
     if (this.form.valid) {
       // Aquí iría la llamada real al backend
       this.successMsg = '¡Petición enviada correctamente a la empresa de mantenimiento!';
-      alert(this.successMsg);
-      setTimeout(() => {
-        this.router.navigate(['/requests']);
-      }, 1000);
-      this.form.reset();
-      this.enviado = false;
+      // Cambiar estado a Pendiente si hay requestId
+      if (this.requestId) {
+        this.requestsService.updateRequestStatus(this.requestId, 'Pendiente').subscribe({
+          next: () => {
+            // Estado actualizado, continuar con el flujo normal
+            alert(this.successMsg);
+            setTimeout(() => {
+              this.router.navigate(['/requests']);
+            }, 1000);
+            this.form.reset();
+            this.enviado = false;
+          },
+          error: () => {
+            this.errorMsg = 'Error al actualizar el estado de la solicitud.';
+          }
+        });
+      } else {
+        // Si no hay requestId, solo mostrar el mensaje y redirigir
+        alert(this.successMsg);
+        setTimeout(() => {
+          this.router.navigate(['/requests']);
+        }, 1000);
+        this.form.reset();
+        this.enviado = false;
+      }
     } else {
       this.errorMsg = 'Por favor, rellena todos los campos correctamente.';
     }
