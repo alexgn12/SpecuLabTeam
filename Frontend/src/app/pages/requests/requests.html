@@ -1,39 +1,19 @@
-<div class="container pb-5">
+<div class="container mt-4 pb-5">
   <h2 class="text-center">Requests</h2>
 
   <!-- Infocards -->
   <div class="row g-3 mb-4 mt-2">
     <div class="col-12 col-md-3">
-      <div class="card metric-card shadow-sm">
-        <div class="card-body">
-          <div class="text-muted small">Recibidas</div>
-          <h3 class="fw-bold mb-1 text-primary">12</h3>
-        </div>
-      </div>
+      <sl-info-card class="flex-fill" label="Recibidas" [value]="getEstadoTotal('Recibido')" badgeClass="bg-primary"></sl-info-card>
     </div>
     <div class="col-12 col-md-3">
-      <div class="card metric-card shadow-sm">
-        <div class="card-body">
-          <div class="text-muted small">Pendientes</div>
-          <h3 class="fw-bold mb-1 text-warning">5</h3>
-        </div>
-      </div>
+      <sl-info-card class="flex-fill" label="Pendientes" [value]="getEstadoTotal('Pendiente')" badgeClass="bg-warning text-dark"></sl-info-card>
     </div>
     <div class="col-12 col-md-3">
-      <div class="card metric-card shadow-sm">
-        <div class="card-body">
-          <div class="text-muted small">Aprobadas</div>
-          <h3 class="fw-bold mb-1 text-success">8</h3>
-        </div>
-      </div>
+      <sl-info-card class="flex-fill" label="Aprobadas" [value]="getEstadoTotal('Aprobado')" badgeClass="bg-success"></sl-info-card>
     </div>
     <div class="col-12 col-md-3">
-      <div class="card metric-card shadow-sm">
-        <div class="card-body">
-          <div class="text-muted small">Rechazadas</div>
-          <h3 class="fw-bold mb-1 text-danger">3</h3>
-        </div>
-      </div>
+      <sl-info-card class="flex-fill" label="Rechazadas" [value]="getEstadoTotal('Rechazado')" badgeClass="bg-danger"></sl-info-card>
     </div>
   </div>
 
@@ -54,6 +34,7 @@
     <sl-request-card 
       [request]="request" 
       [building]="request.building" 
+      (statusChanged)="onStatusChanged()"
       class="w-100" 
       style="max-width: 80vw; min-width: 80vw;">
     </sl-request-card>

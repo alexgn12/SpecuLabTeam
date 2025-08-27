@@ -34,7 +34,7 @@ export class Boton {
       case 'rechazar':
         return 'Rechazar';
       case 'presupuesto':
-        return 'Presupuesto';
+        return 'Solicitar Presupuesto';
       default:
         return '';
     }

@@ -1,12 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MediatR;
-using PrototipoApi.Application.Requests.Queries.GetAllRequests;
 using System.Linq;
 using System.Threading.Tasks;
 using PrototipoApi.Application.AngController.Query;
-using PrototipoApi.Application.AngController.Query.GetRequestResumen;
-using PrototipoApi.Application.AngController.Query.GetBuildingsCountByDistrict;
+
 
 namespace PrototipoApi.Controllers
 {
@@ -47,6 +45,13 @@ namespace PrototipoApi.Controllers
         {
             var result = await _mediator.Send(new GetBuildingsCountByDistrictQuery());
             return Ok(result);
+        }
+
+        [HttpGet("edificios-comprados-count")]
+        public async Task<IActionResult> GetEdificiosCompradosCount()
+        {
+            var count = await _mediator.Send(new GetEdificiosCompradosCountQuery());
+            return Ok(new { EdificiosComprados = count });
         }
     }
 }

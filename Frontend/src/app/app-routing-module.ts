@@ -5,14 +5,17 @@ import { RouterModule, Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Requests } from './pages/requests/requests';
 import { Budget } from './pages/budget/budget';
-import { Transactions } from './pages/transactions/transactions';
+import { History } from './pages/history/history';
+import { Formulario } from './pages/formulario/formulario';
 
 // Definición de rutas
 const routes: Routes = [
   { path: '', component: Home },             // Ruta raíz: / 
   { path: 'requests', component: Requests }, // /requests
   { path: 'budget', component: Budget},     // /budget
-  { path: 'transactions', component: Transactions }, // /transactions
+    { path: 'history', component: History }, // /history
+  { path: 'formulario', component: Formulario }, // /formulario
+  { path: 'formulario/:buildingCode', component: Formulario }, // /formulario/:buildingCode
 
   // Si quieres manejar rutas no encontradas (404)
   { path: '**', redirectTo: '', pathMatch: 'full' }    // Redirige a Home

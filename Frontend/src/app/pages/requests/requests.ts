@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { RequestsService, IRequest } from './requests.service';
 import { RequestCard } from '../../components/request-card/request-card';
+import { InfoCard } from '../../components/info-card/info-card';
 
 
 @Component({
@@ -11,24 +12,44 @@ import { RequestCard } from '../../components/request-card/request-card';
   templateUrl: './requests.html',
   styleUrls: ['./requests.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RequestCard]
+  imports: [CommonModule, FormsModule, RequestCard, InfoCard]
 })
 export class Requests implements OnInit, OnDestroy {
   requestsData: IRequest[] = [];
+  resumen: any = {};
   page = 1;
   size = 10;
   selectedStatus: string = 'Recibido';
   private subscription?: Subscription;
+  private resumenSubscription?: Subscription;
+
+  getEstadoTotal(estado: string): number {
+    if (!this.resumen.porEstado) return 0;
+    const found = this.resumen.porEstado.find((e: any) => e.estado === estado);
+    return found ? found.total : 0;
+  }
 
   onStatusChange() {
     this.page = 1;
     this.loadRequests();
   }
 
+  onStatusChanged() {
+    this.loadRequests();
+    this.requestsService.getResumenRequests().subscribe({
+      next: (data) => this.resumen = data,
+      error: err => console.error('Error al cargar resumen:', err)
+    });
+  }
+
   constructor(private requestsService: RequestsService) {}
 
   ngOnInit() {
     this.loadRequests();
+    this.resumenSubscription = this.requestsService.getResumenRequests().subscribe({
+      next: (data) => this.resumen = data,
+      error: err => console.error('Error al cargar resumen:', err)
+    });
   }
 
   loadRequests() {
@@ -75,5 +96,6 @@ export class Requests implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription?.unsubscribe();
+    this.resumenSubscription?.unsubscribe();
   }
 }

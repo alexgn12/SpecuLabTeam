@@ -1,1 +1,20 @@
-<p>detalle-request works!</p>
+<div class="card mt-3 mb-2 shadow border-info">
+  <div class="card-header bg-info text-white">
+    <strong>Detalles de la Solicitud</strong>
+  </div>
+  <div class="card-body">
+    <h5 class="card-title">Edificio: {{ building?.buildingName || 'N/A' }}</h5>
+    <p><strong>Dirección:</strong> {{ building?.street || 'N/A' }}</p>
+    <p><strong>Distrito:</strong> {{ building?.district || 'N/A' }}</p>
+    <p><strong>Altura (pisos):</strong> {{ building?.floorCount || 'N/A' }}</p>
+    <p><strong>Año de Construcción:</strong> {{ building?.yearBuilt || 'N/A' }}</p>
+    <p><strong>Código del Edificio:</strong> {{ building?.buildingCode || 'N/A' }}</p>
+    <hr>
+    <p><strong>ID Solicitud:</strong> {{ request?.requestId }}</p>
+    <p><strong>Descripción:</strong> {{ request?.description }}</p>
+    <p><strong>Status:</strong> {{ request?.statusType }}</p>
+    <p><strong>Building Amount:</strong> {{ request?.buildingAmount }}</p>
+    <p><strong>Maintenance Amount:</strong> {{ request?.maintenanceAmount }}</p>
+    <p><strong>Total:</strong> {{ (request?.buildingAmount || 0) + (request?.maintenanceAmount || 0) }}</p>
+  </div>
+</div>
