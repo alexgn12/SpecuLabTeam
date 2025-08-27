@@ -38,7 +38,7 @@ namespace PrototipoApi.Application.AngController.Query
                                 TransactionType = g.Key.TransactionName,
                                 TotalGasto = g.Key.TransactionName == "INGRESO"
                                     ? g.Sum(x => x.Amount)
-                                    : g.Sum(x => x.Request.BuildingAmount)
+                                    : g.Sum(x => x.Request.BuildingAmount + x.Request.MaintenanceAmount)
                             };
 
                 return await query
