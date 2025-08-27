@@ -11,6 +11,7 @@ export interface Transaction {
   requestId?: number;
   apartmentId?: number;
   buildingAmount?: number;
+  amount?: number;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -55,6 +56,7 @@ export class TransactionsService {
     const transactionId   = dto.transactionId ?? dto.TransactionId;
     const transactionDate = dto.transactionDate ?? dto.TransactionDate;
     const buildingAmount  = dto.buildingAmount ?? dto.BuildingAmount;
+    const amount          = dto.amount ?? dto.Amount;
     const description     = dto.description ?? dto.Description;
     const requestId       = dto.requestId ?? dto.RequestId;
     const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
@@ -76,6 +78,7 @@ export class TransactionsService {
       transactionId,
       transactionDate, // deja ISO string
       buildingAmount,
+      amount,
       type,
       description,
       requestId,

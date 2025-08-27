@@ -41,7 +41,8 @@ namespace PrototipoApi.Application.Transaction.Queries.GetAllTransaction.ListRes
                 TransactionType = t.TransactionsType.TransactionName,
                 TransactionTypeId = t.TransactionTypeId,
                 Description = t.Description,
-                BuildingAmount = t.Request != null ? (decimal)t.Request.BuildingAmount : 0
+                BuildingAmount = t.Request != null ? (decimal)t.Request.BuildingAmount : 0,
+                Amount = (decimal)t.Amount
             };
 
             Func<IQueryable<TransactionEntity>, IOrderedQueryable<TransactionEntity>> orderBy = q =>
