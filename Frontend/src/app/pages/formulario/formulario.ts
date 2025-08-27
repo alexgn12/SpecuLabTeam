@@ -1,8 +1,10 @@
+
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+// import { RequestsService } from '../requests/requests.service';
 
 @Component({
   selector: 'sl-formulario',
@@ -17,7 +19,12 @@ export class Formulario {
   successMsg = '';
   errorMsg = '';
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+  // private requestsService: RequestsService
+  ) {
     this.form = this.fb.group({
       buildingCode: ['', Validators.required],
       description: ['', Validators.required]
