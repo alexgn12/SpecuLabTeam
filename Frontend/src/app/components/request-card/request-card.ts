@@ -36,4 +36,19 @@ export class RequestCard {
   get buildingName(): string {
     return this.building?.buildingName || 'N/A';
   }
+
+  get showTotalAmount(): boolean {
+    return (
+      this.request.statusType !== 'Recibido' &&
+      typeof this.request.buildingAmount === 'number' &&
+      typeof this.request.maintenanceAmount === 'number' &&
+      this.request.maintenanceAmount > 0
+    );
+  }
+
+  get totalAmountText(): string {
+    return this.showTotalAmount
+      ? ((this.request.buildingAmount || 0) + (this.request.maintenanceAmount || 0)).toString()
+      : 'Por determinar';
+  }
 }
