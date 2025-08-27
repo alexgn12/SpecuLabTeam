@@ -5,6 +5,7 @@ using PrototipoApi.Application.Requests.Commands.CreateRequest;
 using PrototipoApi.Application.Requests.Commands.UpdateRequest;
 using PrototipoApi.Application.Requests.Queries.GetRequestById;
 using PrototipoApi.Application.Requests.Commands.UpdateRequestStatus;
+using PrototipoApi.Application.Requests.Queries.GetRequestByBuildingCode;
 using PrototipoApi.BaseDatos;
 using PrototipoApi.Entities;
 using PrototipoApi.Models;
@@ -69,6 +70,27 @@ public class RequestsController : ControllerBase
         }
 
         _loguer.LogInfo($"Montos actualizados para la request con id {id}");
+        return NoContent();
+    }
+
+    [HttpPut("by-buildingcode/{buildingCode}/amounts")]
+    public async Task<IActionResult> UpdateAmountsByBuildingCode(string buildingCode, [FromBody] UpdateRequestDto dto)
+    {
+        _loguer.LogInfo($"Actualizando montos de la request para el edificio con código {buildingCode}");
+        // Buscar la última request asociada a ese BuildingCode
+        var request = await _mediator.Send(new GetRequestByBuildingCodeQuery(buildingCode));
+        if (request == null)
+        {
+            _loguer.LogWarning($"No se encontró ninguna solicitud para el edificio con código {buildingCode}");
+            return NotFound($"No se encontró ninguna solicitud para el edificio con código {buildingCode}");
+        }
+        var success = await _mediator.Send(new UpdateRequestCommand(request.RequestId, dto));
+        if (!success)
+        {
+            _loguer.LogWarning($"No se pudo actualizar la solicitud para el edificio con código {buildingCode}");
+            return NotFound($"No se pudo actualizar la solicitud para el edificio con código {buildingCode}");
+        }
+        _loguer.LogInfo($"Montos actualizados para la request del edificio con código {buildingCode}");
         return NoContent();
     }
 

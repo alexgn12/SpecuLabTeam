@@ -28,23 +28,8 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequest
             if (entity == null)
                 return false;
 
-            int oldStatusId = entity.StatusId;
-
             entity.MaintenanceAmount = request.Dto.MaintenanceAmount;
-            // Si el estado cambia, registrar el historial
-            if (request.Dto.NewStatusId != 0 && request.Dto.NewStatusId != entity.StatusId)
-            {
-                entity.StatusId = request.Dto.NewStatusId;
-                await _requestStatusHistory.AddAsync(new RequestStatusHistory
-                {
-                    RequestId = entity.RequestId,
-                    OldStatusId = oldStatusId,
-                    NewStatusId = entity.StatusId,
-                    ChangeDate = DateTime.UtcNow,
-                    Comment = "Cambio de estado de la solicitud"
-                });
-                await _requestStatusHistory.SaveChangesAsync();
-            }
+            // Ya no se permite cambiar el estado desde este DTO, solo se actualiza el monto
 
             await _repository.UpdateAsync(entity);
             await _repository.SaveChangesAsync();
