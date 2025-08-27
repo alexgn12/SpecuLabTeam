@@ -1,21 +1,40 @@
-<div class="formulario-container">
-  <h2 class="text-center">Formulario de solicitud de presupuesto</h2>
-<form [formGroup]="form" (ngSubmit)="enviarPeticion()" class="formulario-form">
-  <h4>Solicitar presupuesto de mantenimiento</h4>
-  <div>
-    <label for="buildingCode">Código del edificio</label>
-    <input id="buildingCode" formControlName="buildingCode" type="text" required>
-  </div>
-  <div>
-    <label for="description">Descripción de la reforma</label>
-    <textarea id="description" formControlName="description" required></textarea>
-  </div>
-  <button type="submit">Enviar petición</button>
+<div class="container mt-4 pb-5">
 
-  <div *ngIf="successMsg" class="success-msg">{{ successMsg }}</div>
-  <div *ngIf="errorMsg && enviado" class="error-msg">{{ errorMsg }}</div>
-</form>
-  <button class="btn btn-secondary mb-3" routerLink="/requests">&larr; Volver al listado</button>
+<div class="container d-flex justify-content-center align-items-center mt-5">
+  <div class="card shadow p-4" style="max-width: 400px; width: 100%;">
+    <form
+      [formGroup]="form"
+      (ngSubmit)="enviarPeticion()"
+      class="formulario-form text-center"
+    >
+      <h3 class="mb-4">Solicitar presupuesto de mantenimiento</h3>
+      <div class="mb-3">
+        <label for="buildingCode" class="form-label">Código del edificio</label>
+        <input
+          id="buildingCode"
+          formControlName="buildingCode"
+          type="text"
+          class="form-control text-center"
+          required
+        />
+      </div>
+      <div class="mb-3">
+        <label for="description" class="form-label">Descripción de la reforma</label>
+        <textarea
+          id="description"
+          formControlName="description"
+          class="form-control text-center"
+          rows="4"
+          required
+        ></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Enviar petición</button>
 
+      <div *ngIf="successMsg" class="alert alert-success mt-3">{{ successMsg }}</div>
+      <div *ngIf="errorMsg && enviado" class="alert alert-danger mt-3">{{ errorMsg }}</div>
+    </form>
+    <button class="btn btn-secondary mb-3" routerLink="/requests">&larr; Volver al listado</button>
+  </div>
 </div>
 
+</div>

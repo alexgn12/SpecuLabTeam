@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, ActivatedRoute } from '@angular/router';
+import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -17,7 +17,7 @@ export class Formulario {
   successMsg = '';
   errorMsg = '';
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
     this.form = this.fb.group({
       buildingCode: ['', Validators.required],
       description: ['', Validators.required]
@@ -38,6 +38,10 @@ export class Formulario {
     if (this.form.valid) {
       // Aquí iría la llamada real al backend
       this.successMsg = '¡Petición enviada correctamente a la empresa de mantenimiento!';
+      alert(this.successMsg);
+      setTimeout(() => {
+        this.router.navigate(['/requests']);
+      }, 1000);
       this.form.reset();
       this.enviado = false;
     } else {
