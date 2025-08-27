@@ -5,13 +5,14 @@ import { CommonModule } from '@angular/common';
 import { InfoCard } from '../../components/info-card/info-card';
 import { TransactionsPageComponent } from "../../components/transactions-page/transactions-page.component";
 import { GastoMensualComponent } from '../../components/gasto-mensual/gasto-mensual.component';
+import { EdificiosCompradosCountComponent } from '../../components/edificios-comprados-count/edificios-comprados-count';
 
 @Component({
   selector: 'sl-budget',
   templateUrl: './budget.html',
   styleUrls: ['./budget.css'],
   standalone: true,
-  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent]
+  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent, EdificiosCompradosCountComponent]
 })
 
 export class Budget implements OnInit {
