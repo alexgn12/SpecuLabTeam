@@ -79,7 +79,7 @@ namespace PrototipoApi.Data
                 .RuleFor(r => r.BuildingAmount, f => (double)f.Finance.Amount(50000, 500000))
                 .RuleFor(r => r.MaintenanceAmount, f => 0) // MaintenanceAmount siempre será 0
                 .RuleFor(r => r.Description, f => f.Lorem.Sentence(6))
-                .RuleFor(r => r.RequestDate, f => f.Date.Past(1))
+                .RuleFor(r => r.RequestDate, f => DateTime.UtcNow)
                 .RuleFor(r => r.BuildingId, (f, r) => f.PickRandom(buildingCodeToId.Values.ToList())) // Seleccionar un único valor de la colección
                 .RuleFor(r => r.StatusId, (f, r) => f.PickRandom(statuses).StatusId);
 
