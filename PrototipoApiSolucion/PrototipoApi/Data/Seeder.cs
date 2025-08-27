@@ -27,9 +27,9 @@ namespace PrototipoApi.Data
         // 1. Buildings
         public static List<Building> GenerateBuildings(int count)
         {
-            var buildingCodes = Enumerable.Range(1, 20).Select(i => $"BLD{i:D3}").ToList();
+            var buildingCodes = Enumerable.Range(1, count).Select(i => $"BLD{i:D3}").ToList();
             var faker = new Faker<Building>()
-                .RuleFor(b => b.BuildingCode, f => f.PickRandom(buildingCodes))
+                .RuleFor(b => b.BuildingCode, (f, b) => buildingCodes[b.BuildingId % buildingCodes.Count])
                 .RuleFor(b => b.BuildingName, f => f.Company.CompanyName())
                 .RuleFor(b => b.Street, f => f.Address.StreetAddress())
                 .RuleFor(b => b.District, f => f.Address.City())
@@ -37,7 +37,11 @@ namespace PrototipoApi.Data
                 .RuleFor(b => b.FloorCount, f => f.Random.Int(1, 20))
                 .RuleFor(b => b.YearBuilt, f => f.Date.Past(50).Year);
 
-            return faker.Generate(count);
+            var buildings = faker.Generate(count);
+            // Asigna códigos únicos
+            for (int i = 0; i < buildings.Count; i++)
+                buildings[i].BuildingCode = buildingCodes[i];
+            return buildings;
         }
 
         // 1b. Apartments
@@ -72,7 +76,11 @@ namespace PrototipoApi.Data
 
         public static List<Request> GenerateRequests(int count, List<Building> buildings, List<Status> statuses)
         {
-            var buildingCodes = Enumerable.Range(1, 20).Select(i => $"BLD{i:D3}").ToList();
+            // Crear un diccionario para mapear BuildingCode a BuildingId
+            var buildingCodeToId = buildings
+                .GroupBy(b => b.BuildingCode)
+                .Select(g => g.First())
+                .ToDictionary(b => b.BuildingCode, b => b.BuildingId);
 
             var requestFaker = new Faker<Request>()
                 .RuleFor(r => r.BuildingAmount, f => (double)f.Finance.Amount(50000, 500000))
