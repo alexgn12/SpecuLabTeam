@@ -1,6 +1,12 @@
 <div *ngIf="loading" class="alert alert-info text-center">Cargando datos de gasto mensual...</div>
 <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
 <div *ngIf="!loading && !error">
+	<div class="mb-3 d-flex align-items-center gap-2">
+		<label for="yearSelect" class="form-label mb-0">Año:</label>
+		<select id="yearSelect" class="form-select w-auto" [value]="selectedYear" (change)="onYearChange($event)">
+			<option *ngFor="let year of years" [value]="year">{{ year }}</option>
+		</select>
+	</div>
 	<div class="card shadow-sm">
 		<div class="card-header bg-white fw-bold">Gasto mensual</div>
 		<div class="card-body">
