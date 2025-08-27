@@ -44,6 +44,20 @@ namespace PrototipoApi.Controllers
             return Ok(status);
         }
 
+        // GET: api/status/type/{statusType}
+        [HttpGet("type/{statusType}")]
+        public async Task<ActionResult<int>> GetStatusIdByType(string statusType)
+        {
+            _loguer.LogInfo($"Obteniendo statusId con tipo {statusType}");
+            var status = await _mediator.Send(new PrototipoApi.Application.Status.Queries.GetStatusByType.GetStatusByTypeQuery(statusType));
+            if (status == null)
+            {
+                _loguer.LogWarning($"Status con tipo {statusType} no encontrado");
+                return NotFound();
+            }
+            return Ok(status.StatusId);
+        }
+
 
         // POST: api/status
         [HttpPost]
