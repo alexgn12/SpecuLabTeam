@@ -4,6 +4,8 @@ import { RouterModule } from '@angular/router';
 import { Boton } from '../boton/boton';
 import { IRequest } from '../../pages/requests/requests.service';
 import { DetalleRequest } from '../detalle-request/detalle-request';
+import { RequestsService } from '../../pages/requests/requests.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'sl-request-card',
@@ -29,6 +31,8 @@ export class RequestCard {
 
   showDetails = false;
 
+  constructor(private requestsService: RequestsService, private router: Router) {}
+
   get totalAmount(): number {
     return (this.request?.buildingAmount || 0) + (this.request?.maintenanceAmount || 0);
   }
@@ -50,5 +54,23 @@ export class RequestCard {
     return this.showTotalAmount
       ? ((this.request.buildingAmount || 0) + (this.request.maintenanceAmount || 0)).toString()
       : 'Por determinar';
+  }
+
+  aceptarRequest() {
+    if (confirm('¿Quieres aceptar esta petición?')) {
+      this.requestsService.updateRequestStatus(this.request.requestId, 'Aprobado').subscribe({
+        next: () => window.location.reload(),
+        error: err => alert('Error al aceptar la petición')
+      });
+    }
+  }
+
+  rechazarRequest() {
+    if (confirm('¿Quieres rechazar esta petición?')) {
+      this.requestsService.updateRequestStatus(this.request.requestId, 'Rechazado').subscribe({
+        next: () => window.location.reload(),
+        error: err => alert('Error al rechazar la petición')
+      });
+    }
   }
 }
