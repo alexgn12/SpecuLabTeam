@@ -32,12 +32,12 @@ import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
     CommonModule,
     AppRoutingModule,
     HttpClientModule,
-  Budget,
-  InfoCard,
-  TransactionsPageComponent,
-  ResumenRequestsComponent,
-  ZoneGrafo
-],
+    Budget,
+    InfoCard,
+    TransactionsPageComponent,
+    ResumenRequestsComponent,
+    ZoneGrafo
+  ],
   providers: [
     provideBrowserGlobalErrorListeners()
   ],

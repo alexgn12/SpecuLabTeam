@@ -1,1 +1,16 @@
-<p>zone-grafo works!</p>
+<div class="zone-grafo-card">
+  <div class="zone-grafo-header">Operaciones por Zona</div>
+
+  <div *ngIf="loading" class="zone-grafo-loading">Cargando datos...</div>
+  <div *ngIf="error" class="zone-grafo-error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error" class="zone-grafo-body">
+    <canvas
+      baseChart
+      [datasets]="barChartData.datasets"
+      [labels]="barChartData.labels"
+      [options]="barChartOptions"
+      [type]="'bar'">
+    </canvas>
+  </div>
+</div>

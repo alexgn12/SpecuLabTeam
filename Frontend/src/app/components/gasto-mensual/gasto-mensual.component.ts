@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BudgetService } from '../../pages/budget/budget.service';
 import { ChartConfiguration } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { NgChartsModule } from 'ng2-charts';
 
 @Component({
 	selector: 'gasto-mensual',
 	templateUrl: './gasto-mensual.component.html',
 	styleUrls: ['./gasto-mensual.component.css'],
 	standalone: true,
-	imports: [CommonModule, BaseChartDirective]
+		imports: [CommonModule, NgChartsModule]
 })
 export class GastoMensualComponent implements OnInit {
 	loading = true;
