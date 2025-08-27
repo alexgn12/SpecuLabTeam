@@ -57,7 +57,7 @@
               </span>
             </td>
             <td>
-              {{ t.type === 'INGRESO' ? t.amount : t.buildingAmount | currency:'EUR':'symbol':'1.0-0' }}
+              {{ t.amount  | currency:'EUR':'symbol':'1.0-0' }}
             </td>
             <td>{{ t.description }}</td>
             <td>
