@@ -4,6 +4,7 @@ using PrototipoApi.Repositories.Interfaces;
 using System.Threading;
 using System.Threading.Tasks;
 using PrototipoApi.Models;
+using System;
 
 namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
 {
@@ -11,10 +12,18 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
     {
         private readonly IRepository<Request> _requests;
         private readonly IRepository<Status> _statuses;
-        public UpdateRequestStatusHandler(IRepository<Request> requests, IRepository<Status> statuses)
+        private readonly IRepository<PrototipoApi.Entities.Transaction> _transactions;
+        private readonly IRepository<TransactionType> _transactionTypes;
+        public UpdateRequestStatusHandler(
+            IRepository<Request> requests,
+            IRepository<Status> statuses,
+            IRepository<PrototipoApi.Entities.Transaction> transactions,
+            IRepository<TransactionType> transactionTypes)
         {
             _requests = requests;
             _statuses = statuses;
+            _transactions = transactions;
+            _transactionTypes = transactionTypes;
         }
         public async Task<bool?> Handle(UpdateRequestStatusCommand request, CancellationToken cancellationToken)
         {
@@ -40,6 +49,27 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
                 });
             });
             await _requests.SaveChangesAsync();
+
+            // Si el nuevo estado es "Aprobado", crear transacción de gasto
+            if (status.StatusType == "Aprobado")
+            {
+                // Buscar el TransactionTypeId para "GASTO"
+                var gastoType = await _transactionTypes.GetOneAsync(t => t.TransactionName == "GASTO");
+                if (gastoType != null)
+                {
+                    var amount = entity.BuildingAmount + entity.MaintenanceAmount;
+                    var transaction = new PrototipoApi.Entities.Transaction
+                    {
+                        RequestId = entity.RequestId,
+                        TransactionTypeId = gastoType.TransactionTypeId,
+                        TransactionDate = DateTime.UtcNow,
+                        Amount = amount,
+                        Description = $"Gasto generado automáticamente al aprobar la solicitud {entity.RequestId}"
+                    };
+                    await _transactions.AddAsync(transaction);
+                    await _transactions.SaveChangesAsync();
+                }
+            }
             return true;
         }
     }
