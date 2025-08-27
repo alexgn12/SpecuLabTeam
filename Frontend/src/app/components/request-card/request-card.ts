@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { Boton } from '../boton/boton';
@@ -28,6 +28,8 @@ export class RequestCard {
     yearBuilt: number;
     buildingCode: string;
   };
+
+  @Output() statusChanged = new EventEmitter<void>();
 
   showDetails = false;
 
@@ -59,7 +61,10 @@ export class RequestCard {
   aceptarRequest() {
     if (confirm('¿Quieres aceptar esta petición?')) {
       this.requestsService.updateRequestStatus(this.request.requestId, 'Aprobado').subscribe({
-        next: () => window.location.reload(),
+        next: () => {
+          alert('La petición ha sido aceptada');
+          this.statusChanged.emit();
+        },
         error: err => alert('Error al aceptar la petición')
       });
     }
@@ -68,7 +73,10 @@ export class RequestCard {
   rechazarRequest() {
     if (confirm('¿Quieres rechazar esta petición?')) {
       this.requestsService.updateRequestStatus(this.request.requestId, 'Rechazado').subscribe({
-        next: () => window.location.reload(),
+        next: () => {
+          alert('La petición ha sido rechazada');
+          this.statusChanged.emit();
+        },
         error: err => alert('Error al rechazar la petición')
       });
     }
