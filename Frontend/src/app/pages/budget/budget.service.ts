@@ -28,6 +28,7 @@ export interface ManagementBudget {
 })
 export class BudgetService {
   private apiUrlBudget = 'https://localhost:7092/api/managementbudgets';
+  private edificiosCompradosCountUrl = 'https://localhost:7092/api/Ang/edificios-comprados-count';
 
   constructor(private https: HttpClient) {}
 
@@ -42,6 +43,13 @@ export class BudgetService {
     return this.https.get<MonthlyGastoIngreso[]>(
       'https://localhost:7092/api/Ang/gasto-mensual'
     );
+  }
+
+  /**
+   * Obtiene el conteo de edificios comprados desde el endpoint.
+   */
+  getEdificiosCompradosCount(): Observable<number> {
+    return this.https.get<number>(this.edificiosCompradosCountUrl);
   }
 
 

@@ -1,0 +1,3 @@
+<sl-info-card *ngIf="!loading && count !== null" [label]="'Edificios Comprados'" [value]="count"></sl-info-card>
+<div *ngIf="loading">Cargando...</div>
+<div *ngIf="error">{{ error }}</div>
