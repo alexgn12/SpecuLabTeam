@@ -1,0 +1,106 @@
+﻿---
+### ¿Qué es un PRD?
+
+Un **PRD** (Product Requirements Document) o Documento de Requisitos de Producto es un documento fundamental en el desarrollo de cualquier producto. Funciona como la "biblia" que guía a todos los equipos involucrados (desarrollo, diseño, marketing, etc.), detallando qué se va a construir, por qué se va a construir, para quién y cómo se medirá su éxito. En esencia, traduce la visión de un producto en un plan de acción concreto.
+
+---
+### Ejemplos de PRD's para diferentes productos
+
+Aunque la estructura puede variar, los elementos clave de un PRD se mantienen. Aquí tienes tres ejemplos de PRD's simplificados, cada uno para un tipo de producto diferente: una función para una app, un producto de hardware y un servicio digital B2B.
+
+#### Ejemplo 1: Nueva función para una aplicación móvil
+
+**Nombre del PRD:** Agregar la función "Modo Oscuro" en la app de noticias.
+
+**1. Introducción y Resumen Ejecutivo:**
+* **Visión:** Ofrecer a los usuarios una experiencia de lectura más cómoda, especialmente en entornos con poca luz.
+* **Objetivo:** Permitir a los usuarios cambiar entre los modos de visualización claro y oscuro.
+* **Público objetivo:** Usuarios habituales que leen por la noche o en lugares oscuros.
+
+**2. Justificación y Objetivos de Negocio:**
+* **Problema a resolver:** La luz brillante de la pantalla en la noche puede causar fatiga visual y molestar a otros.
+* **Métricas de éxito:**
+    * **Aumento en la retención de usuarios:** Medir el porcentaje de usuarios que activan el modo oscuro y siguen usando la app.
+    * **Aumento en el tiempo de sesión:** Analizar si el tiempo promedio que los usuarios pasan en la app aumenta.
+    * **Feedback de usuarios:** Evaluar las reseñas y comentarios sobre la nueva función.
+
+**3. Requisitos funcionales:**
+* El usuario debe poder activar o desactivar el modo oscuro desde el menú de "Ajustes".
+* La app debe cambiar automáticamente a modo oscuro si el sistema operativo del teléfono está en ese modo.
+* Todos los elementos de la interfaz (texto, imágenes, fondos) deben adaptarse al nuevo esquema de colores.
+
+**4. Requisitos de experiencia de usuario (UX):**
+* **Diseño:** Crear una paleta de colores con contrastes apropiados para el modo oscuro, asegurando la legibilidad.
+* **Flujo del usuario:** El cambio de modo debe ser rápido y sin interrupciones.
+
+**5. Requisitos técnicos:**
+* **Plataformas:** La función debe ser compatible con iOS y Android.
+* **API/Integraciones:** No se requieren integraciones externas.
+
+---
+
+#### Ejemplo 2: Producto de Hardware
+
+**Nombre del PRD:** Lanzamiento del "Smartwatch Eco", un reloj inteligente con funciones básicas de salud.
+
+**1. Introducción y Resumen Ejecutivo:**
+* **Visión:** Crear un smartwatch asequible y ecológico que motive a los usuarios a llevar una vida más activa.
+* **Objetivo:** Ofrecer un dispositivo con funciones esenciales de salud (contador de pasos, monitor de sueño) y una larga duración de batería.
+* **Público objetivo:** Personas jóvenes y mayores que buscan su primer reloj inteligente o una opción más económica y sostenible.
+
+**2. Justificación y Objetivos de Negocio:**
+* **Problema a resolver:** El mercado de smartwatches de gama alta es costoso, dejando fuera a un segmento de consumidores que solo quieren funciones básicas a un precio accesible.
+* **Métricas de éxito:**
+    * **Ventas:** Lograr X unidades vendidas en los primeros seis meses.
+    * **Costo de producción:** Mantener el costo de fabricación por debajo de un umbral específico.
+    * **Feedback de usuarios:** Recopilar reseñas positivas sobre la facilidad de uso y la precisión de las mediciones.
+
+**3. Requisitos funcionales:**
+* Debe contar los pasos diarios del usuario.
+* Debe monitorear el sueño y distinguir entre sueño profundo y ligero.
+* La batería debe durar al menos 7 días con una sola carga.
+* Debe conectarse vía Bluetooth a una aplicación móvil para sincronizar datos.
+
+**4. Requisitos de experiencia de usuario (UX):**
+* **Diseño físico:** Debe ser ligero y cómodo para usar durante todo el día y la noche.
+* **Interfaz:** La pantalla debe ser clara y fácil de leer con íconos intuitivos.
+
+**5. Requisitos técnicos:**
+* **Hardware:** Microprocesador, sensor de movimiento (acelerómetro), sensor de ritmo cardíaco (opcional, si se incluye), batería.
+* **Software:** Firmware optimizado para bajo consumo de energía.
+
+---
+
+#### Ejemplo 3: Servicio Digital B2B (Business to Business)
+
+**Nombre del PRD:** Plataforma "Salesflow", un CRM simplificado para pequeñas empresas.
+
+**1. Introducción y Resumen Ejecutivo:**
+* **Visión:** Proporcionar a las pequeñas empresas una herramienta intuitiva para gestionar sus contactos y procesos de ventas sin la complejidad de los CRM tradicionales.
+* **Objetivo:** Desarrollar un sistema de gestión de clientes (CRM) que se enfoque en la facilidad de uso y las funciones básicas para equipos de ventas pequeños.
+* **Público objetivo:** Empresas con 1 a 10 empleados en el área de ventas.
+
+**2. Justificación y Objetivos de Negocio:**
+* **Problema a resolver:** Los CRM existentes son demasiado caros y complejos para las necesidades de las pequeñas empresas, lo que les impide organizarse y crecer.
+* **Métricas de éxito:**
+    * **Adquisición de clientes:** Lograr X nuevos clientes de pago por mes.
+    * **Tasa de retención:** Mantener a un 80% de los clientes activos después de 6 meses.
+    * **Satisfacción del cliente:** Obtener una puntuación de "Net Promoter Score" (NPS) superior a 50.
+
+**3. Requisitos funcionales:**
+* **Gestión de contactos:** Los usuarios deben poder crear, editar y eliminar contactos y empresas.
+* **Gestión de oportunidades:** Permitir el seguimiento del estado de cada oportunidad de venta (ej. Prospecto, Contacto, Propuesta, Cerrado).
+* **Reportes básicos:** Generar reportes sobre el número de ventas cerradas y el valor total de las oportunidades.
+
+**4. Requisitos de experiencia de usuario (UX):**
+* **Diseño:** Interfaz de usuario limpia, sin distracciones y con una curva de aprendizaje mínima.
+* **Flujo del usuario:** El proceso para agregar un nuevo contacto y una oportunidad debe ser rápido y fluido.
+
+**5. Requisitos técnicos:**
+* **Arquitectura:** Plataforma basada en la nube (SaaS).
+* **Tecnologías:** Usar un marco de desarrollo web robusto y seguro.
+* **Seguridad:** Implementar un sistema de autenticación de dos factores (2FA).
+
+Es importante recordar que un PRD es un documento vivo que se actualiza a medida que el proyecto avanza. Su objetivo principal es asegurar que todos en el equipo tengan una comprensión clara y compartida de lo que se está construyendo.
+
+
