@@ -1,0 +1,94 @@
+/* ===== Fondo con contraste y tokens iOS ===== */
+.requests-page{
+  --bg: #e2e8f0;         /* slate-200 */
+  --card:#ffffff;
+  --border:#d0d7e3;
+  --shadow:0 10px 30px rgba(20,24,40,.08);
+  --text:#0f172a;
+  --muted:#475569;
+  --accent:#3b82f6;
+
+  background: linear-gradient(180deg, var(--bg) 0%, #f8fafc 100%);
+  min-height: 100%;
+  padding: clamp(16px,2.5vw,28px) 0 2rem;
+}
+
+.requests-container{ max-width: 1280px; }
+
+.rq-header{ margin-bottom: .5rem; }
+.rq-title{
+  color:var(--text); font-weight:700; letter-spacing:-.01em;
+  margin:0; font-size: clamp(1.4rem,1.1rem + 1.6vw,2rem);
+}
+
+/* ===== Tabs segmentados estilo iOS ===== */
+.rq-tabs{
+  display:flex; justify-content:center;
+}
+.rq-segment{
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 4px;
+  display: inline-flex;
+  gap: 4px;
+  width: 100%;
+  max-width: 1100px;
+}
+.rq-segment__btn{
+  appearance: none;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: .01em;
+  padding: 8px 14px;
+  border-radius: 10px;
+  flex: 1 1 auto;
+  transition: background-color .16s ease, color .16s ease, box-shadow .16s ease;
+  text-align: center;
+  white-space: nowrap;
+}
+.rq-segment__btn:hover{
+  background: #f1f5fb;
+  color: var(--text);
+}
+.rq-segment__btn.active{
+  background: #eef5ff;
+  color: var(--text);
+  box-shadow: inset 0 0 0 1px #d9e7ff;
+}
+
+/* ===== Select móvil ===== */
+.rq-toolbar{ display:flex; }
+.rq-select{
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+/* ===== Lista centrada y respirada ===== */
+.rq-list{
+  display:flex; flex-direction:column; gap: 14px;
+  align-items: center;
+}
+.rq-item{
+  width: 100%;
+  display:flex; justify-content:center;
+}
+.rq-card{
+  width: 100%;
+  max-width: 1100px;           /* similar al mock */
+  border-radius: 16px;         /* por si el child no lo trae */
+  box-shadow: var(--shadow);   /* sombra suave, sin invadir estilos internos */
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+/* ===== Paginación centrada con pill suave ===== */
+.rq-pagination{
+  display:flex; justify-content:center; margin-top: 14px;
+}
+.pagination .page-link{
+  border-radius: 10px;
+}

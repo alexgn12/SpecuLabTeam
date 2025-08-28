@@ -1,63 +1,102 @@
-<div class="card m-2 shadow-sm bg-light" style="width: auto">
-  <div class="card-header d-flex justify-content-between align-items-center">
+<div class="request-card card border-0 rounded-4">
+  <!-- Header -->
+  <div class="card-header rq-header d-flex align-items-center justify-content-between">
+    <div class="d-flex align-items-center gap-3">
+      <div class="rq-icon"></div>
+      <div class="rq-title-wrap">
+        <h5 class="rq-title mb-0">
+          {{ titleText }}
+        </h5>
+        <small class="rq-subtitle text-muted">
+          Edificio ID: <strong>{{ building?.buildingCode }}</strong>
+        </small>
+      </div>
+    </div>
+
+    <!-- Estado -->
     <span
-      >Edificio ID: <strong>{{ building?.buildingCode }}</strong></span
-    >
-    <span
-      class="badge"
+      class="badge rq-badge"
       [ngClass]="{
-        'bg-success': request.statusType === 'Aprobado',
-        'bg-warning text-dark': request.statusType === 'Pendiente',
-        'bg-danger': request.statusType === 'Rechazado',
-        'bg-primary': request.statusType === 'Recibido'
+        'rq-badge--ok': request.statusType === 'Aprobado',
+        'rq-badge--warn': request.statusType === 'Pendiente',
+        'rq-badge--bad': request.statusType === 'Rechazado',
+        'rq-badge--info': request.statusType === 'Recibido'
       }"
     >
       {{ request.statusType }}
     </span>
   </div>
 
-  <div class="card-body">
-    <h5 class="card-title mb-2">
-      Nombre del Edificio:
-      <span class="text-primary">{{ building?.buildingName || "N/A" }}</span>
-    </h5>
-    <p class="card-text mb-1">
-      <strong>Dirección:</strong> {{ building?.street || "N/A" }}
+  <!-- Body -->
+  <div class="card-body rq-body">
+    <!-- Descripción corta (opcional) -->
+    <p class="rq-description" *ngIf="request?.description">
+      {{ request.description }}
     </p>
 
-    <ul class="list-group list-group-flush mb-2">
-      <li class="list-group-item px-0 py-1">
-        <strong>Building Amount:</strong>
-        {{ request.buildingAmount }}
-      </li>
-      <li class="list-group-item px-0 py-1">
-        <strong>Maintenance Amount:</strong>
-        {{ request.maintenanceAmount }}
-      </li>
-    </ul>
+    <!-- Grid de datos clave -->
+    <div class="rq-grid">
+      <div class="rq-field">
+        <div class="rq-label">Nombre del edificio</div>
+        <div class="rq-value text-primary fw-semibold">
+          {{ building?.buildingName || 'N/A' }}
+        </div>
+      </div>
 
-    <div class="d-flex justify-content-between align-items-center mt-3">
-      <span class="fw-bold h4 ms-2">Total Amount: {{ totalAmountText }}</span>
-      <div class="d-flex gap-4">
-        <ng-container *ngIf="request.statusType === 'Pendiente'">
-          <button class="btn btn-outline-success w-100 mt-2" (click)="aceptarRequest()">Aceptar</button>
-          <button class="btn btn-outline-danger w-100 mt-2" (click)="rechazarRequest()">Rechazar</button>
-        </ng-container>
-        <ng-container *ngIf="request.statusType === 'Recibido'">
-          <a [routerLink]="['/formulario', building?.buildingCode, request.requestId]" class="btn btn-outline-warning w-100 mt-2">Solicitar Presupuesto</a>
-          <sl-boton tipo="rechazar"></sl-boton>
-        </ng-container>
-        <!-- No buttons for 'Aprobado' o 'Rechazado' -->
+      <div class="rq-field">
+        <div class="rq-label">Dirección</div>
+        <div class="rq-value">
+          {{ building?.street || 'N/A' }}
+        </div>
+      </div>
+
+      <div class="rq-field">
+        <div class="rq-label">Building Amount</div>
+        <div class="rq-value fw-semibold">
+          {{ request.buildingAmount | currency:'EUR':'symbol':'1.0-0' }}
+        </div>
+      </div>
+
+      <div class="rq-field">
+        <div class="rq-label">Maintenance Amount</div>
+        <div class="rq-value fw-semibold">
+          {{ request.maintenanceAmount | currency:'EUR':'symbol':'1.0-0' }}
+        </div>
+      </div>
+
+      <div class="rq-field rq-field--total">
+        <div class="rq-label">Total Amount</div>
+        <div class="rq-total fw-bold">
+          {{ totalAmountText }}
+        </div>
       </div>
     </div>
-    <div class="text-center">
-            <button
-        class="btn btn-outline-info btn-sm"
-        (click)="showDetails = !showDetails"
-      >
+
+    <!-- Acciones -->
+    <div class="rq-actions">
+      <ng-container *ngIf="request.statusType === 'Pendiente'">
+        <button class="btn rq-btn rq-btn--ok" (click)="aceptarRequest()">Aceptar</button>
+        <button class="btn rq-btn rq-btn--bad" (click)="rechazarRequest()">Rechazar</button>
+      </ng-container>
+
+     <ng-container *ngIf="request.statusType === 'Recibido'">
+  <a
+    [routerLink]="['/formulario', building?.buildingCode, request.requestId]"
+    class="btn rq-btn rq-btn--warn"
+  >
+    Solicitar Presupuesto
+  </a>
+  <button class="btn rq-btn rq-btn--bad" (click)="rechazarRequest()">Rechazar</button>
+</ng-container>
+    </div>
+
+    <!-- Detalles -->
+    <div class="rq-details-toggle">
+      <button class="btn btn-outline-info btn-sm rq-btn--ghost" (click)="showDetails = !showDetails">
         Detalles
       </button>
     </div>
+
     <sl-detalle-request
       *ngIf="showDetails"
       [request]="request"

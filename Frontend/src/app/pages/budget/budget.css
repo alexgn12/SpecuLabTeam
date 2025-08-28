@@ -1,0 +1,138 @@
+/* ===== Tokens de tema (gama fría iOS) ===== */
+.budget-page {
+  --bg: #f6f8fb;            /* gris muy claro azulado */
+  --card: #ffffff;          /* blanco puro */
+  --border: #e8edf5;        /* borde sutil */
+  --shadow: 0 10px 30px rgba(20, 24, 40, 0.06);
+  --text: #0f172a;          /* slate-900 */
+  --muted: #64748b;         /* slate-500/600 */
+  --accent: #3b82f6;        /* azul suave */
+
+  background: linear-gradient(180deg, var(--bg) 0%, #ffffff 100%);
+  min-height: 100%;
+  padding: clamp(16px, 2.5vw, 28px) 0 2rem;
+}
+
+/* Contenedor principal con respiro lateral */
+.budget-container {
+  max-width: 1200px;
+}
+
+/* ===== Header de página ===== */
+.budget-header {
+  margin-bottom: clamp(12px, 2vw, 20px);
+  padding: 0 clamp(6px, 1vw, 10px);
+}
+
+.page-title {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
+}
+
+.page-subtitle {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* ===== Tarjetas superiores ===== */
+.budget-cards .col-12 > * {
+  /* Asegura radios y sombras consistentes si las tarjetas internas aún no los tienen */
+  border-radius: 20px;
+}
+
+/* ===== Separadores ===== */
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--border) 10%,
+    var(--border) 90%,
+    transparent 100%
+  );
+  margin: clamp(12px, 2vw, 20px) 0 clamp(16px, 2.5vw, 28px);
+}
+
+.soft-divider {
+  height: 1px;
+  background: var(--border);
+  margin: clamp(12px, 2vw, 20px) 0;
+  border-radius: 1px;
+}
+
+/* ===== Section card contenedora (Actividad) ===== */
+.section-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.section-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: clamp(14px, 2.2vw, 20px) clamp(16px, 2.5vw, 24px);
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+}
+
+.section-title {
+  color: var(--text);
+  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.35rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+.section-subtitle {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+.section-card__body {
+  padding: clamp(14px, 2.5vw, 24px);
+  background: var(--card);
+}
+
+/* ===== Alertas integradas en la gama ===== */
+.alert-info {
+  background-color: #eef5ff;
+  border-color: #d9e7ff;
+  color: #1e3a8a;
+}
+
+.alert-danger {
+  background-color: #fdecec;
+  border-color: #f7d6d6;
+  color: #7f1d1d;
+}
+
+/* ===== Responsivo ===== */
+@media (max-width: 575.98px) {
+  .page-title { font-size: clamp(1.2rem, 1rem + 3vw, 1.6rem); }
+  .section-card { border-radius: 16px; }
+}
+/* ===== Tokens de tema (gama fría iOS) ===== */
+.budget-page {
+  /* Fondo más oscuro para contraste */
+  --bg: #e2e8f0;            /* slate-200 (gris azulado) */
+  --card: #ffffff;          /* blanco puro */
+  --border: #d0d7e3;        /* borde sutil más visible */
+  --shadow: 0 10px 30px rgba(20, 24, 40, 0.08);
+  --text: #0f172a;          /* slate-900 */
+  --muted: #475569;         /* slate-600 */
+  --accent: #3b82f6;        /* azul suave */
+
+  background: linear-gradient(180deg, var(--bg) 0%, #f8fafc 100%);
+  min-height: 100%;
+  padding: clamp(16px, 2.5vw, 28px) 0 2rem;
+}
+

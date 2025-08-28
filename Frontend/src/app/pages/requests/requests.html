@@ -1,59 +1,116 @@
-<div class="container mt-4 pb-5">
-  <h2 class="text-center">Requests</h2>
+<div class="requests-page">
+  <div class="container requests-container">
 
-  <!-- Infocards -->
-  <div class="row g-3 mb-4 mt-2">
-    <div class="col-12 col-md-3">
-      <sl-info-card class="flex-fill" label="Recibidas" [value]="getEstadoTotal('Recibido')" badgeClass="bg-primary"></sl-info-card>
+    <!-- Título -->
+    <header class="rq-header">
+      <h2 class="rq-title text-center">Requests</h2>
+    </header>
+
+    <!-- Infocards -->
+    <section class="row g-3 mb-3 mt-2">
+      <div class="col-12 col-md-3">
+        <sl-info-card class="flex-fill"
+          label="Total"
+          [value]="getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido')">
+        </sl-info-card>
+      </div>
+      <div class="col-12 col-md-3">
+        <sl-info-card class="flex-fill"
+          label="Pendientes"
+          [value]="getEstadoTotal('Pendiente')">
+        </sl-info-card>
+      </div>
+      <div class="col-12 col-md-3">
+        <sl-info-card class="flex-fill"
+          label="En Revisión"
+          [value]="getEstadoTotal('Recibido')">
+        </sl-info-card>
+      </div>
+      <div class="col-12 col-md-3">
+        <sl-info-card class="flex-fill"
+          label="Completadas"
+          [value]="getEstadoTotal('Aprobado')">
+        </sl-info-card>
+      </div>
+    </section>
+
+    <!-- Tabs segmentados (como en la imagen) -->
+    <section class="rq-tabs mb-3">
+      <div class="rq-segment">
+        <button
+          type="button"
+          class="rq-segment__btn"
+          [class.active]="!selectedStatus"
+          (click)="selectedStatus=''; onStatusChange()">
+          Todas ({{ getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido') }})
+        </button>
+
+        <button
+  type="button"
+  class="rq-segment__btn"
+  [class.active]="selectedStatus==='Recibido'"
+  (click)="selectedStatus='Recibido'; onStatusChange()">
+  Recibidas ({{ getEstadoTotal('Recibido') }})
+</button>
+
+<button
+  type="button"
+  class="rq-segment__btn"
+  [class.active]="selectedStatus==='Pendiente'"
+  (click)="selectedStatus='Pendiente'; onStatusChange()">
+  Pendientes ({{ getEstadoTotal('Pendiente') }})
+</button>
+
+
+        <button
+          type="button"
+          class="rq-segment__btn"
+          [class.active]="selectedStatus==='Aprobado'"
+          (click)="selectedStatus='Aprobado'; onStatusChange()">
+          Completadas ({{ getEstadoTotal('Aprobado') }})
+        </button>
+      </div>
+    </section>
+
+    <!-- (Opcional) Select de estado para móvil o accesibilidad -->
+    <div class="rq-toolbar mb-3 d-lg-none d-flex justify-content-center">
+      <select class="form-select rq-select w-auto" [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange()">
+        <option value="">Todas</option>
+<option value="Recibido">Recibidas</option>
+<option value="Pendiente">Pendientes</option>
+
+        <option value="Aprobado">Completadas</option>
+        <option value="Rechazado">Rechazadas</option>
+      </select>
     </div>
-    <div class="col-12 col-md-3">
-      <sl-info-card class="flex-fill" label="Pendientes" [value]="getEstadoTotal('Pendiente')" badgeClass="bg-warning text-dark"></sl-info-card>
-    </div>
-    <div class="col-12 col-md-3">
-      <sl-info-card class="flex-fill" label="Aprobadas" [value]="getEstadoTotal('Aprobado')" badgeClass="bg-success"></sl-info-card>
-    </div>
-    <div class="col-12 col-md-3">
-      <sl-info-card class="flex-fill" label="Rechazadas" [value]="getEstadoTotal('Rechazado')" badgeClass="bg-danger"></sl-info-card>
-    </div>
+
+    <!-- Lista de requests -->
+    <ul class="rq-list list-unstyled">
+      <li *ngFor="let request of requestsData" class="rq-item">
+        <sl-request-card
+          class="rq-card"
+          [request]="request"
+          [building]="request.building"
+          (statusChanged)="onStatusChanged()">
+        </sl-request-card>
+      </li>
+    </ul>
+
+    <!-- Paginación -->
+    <nav aria-label="Paginación de requests" class="rq-pagination">
+      <ul class="pagination mb-0">
+        <li class="page-item" [class.disabled]="page === 1">
+          <button class="page-link" (click)="prevPage()" [disabled]="page === 1">Anterior</button>
+        </li>
+        <li class="page-item disabled">
+          <span class="page-link">Página {{ page }}</span>
+        </li>
+        <li class="page-item" [class.disabled]="requestsData.length < size">
+          <button class="page-link" (click)="nextPage()" [disabled]="requestsData.length < size">Siguiente</button>
+        </li>
+      </ul>
+    </nav>
+
+    <p *ngIf="requestsData.length === 0" class="text-center text-muted mt-3">No hay requests disponibles.</p>
   </div>
-
-<div class="mb-3 d-flex justify-content-center">
-  <label for="statusFilter" class="form-label me-2"></label>
-  <select id="statusFilter" class="form-select w-auto" [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange()">
-    <option value="">Todos</option>
-  <option value="Pendiente">Pendiente</option>
-  <option value="Aprobado">Aprobado</option>
-  <option value="Rechazado">Rechazado</option>
-  <option value="Recibido">Recibido</option>
-  </select>
-</div>
-
-
-<ul class="list-unstyled d-flex flex-column align-items-center">
-  <li *ngFor="let request of requestsData" class="w-100 d-flex justify-content-center">
-    <sl-request-card 
-      [request]="request" 
-      [building]="request.building" 
-      (statusChanged)="onStatusChanged()"
-      class="w-100" 
-      style="max-width: 80vw; min-width: 80vw;">
-    </sl-request-card>
-  </li>
-</ul>
-
-<nav aria-label="Paginación de requests" class="d-flex justify-content-center mt-3">
-  <ul class="pagination">
-    <li class="page-item" [class.disabled]="page === 1">
-      <button class="page-link" (click)="prevPage()" [disabled]="page === 1">Anterior</button>
-    </li>
-    <li class="page-item disabled">
-      <span class="page-link">Página {{ page }}</span>
-    </li>
-    <li class="page-item" [class.disabled]="requestsData.length < size">
-      <button class="page-link" (click)="nextPage()" [disabled]="requestsData.length < size">Siguiente</button>
-    </li>
-  </ul>
-</nav>
-
-<p *ngIf="requestsData.length === 0">No hay requests disponibles.</p>
 </div>

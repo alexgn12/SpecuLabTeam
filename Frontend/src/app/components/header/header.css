@@ -1,0 +1,152 @@
+/* ===== Paleta fría iOS solo para el header ===== */
+:host {
+  --hd-bg: #ffffff;
+  --hd-glass: rgba(255, 255, 255, 0.75);
+  --hd-border: #e8edf5;
+  --hd-shadow: 0 10px 30px rgba(20, 24, 40, 0.06);
+  --hd-text: #0f172a;   /* slate-900 */
+  --hd-muted: #64748b;  /* slate-500/600 */
+  --hd-accent: #3b82f6; /* azul suave */
+}
+
+/* Navbar contenedor */
+.app-header {
+  background: var(--hd-bg);
+  border-bottom: 1px solid var(--hd-border) !important;
+  box-shadow: var(--hd-shadow);
+  backdrop-filter: saturate(180%) blur(8px);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  padding-block: 8px;
+}
+
+/* Limitar ancho y dar respiro lateral */
+.header-container {
+  max-width: 1200px;
+}
+
+/* Marca */
+.brand-logo {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  filter: saturate(110%);
+}
+
+.brand-text {
+  color: var(--hd-text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  font-size: 1.05rem;
+}
+
+/* Toggler minimalista */
+.header-toggler {
+  border: 1px solid var(--hd-border);
+  border-radius: 12px;
+  padding: 6px 8px;
+  transition: box-shadow 160ms ease, border-color 160ms ease, background-color 160ms ease;
+  background-color: #fff;
+}
+
+.header-toggler:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+  border-color: #cfe2ff;
+}
+
+/* Icono hamburguesa propio para mantener la gama */
+.toggler-icon,
+.toggler-icon::before,
+.toggler-icon::after {
+  display: block;
+  width: 18px;
+  height: 2px;
+  background: var(--hd-text);
+  border-radius: 2px;
+  position: relative;
+  content: "";
+}
+
+.toggler-icon::before {
+  position: absolute;
+  top: -6px;
+}
+
+.toggler-icon::after {
+  position: absolute;
+  top: 6px;
+}
+
+/* Navegación */
+.header-nav .nav-link {
+  color: var(--hd-muted);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  transition: color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  position: relative;
+}
+
+/* Subrayado iOS-style (solo al pasar por encima o activo) */
+.header-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
+  height: 2px;
+  background: transparent;
+  border-radius: 2px;
+  transition: background-color 160ms ease, transform 160ms ease, opacity 160ms ease;
+  transform: scaleX(0.6);
+  opacity: 0;
+}
+
+.header-nav .nav-link:hover {
+  color: var(--hd-text);
+  background: #f6f8fb;
+}
+
+.header-nav .nav-link:hover::after {
+  background: var(--hd-accent);
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* Estado activo (Angular routerLinkActive) */
+.header-nav .nav-link.active {
+  color: var(--hd-text);
+  background: #eef5ff;
+  box-shadow: inset 0 0 0 1px #d9e7ff;
+}
+
+.header-nav .nav-link.active::after {
+  background: var(--hd-accent);
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+/* Accesibilidad: foco visible */
+.header-nav .nav-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+  background: #f6f8fb;
+  color: var(--hd-text);
+}
+
+/* Responsive sutil */
+@media (max-width: 991.98px) {
+  .header-nav .nav-link {
+    padding: 0.6rem 0.75rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .brand-text {
+    display: none; /* Solo icono en móviles muy pequeños */
+  }
+}
