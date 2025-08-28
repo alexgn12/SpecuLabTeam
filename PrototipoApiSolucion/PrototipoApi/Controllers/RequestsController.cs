@@ -98,25 +98,6 @@ public class RequestsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("{id}/status")]
-    public async Task<IActionResult> UpdateStatus(int id, [FromBody] UpdateRequestStatusDto dto)
-    {
-        _loguer.LogInfo($"Actualizando status de la request con id {id} a statusType {dto.StatusType}");
-        var success = await _mediator.Send(new UpdateRequestStatusCommand(id, dto.StatusType, dto.Comment, dto.ChangeDate));
-        if (success == null)
-        {
-            _loguer.LogWarning($"No se encontró la solicitud o el status con ID {id}/{dto.StatusType} para actualizar");
-            return NotFound($"No se encontró la solicitud o el status con ID {id}/{dto.StatusType}");
-        }
-        if (success == false)
-        {
-            _loguer.LogWarning($"El estado actual ya es '{dto.StatusType}', no se realizó ningún cambio");
-            return BadRequest($"El estado actual ya es '{dto.StatusType}', no se realizó ningún cambio");
-        }
-        _loguer.LogInfo($"Status actualizado para la request con id {id}");
-        return NoContent();
-    }
-
 
     [HttpPatch("{id}")]
     public async Task<IActionResult> PatchRequest(int id, [FromBody] JsonPatchDocument<Request> patchDoc)
