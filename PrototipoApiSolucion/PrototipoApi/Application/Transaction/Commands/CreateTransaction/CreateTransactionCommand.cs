@@ -4,8 +4,9 @@ using System;
 
 public record CreateTransactionCommand(
     DateTime TransactionDate,
-    int TransactionTypeId,
-    int RequestId
-// int? ManagementBudgetId // Descomenta si lo usas
+    string Description,
+    decimal Amount,
+    string ApartmentCode
+    // Puedes agregar más campos si lo necesitas
 ) : IRequest<TransactionDto>;
 
