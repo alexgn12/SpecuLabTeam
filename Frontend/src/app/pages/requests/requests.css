@@ -92,3 +92,37 @@
 .pagination .page-link{
   border-radius: 10px;
 }
+/* Posiciona el icono proyectado dentro de <sl-info-card> */
+.requests-kpis sl-info-card .ic-mini {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 20px;
+  height: 20px;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+/* Asegura contexto de posicionamiento en el body de la card del info-card */
+.requests-kpis sl-info-card .card-body {
+  position: relative;
+  padding-left: 44px !important;  /* deja hueco para el icono */
+}
+/* ===== Iconos mini en KPIs (sl-info-card) ===== */
+.ic-mini {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  font-size: 1.3rem;
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+/* Colores específicos */
+.ic-total       { color: #0ea5e9; } /* azul brillante */
+.ic-recibidos   { color: #3b82f6; } /* azul medio */
+.ic-pendientes  { color: #f59e0b; } /* ámbar */
+.ic-completadas { color: #10b981; } /* verde */
+.ic-rechazadas  { color: #ef4444; } /* rojo */
+
+
