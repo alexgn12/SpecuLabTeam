@@ -1,187 +1,156 @@
 :host {
   --rq-card: #ffffff;
-  --rq-bg: #f8fafc;              /* fondo muy suave del body de la card */
+  --rq-bg: #f8fafc;
   --rq-border: #e6ecf4;
   --rq-shadow: 0 10px 30px rgba(20,24,40,.06);
   --rq-text: #0f172a;
   --rq-muted: #64748b;
 
-  /* Pills */
-  --rq-ok: #10b981;              /* verde */
-  --rq-warn: #f59e0b;            /* ámbar */
-  --rq-bad: #ef4444;             /* rojo */
-  --rq-info: #3b82f6;            /* azul */
+  --rq-ok: #10b981;
+  --rq-warn: #f59e0b;
+  --rq-bad: #ef4444;
+  --rq-info: #3b82f6;
 }
 
-/* ===== Card ===== */
-.request-card {
-  background: var(--rq-card);
-  border: 1px solid var(--rq-border);
-  box-shadow: var(--rq-shadow);
+/* ===== Card general ===== */
+.card {
+  border: 1px solid var(--rq-border) !important;
+  border-radius: 20px !important;
+  background: var(--rq-card) !important;
+  box-shadow: var(--rq-shadow) !important;
   overflow: hidden;
 }
 
 /* ===== Header ===== */
-.rq-header {
+.card-header {
   background: #fff;
   border-bottom: 1px solid var(--rq-border);
-  padding: 14px 18px;
-}
-
-.rq-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: #0b2247;          /* azul profundo estilo mock */
-  display: grid;
-  place-items: center;
-  color: #e6efff;
-  font-size: 1.1rem;
-  box-shadow: 0 6px 18px rgba(11,34,71,.18);
-}
-
-.rq-title-wrap { line-height: 1.15; }
-.rq-title {
-  color: var(--rq-text);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-}
-.rq-subtitle { color: var(--rq-muted) !important; }
-
-/* Estado (pill) */
-.rq-badge {
-  border-radius: 999px;
-  padding: 0.35rem 0.6rem;
   font-weight: 600;
-  border: 1px solid transparent;
-  min-width: 7.5rem;
+  padding: 14px 18px !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Pills de estado uniformes */
+.badge {
+  border-radius: 999px !important;
+  padding: 0.4rem 0.75rem !important;
+  font-weight: 600;
+  font-size: 0.85rem;
+  min-width: 7rem;
   text-align: center;
 }
-.rq-badge--ok {
-  background: rgba(16,185,129,0.12);
-  color: #065f46;
-  border-color: rgba(16,185,129,0.25);
+
+.bg-success {
+  background: rgba(16,185,129,0.12) !important;
+  color: #065f46 !important;
+  border: 1px solid rgba(16,185,129,0.25) !important;
 }
-.rq-badge--warn {
-  background: rgba(245,158,11,0.12);
-  color: #7c4a03;
-  border-color: rgba(245,158,11,0.25);
+.bg-warning {
+  background: rgba(245,158,11,0.12) !important;
+  color: #7c4a03 !important;
+  border: 1px solid rgba(245,158,11,0.25) !important;
 }
-.rq-badge--bad {
-  background: rgba(239,68,68,0.12);
-  color: #7f1d1d;
-  border-color: rgba(239,68,68,0.25);
+.bg-danger {
+  background: rgba(239,68,68,0.12) !important;
+  color: #7f1d1d !important;
+  border: 1px solid rgba(239,68,68,0.25) !important;
 }
-.rq-badge--info {
-  background: rgba(59,130,246,0.12);
-  color: #1e3a8a;
-  border-color: rgba(59,130,246,0.25);
+.bg-primary {
+  background: rgba(59,130,246,0.12) !important;
+  color: #1e3a8a !important;
+  border: 1px solid rgba(59,130,246,0.25) !important;
 }
 
 /* ===== Body ===== */
-.rq-body {
+.card-body {
   background: var(--rq-bg);
-  padding: clamp(14px, 2.2vw, 22px);
+  padding: clamp(14px, 2.2vw, 22px) !important;
 }
 
-.rq-description {
-  margin: 0 0 8px 0;
-  color: var(--rq-muted);
-}
-
-/* Grid de campos */
-.rq-grid {
+/* Campos en grid sin cambiar el HTML */
+.list-group {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 14px 18px;
-  border-radius: 12px;
-  padding: 12px;
-  background: #fff;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 10px 18px;
   border: 1px solid var(--rq-border);
+  border-radius: 12px;
+  background: #fff;
+  margin-top: 12px;
+  margin-bottom: 16px !important;
 }
 
-.rq-field .rq-label {
+.list-group-item {
+  border: none !important;
+  background: transparent !important;
+  padding: 8px 4px !important;
+}
+
+.list-group-item strong {
+  display: block;
+  font-size: 0.85rem;
   color: var(--rq-muted);
-  font-size: 0.9rem;
   margin-bottom: 2px;
 }
-.rq-field .rq-value {
-  color: var(--rq-text);
+.list-group-item:not(:last-child) {
+  border-bottom: none !important;
 }
-.rq-field--total {
-  grid-column: 1 / -1;
-  margin-top: 4px;
-  padding-top: 10px;
-  border-top: 1px dashed var(--rq-border);
-}
-.rq-total {
-  font-size: clamp(1.1rem, 0.95rem + 0.6vw, 1.35rem);
+
+/* Total */
+.fw-bold.h4 {
+  font-size: 1.1rem !important;
+  margin: 0;
 }
 
 /* ===== Acciones ===== */
-.rq-actions {
-  display: flex;
-  gap: 10px;
-  justify-content: flex-end;
-  align-items: center;
-  margin-top: 14px;
+.d-flex.gap-4 button,
+.d-flex.gap-4 a,
+sl-boton {
+  border-radius: 12px !important;
+  padding: 8px 14px !important;
+  font-weight: 600 !important;
+  flex: 1 1 auto;
+  transition: background-color 160ms ease, box-shadow 160ms ease;
 }
 
-.rq-btn {
-  border-radius: 12px;
-  padding: 8px 14px;
-  font-weight: 600;
-  border: 1px solid transparent;
-  transition: transform 120ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
+/* Verde (Aceptar) */
+.btn-outline-success {
+  background: rgba(16,185,129,0.12) !important;
+  color: #065f46 !important;
+  border: 1px solid rgba(16,185,129,0.25) !important;
+}
+.btn-outline-success:hover {
+  background: rgba(16,185,129,0.18) !important;
 }
 
-/* Botones por tipo */
-.rq-btn--ok {
-  background: rgba(16,185,129,0.12);
-  color: #065f46;
-  border-color: rgba(16,185,129,0.25);
+/* Rojo (Rechazar) */
+.btn-outline-danger,
+sl-boton[tipo="rechazar"] button {
+  background: rgba(239,68,68,0.12) !important;
+  color: #7f1d1d !important;
+  border: 1px solid rgba(239,68,68,0.25) !important;
 }
-.rq-btn--ok:hover {
-  background: rgba(16,185,129,0.18);
-}
-
-.rq-btn--bad {
-  background: rgba(239,68,68,0.12);
-  color: #7f1d1d;
-  border-color: rgba(239,68,68,0.25);
-}
-.rq-btn--bad:hover {
-  background: rgba(239,68,68,0.18);
+.btn-outline-danger:hover,
+sl-boton[tipo="rechazar"] button:hover {
+  background: rgba(239,68,68,0.18) !important;
 }
 
-.rq-btn--warn {
-  background: rgba(245,158,11,0.12);
-  color: #7c4a03;
-  border-color: rgba(245,158,11,0.25);
+/* Amarillo (Solicitar presupuesto) */
+.btn-outline-warning {
+  background: rgba(245,158,11,0.12) !important;
+  color: #7c4a03 !important;
+  border: 1px solid rgba(245,158,11,0.25) !important;
 }
-.rq-btn--warn:hover {
-  background: rgba(245,158,11,0.18);
-}
-
-/* Botón de detalles “ghost” */
-.rq-details-toggle {
-  display: flex;
-  justify-content: center;
-  margin-top: 10px;
-}
-.rq-btn--ghost {
-  border-radius: 999px;
-  padding: 4px 10px;
-  color: #0ea5e9;
-  border-color: #bae6fd;
+.btn-outline-warning:hover {
+  background: rgba(245,158,11,0.18) !important;
 }
 
-/* ===== Responsive ===== */
-@media (max-width: 992px) {
-  .rq-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 520px) {
-  .rq-grid { grid-template-columns: 1fr; }
-  .rq-actions { justify-content: stretch; flex-wrap: wrap; }
-  .rq-btn { flex: 1 1 48%; }
+/* Botón detalles */
+.btn-outline-info {
+  border-radius: 999px !important;
+  padding: 4px 12px !important;
+  font-weight: 500;
+  color: #0ea5e9 !important;
+  border-color: #bae6fd !important;
 }
