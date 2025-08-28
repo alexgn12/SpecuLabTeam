@@ -5,11 +5,13 @@
     <label for="requestId">ID de Solicitud:</label>
     <input id="requestId" type="number" [(ngModel)]="requestId">
 
-    <label for="fromDate">Desde:</label>
-    <input id="fromDate" type="date" [(ngModel)]="fromDate">
 
-    <label for="toDate">Hasta:</label>
-    <input id="toDate" type="date" [(ngModel)]="toDate">
+  <label for="fromDate">Desde:</label>
+  <input id="fromDate" type="date" [(ngModel)]="fromDate">
+
+
+  <label for="toDate">Hasta:</label>
+  <input id="toDate" type="date" [(ngModel)]="toDate">
     
     <button (click)="applyFilters()">Aplicar Filtros</button>
   </div>
