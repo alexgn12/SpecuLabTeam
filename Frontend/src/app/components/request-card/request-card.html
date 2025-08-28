@@ -1,8 +1,6 @@
-<div class="card m-2 shadow-sm bg-light" style="width: auto">
+<div class="card request-card m-2">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span
-      >Edificio ID: <strong>{{ building?.buildingCode }}</strong></span
-    >
+    <span>Edificio ID: <strong>{{ building?.buildingCode }}</strong></span>
     <span
       class="badge"
       [ngClass]="{
@@ -16,63 +14,57 @@
     </span>
   </div>
 
-  <div class="card-body">
-    <h5 class="card-title mb-2">
-      Nombre del Edificio:
-      <span class="text-primary">{{ building?.buildingName || "N/A" }}</span>
-    </h5>
-    <p class="card-text mb-1">
-      <strong>Dirección:</strong> {{ building?.street || "N/A" }}
-    </p>
+  <div class="card-body rc-grid">
+    <!-- Columna izquierda: info -->
+    <div class="rc-info">
+      <h5 class="card-title mb-1">
+        Nombre del Edificio:
+        <span class="text-primary">{{ building?.buildingName || "N/A" }}</span>
+      </h5>
+      <p class="card-text mb-0">
+        <strong>Dirección:</strong> {{ building?.street || "N/A" }}
+      </p>
 
-    <ul class="list-group list-group-flush mb-2">
-      <li class="list-group-item px-0 py-1">
-        <strong>Building Amount:</strong>
-        {{ request.buildingAmount }}
-      </li>
-      <li class="list-group-item px-0 py-1">
-        <strong>Maintenance Amount:</strong>
-        {{ request.maintenanceAmount }}
-      </li>
-    </ul>
+      <button class="btn btn-outline-info btn-sm mt-3"
+              (click)="showDetails = !showDetails">Detalles</button>
+    </div>
 
-    <div class="d-flex justify-content-between align-items-center mt-3">
-      <span class="fw-bold h4 ms-2">Total Amount: {{ totalAmountText }}</span>
-      <div class="d-flex gap-4">
+    <!-- Columna derecha: importes + total -->
+    <div class="rc-nums">
+      <ul class="list-group list-group-flush rc-list mb-2">
+        <li class="list-group-item">
+          <span class="rc-label">Building</span>
+          <span class="rc-value">{{ request.buildingAmount }}</span>
+        </li>
+        <li class="list-group-item">
+          <span class="rc-label">Maintenance</span>
+          <span class="rc-value">{{ request.maintenanceAmount }}</span>
+        </li>
+      </ul>
+
+      <div class="rc-total">
+        <span>Total Amount</span>
+        <strong>{{ totalAmountText }}</strong>
+      </div>
+
+      <!-- Acciones alineadas a la derecha -->
+      <div class="rc-actions">
         <ng-container *ngIf="request.statusType === 'Pendiente'">
-          <button class="btn btn-outline-success w-100 mt-2" (click)="aceptarRequest()">Aceptar</button>
-          <button class="btn btn-outline-danger w-100 mt-2" (click)="rechazarRequest()">Rechazar</button>
+          <button class="btn btn-outline-success" (click)="aceptarRequest()">Aceptar</button>
+          <button class="btn btn-outline-danger"  (click)="rechazarRequest()">Rechazar</button>
         </ng-container>
-        <ng-container *ngIf="request.statusType === 'Recibido'">
-  <a
-    [routerLink]="['/formulario', building?.buildingCode, request.requestId]"
-    class="btn btn-outline-warning w-100 mt-2"
-  >
-    Solicitar Presupuesto
-  </a>
-  <button
-    class="btn btn-outline-danger w-100 mt-2"
-    (click)="rechazarRequest()"
-  >
-    Rechazar
-  </button>
-</ng-container>
 
-        <!-- No buttons for 'Aprobado' o 'Rechazado' -->
+        <ng-container *ngIf="request.statusType === 'Recibido'">
+          <a [routerLink]="['/formulario', building?.buildingCode, request.requestId]"
+             class="btn btn-outline-warning">Solicitar Presupuesto</a>
+          <button class="btn btn-outline-danger" (click)="rechazarRequest()">Rechazar</button>
+        </ng-container>
       </div>
     </div>
-    <div class="text-center">
-            <button
-        class="btn btn-outline-info btn-sm"
-        (click)="showDetails = !showDetails"
-      >
-        Detalles
-      </button>
+
+    <!-- detalle (debajo del grid, ocupa todo el ancho) -->
+    <div class="rc-detail" *ngIf="showDetails">
+      <sl-detalle-request [request]="request" [building]="building"></sl-detalle-request>
     </div>
-    <sl-detalle-request
-      *ngIf="showDetails"
-      [request]="request"
-      [building]="building"
-    ></sl-detalle-request>
   </div>
 </div>
