@@ -1,11 +1,11 @@
-<div class="budget-page">
-  <div class="container budget-container">
-    <header class="budget-header">
-      <h2 class="page-title">Panel de Bienes en propiedad</h2>
-      <p class="page-subtitle">Edificios comprados y apartamentos alquilados</p>
+<div class="requests-page">
+  <div class="container requests-container">
+    <header class="rq-header">
+      <h2 class="rq-title text-center">Panel de Bienes en propiedad</h2>
+      <p class="page-subtitle text-center">Edificios comprados y apartamentos alquilados</p>
     </header>
-    <div *ngIf="loading" class="alert alert-info">Cargando...</div>
-    <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+    <div *ngIf="loading" class="alert alert-info text-center">Cargando...</div>
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
     <div class="patrimony-flex" *ngIf="!loading && !error">
     <div class="patrimony-col">
       <h4 class="text-center">Edificios Comprados</h4>
