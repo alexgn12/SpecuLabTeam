@@ -1,0 +1,78 @@
+/* Paleta y tokens (gama fría gris/azul, estilo iOS) */
+:host {
+  --ic-bg: #ffffff;
+  --ic-border: #e8edf5;
+  --ic-shadow: 0 10px 30px rgba(20, 24, 40, 0.06);
+  --ic-text: #0f172a;   /* slate-900 */
+  --ic-muted: #64748b;  /* slate-500/600 */
+}
+
+/* Tarjeta base */
+.info-card {
+  background: var(--ic-bg);
+  border: 1px solid var(--ic-border) !important;
+  border-radius: 20px;              /* rounded-4 visual coherente */
+  box-shadow: var(--ic-shadow);
+  transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  will-change: transform;
+}
+
+/* Elevación sutil en hover/focus (iOS-like) */
+.info-card:hover,
+.info-card:focus-within {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 34px rgba(20, 24, 40, 0.08);
+  border-color: #dde6f3 !important;
+}
+
+/* Tipografía y espaciados */
+.info-card__label {
+  color: var(--ic-muted) !important;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.25rem;
+}
+
+.info-card__value {
+  color: var(--ic-text);
+  line-height: 1.1;
+  /* Tamaño fluido: más grande en pantallas amplias */
+  font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
+  margin-bottom: 0.5rem;
+  word-break: break-word;
+}
+
+/* Badge: se integra con tu badgeClass sin pelear estilos.
+   Solo aporta padding y forma. Los colores vendrán de badgeClass. */
+.info-card__badge {
+  border-radius: 999px;
+  padding: 0.375rem 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Ajustes sutiles del body */
+.card-body {
+  padding: clamp(14px, 2.2vw, 22px) !important;
+}
+
+/* Accesibilidad: foco visible si se navega con teclado */
+.info-card:focus-visible {
+  outline: 2px solid #93c5fd; /* azul suave */
+  outline-offset: 2px;
+}
+
+/* Compatibilidad con modo compacto (opcional, añade clase desde el padre si la quieres) */
+.info-card--compact .card-body {
+  padding: 12px !important;
+}
+.info-card--compact .info-card__value {
+  font-size: clamp(1.2rem, 1rem + 1.1vw, 1.6rem);
+}
+
+/* Responsive sutil en móviles muy pequeños */
+@media (max-width: 360px) {
+  .info-card {
+    border-radius: 16px;
+  }
+}

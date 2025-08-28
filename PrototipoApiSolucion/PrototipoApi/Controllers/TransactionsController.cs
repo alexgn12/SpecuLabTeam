@@ -53,14 +53,25 @@ namespace PrototipoApi.Controllers
 
         // POST: api/transactions
         [HttpPost]
-        public async Task<ActionResult<TransactionDto>> CreateTransaction(TransactionDto dto)
+        public async Task<ActionResult<TransactionDto>> CreateTransaction([FromBody] CreateTransactionDto dto)
         {
             _loguer.LogInfo("Creando nueva transacción");
-            var createdTransaction = await _mediator.Send(
-                new CreateTransactionCommand(dto.TransactionDate, dto.TransactionTypeId, (int)dto.BuildingAmount)
+            var command = new CreateTransactionCommand(
+                DateTime.UtcNow, // O usa un campo de fecha si lo agregas al DTO
+                dto.Description,
+                dto.Amount,
+                dto.ApartmentCode
             );
+            var createdTransaction = await _mediator.Send(command);
             _loguer.LogInfo($"Transacción creada con id {createdTransaction.TransactionId}");
             return CreatedAtAction(nameof(GetTransaction), new { id = createdTransaction.TransactionId }, createdTransaction);
+        }
+
+        private async Task<int> GetIngresoTransactionTypeId()
+        {
+            // Aquí deberías obtener el TransactionTypeId correspondiente a "INGRESO" desde la base de datos o un servicio
+            // Por simplicidad, se retorna 1, pero deberías reemplazarlo por la lógica real
+            return 1;
         }
 
     }

@@ -1,0 +1,66 @@
+quiero crear un controlador con un get para obtnener los datos de #RequestStatusHistory, lo quiero paginado y con los siguienetes filtros: 
+- Fecha (Desde - hasta)
+- RequestId
+
+Quiero obtner el siguiente dto: 
+- RequestId (de la tabla RequestStatusHistories)
+- Descripción del request (viene de la tabla request)
+- OldstatusId , StatusType (de la tabla Statuses)
+- NewdstatusId , StatusType (de la tabla Statuses)
+- ChangeDate (de la tabla RequestStatusHistories)
+- Comment(de la tabla RequestStatusHistories)
+
+---
+### Transformación a un PRD: Controlador de Historial de Estados de Solicitudes
+
+Aquí tienes el texto que proporcionaste, estructurado y ampliado en un formato de **PRD** (Product Requirements Document) simplificado. Este documento es un borrador que puedes usar para alinear a los equipos de desarrollo, diseño y producto.
+
+---
+
+### **1. Resumen y Visión General**
+
+* **Nombre del PRD:** API para el Historial de Estados de Solicitudes (RequestStatusHistory)
+* **Visión:** Proporcionar un *endpoint* de API eficiente y flexible que permita a los usuarios y sistemas internos consultar el historial detallado de los cambios de estado de las solicitudes.
+* **Objetivo:** Desarrollar un nuevo controlador (`RequestStatusHistoryController`) con una operación `GET` que ofrezca la información paginada y filtrable del historial de estados. Este controlador será consumido por la interfaz de usuario (UI) para mostrar el historial de una solicitud específica o para fines de auditoría.
+
+---
+
+### **2. Requisitos Funcionales**
+
+* **Endpoint:** Se creará un nuevo *endpoint* `GET` para acceder a los datos del historial.
+    * **Ejemplo de URL:** `/api/request-status-history`
+* **Paginación:** La respuesta debe estar paginada para gestionar grandes volúmenes de datos de manera eficiente.
+    * Se deben incluir parámetros de consulta para `page` (número de página) y `pageSize` (cantidad de registros por página).
+* **Filtros:** El *endpoint* debe aceptar los siguientes parámetros de consulta para filtrar la información:
+    * **`fromDate` y `toDate`:** Para filtrar por un rango de fechas (`ChangeDate`).
+    * **`requestId`:** Para obtener el historial de una solicitud específica.
+
+---
+
+### **3. Requisitos Técnicos y de Datos**
+
+* **Entidades involucradas:** El controlador necesitará acceder a las siguientes tablas y sus campos:
+    * `RequestStatusHistories`: Contiene el historial de cambios de estado.
+    * `Requests`: Contiene la información principal de la solicitud, incluyendo la `Descripción`.
+    * `Statuses`: Contiene la información de los estados (`StatusType`).
+* **DTO de Salida (Data Transfer Object):** La API debe retornar un objeto JSON con la siguiente estructura y campos:
+    * `requestId` (del historial)
+    * `requestDescription` (de la tabla `Requests`)
+    * `oldStatusId` (del historial)
+    * `oldStatusType` (de la tabla `Statuses` asociada a `oldStatusId`)
+    * `newStatusId` (del historial)
+    * `newStatusType` (de la tabla `Statuses` asociada a `newStatusId`)
+    * `changeDate` (del historial)
+    * `comment` (del historial)
+
+---
+
+### **4. Consideraciones Adicionales**
+
+* **Rendimiento:** Asegurar que las consultas a la base de datos estén optimizadas con índices adecuados, especialmente para los filtros de `requestId` y `ChangeDate`.
+* **Manejo de errores:** Implementar un manejo de errores robusto. Por ejemplo, si se proporciona un `requestId` no válido o un rango de fechas mal formado, la API debe devolver una respuesta de error clara (`400 Bad Request`).
+* **Seguridad:** El *endpoint* debe estar protegido con la autenticación y autorización adecuadas para evitar accesos no autorizados.
+* **Documentación:** La API debe estar documentada usando una herramienta como Swagger/OpenAPI para que los desarrolladores front-end puedan integrarla fácilmente.
+
+Este formato de PRD te ayudará a comunicar de forma clara y concisa los requisitos de tu proyecto a tu equipo. ¿Necesitas añadir algún otro detalle o tienes alguna pregunta sobre un punto en específico?
+

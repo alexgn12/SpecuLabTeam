@@ -48,6 +48,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
 // Registro del servicio externo de edificios
 builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>();
+builder.Services.AddHttpClient<PrototipoApi.Services.IExternalApartmentService, PrototipoApi.Services.ExternalApartmentService>();
 
 // Registro del loguer
 builder.Services.AddSingleton<PrototipoApi.Logging.ILoguer, PrototipoApi.Logging.Loguer>();
@@ -59,18 +60,18 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 var app = builder.Build();
 
 // Inicializa la base de datos con datos semilla al iniciar la aplicación
-//using (var scope = app.Services.CreateScope())
-//{
-//    var services = scope.ServiceProvider;
-//    var context = services.GetRequiredService<ContextoBaseDatos>();
-//
-//    if (app.Environment.IsDevelopment())
-//    {
-//        context.Database.Migrate();
-//    }
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<ContextoBaseDatos>();
 
-//    await DbInitializer.SeedAsync(context); // Método asíncrono para poblar la base de datos si es necesario
-//}
+    if (app.Environment.IsDevelopment())
+    {
+        context.Database.Migrate();
+    }
+
+    await DbInitializer.SeedAsync(context); // Método asíncrono para poblar la base de datos si es necesario
+}
 
 // Configura el pipeline de solicitudes HTTP
 if (app.Environment.IsDevelopment())

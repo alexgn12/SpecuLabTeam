@@ -40,16 +40,8 @@
       <span class="fw-bold h4 ms-2">Total Amount: {{ totalAmountText }}</span>
       <div class="d-flex gap-4">
         <ng-container *ngIf="request.statusType === 'Pendiente'">
-          <button class="btn btn-outline-success w-100 mt-2"
-                  (click)="aceptarRequest()"
-                  [disabled]="!request.maintenanceAmount || request.maintenanceAmount <= 0">
-            Aceptar
-          </button>
-          <button class="btn btn-outline-danger w-100 mt-2"
-                  (click)="rechazarRequest()"
-                  [disabled]="!request.maintenanceAmount || request.maintenanceAmount <= 0">
-            Rechazar
-          </button>
+          <button class="btn btn-outline-success w-100 mt-2" (click)="aceptarRequest()">Aceptar</button>
+          <button class="btn btn-outline-danger w-100 mt-2" (click)="rechazarRequest()">Rechazar</button>
         </ng-container>
         <ng-container *ngIf="request.statusType === 'Recibido'">
           <a [routerLink]="['/formulario', building?.buildingCode, request.requestId]" class="btn btn-outline-warning w-100 mt-2">Solicitar Presupuesto</a>

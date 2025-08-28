@@ -1,15 +1,23 @@
-<div class="card text-center shadow-sm border-0 rounded-3">
-  <div class="card-body">
-    <h5 class="card-title text-muted">{{ label }}</h5>
-    <h3 class="display-6 fw-bold mb-1">
+<div class="card info-card text-center border-0 rounded-4">
+  <div class="card-body px-4 py-3">
+    <h5 class="card-title info-card__label text-muted mb-2">
+      {{ label }}
+    </h5>
+
+    <h3 class="info-card__value fw-bold mb-2" aria-live="polite">
       <ng-container *ngIf="currency; else normalValue">
-        {{ value | currency:currency }}
+        {{ value | currency: currency }}
       </ng-container>
       <ng-template #normalValue>
         {{ value }}{{ suffix }}
       </ng-template>
     </h3>
-    <span *ngIf="badge" class="badge" [ngClass]="badgeClass">{{ badge }}</span>
+
+    <span *ngIf="badge" class="badge info-card__badge" [ngClass]="badgeClass">
+      {{ badge }}
+    </span>
+
+    <!-- Slot para contenido adicional (no se estiliza) -->
     <ng-content></ng-content>
   </div>
 </div>
