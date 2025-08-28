@@ -1,0 +1,51 @@
+<div class="request-history-container">
+  <h2>Historial de Solicitudes</h2>
+
+  <div class="filters">
+    <label for="requestId">ID de Solicitud:</label>
+    <input id="requestId" type="number" [(ngModel)]="requestId">
+
+    <label for="fromDate">Desde:</label>
+    <input id="fromDate" type="date" [(ngModel)]="fromDate">
+
+    <label for="toDate">Hasta:</label>
+    <input id="toDate" type="date" [(ngModel)]="toDate">
+    
+    <button (click)="applyFilters()">Aplicar Filtros</button>
+  </div>
+  
+  <div *ngIf="errorMsg" class="error-message" style="color: red; margin-bottom: 1rem;">
+    {{ errorMsg }}
+  </div>
+  <div class="history-table">
+    <table *ngIf="history.length > 0">
+      <thead>
+        <tr>
+          <th>ID de Solicitud</th>
+          <th>Descripción</th>
+          <th>Estado Anterior</th>
+          <th>Estado Nuevo</th>
+          <th>Fecha de Cambio</th>
+          <th>Comentario</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of history">
+          <td>{{ item.requestId }}</td>
+          <td>{{ item.requestDescription }}</td>
+          <td>{{ item.oldStatusType }}</td>
+          <td>{{ item.newStatusType }}</td>
+          <td>{{ formatDate(item.changeDate) }}</td>
+          <td>{{ item.comment }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+
+  <div class="pagination-controls" style="margin-top: 1rem; display: flex; gap: 1rem; align-items: center;">
+    <button (click)="page > 1 && previousPage()" [disabled]="page === 1">Anterior</button>
+    <span>Página {{ page }}</span>
+    <button (click)="nextPage()" [disabled]="history.length < pageSize">Siguiente</button>
+  </div>
+</div>

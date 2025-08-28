@@ -1,0 +1,2 @@
+﻿Generar un componente que muestre el historial.
+El historial está en 
