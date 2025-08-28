@@ -1,85 +1,98 @@
 <!-- Barra de filtros -->
-<div class="card mb-4">
+<div class="card tp-filters mb-4 border-0 rounded-4 shadow-sm">
   <div class="card-body">
-    <form class="row g-3">
+    <form class="row g-3 align-items-end">
       <div class="col-md-3">
-        <label for="year" class="form-label">Año</label>
-        <select class="form-select" id="year" [(ngModel)]="filters.year" name="year">
+        <label for="year" class="form-label tp-label">Año</label>
+        <select class="form-select tp-select" id="year" [(ngModel)]="filters.year" name="year">
           <option value="">Todos</option>
           <option *ngFor="let y of years" [value]="y">{{ y }}</option>
         </select>
       </div>
+
       <div class="col-md-3">
-        <label for="month" class="form-label">Mes</label>
-        <select class="form-select" id="month" [(ngModel)]="filters.month" name="month">
+        <label for="month" class="form-label tp-label">Mes</label>
+        <select class="form-select tp-select" id="month" [(ngModel)]="filters.month" name="month">
           <option value="">Todos</option>
           <option *ngFor="let m of months" [value]="m.value">{{ m.label }}</option>
         </select>
       </div>
+
       <div class="col-md-3">
-        <label for="type" class="form-label">Tipo de transacción</label>
-        <select class="form-select" id="type" [(ngModel)]="filters.type" name="type">
+        <label for="type" class="form-label tp-label">Tipo de transacción</label>
+        <select class="form-select tp-select" id="type" [(ngModel)]="filters.type" name="type">
           <option value="">Todos</option>
           <option value="INGRESO">Ingreso</option>
           <option value="GASTO">Gasto</option>
         </select>
       </div>
-      <div class="col-md-2 d-flex align-items-end">
-        <button type="button" class="btn btn-primary w-100" (click)="applyFilters()">Filtrar</button>
-        <button type="button" class="btn btn-secondary w-100 ms-2" (click)="resetFilters()">Resetear</button>
+
+      <div class="col-md-3 d-flex gap-2">
+        <button type="button" class="btn btn-primary tp-btn w-100" (click)="applyFilters()">Filtrar</button>
+        <button type="button" class="btn btn-outline-secondary tp-btn w-100" (click)="resetFilters()">Resetear</button>
       </div>
     </form>
-    <!-- TODO: Añadir filtros avanzados -->
   </div>
 </div>
 
 <!-- Tabla principal de transacciones -->
-<div class="card">
-  <div class="card-body">
+<div class="card tp-card border-0 rounded-4 shadow-sm">
+  <div class="card-body p-0">
     <div class="table-responsive">
-      <table class="table table-striped align-middle">
-        <thead>
+      <table class="table tp-table align-middle mb-0">
+        <thead class="tp-thead">
           <tr>
-            <th>Fecha</th>
-            <th>Tipo</th>
-            <th>Importe</th>
-            <th>Descripción</th>
-            <th>Relacionado con</th>
-            <th>Acciones</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Tipo</th>
+            <th scope="col" class="text-end">Importe</th>
+            <th scope="col">Descripción</th>
+            <th scope="col">Relacionado con</th>
+            <th scope="col" class="text-end">Acciones</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let t of transactions">
-            <td>{{ t.transactionDate }}</td>
+          <tr *ngFor="let t of transactions" class="tp-row">
+            <td class="tp-date">{{ t.transactionDate }}</td>
+
             <td>
-              <span class="badge" [ngClass]="{'bg-success': t.type === 'INGRESO', 'bg-danger': t.type === 'GASTO'}">
+              <span class="badge tp-badge"
+                [ngClass]="{ 'tp-badge--in': t.type === 'INGRESO', 'tp-badge--out': t.type === 'GASTO' }">
                 {{ t.type }}
               </span>
             </td>
-            <td>
-              {{ t.amount  | currency:'EUR':'symbol':'1.0-0' }}
+
+            <td class="text-end tp-amount" [class.tp-amount--in]="t.type === 'INGRESO'" [class.tp-amount--out]="t.type === 'GASTO'">
+              {{ t.amount | currency:'EUR':'symbol':'1.0-0' }}
             </td>
-            <td>{{ t.description }}</td>
-            <td>
+
+            <td class="tp-desc">{{ t.description }}</td>
+
+            <td class="tp-related">
               <ng-container *ngIf="t.requestId">Solicitud #{{ t.requestId }}</ng-container>
               <ng-container *ngIf="t.apartmentId">Apartamento #{{ t.apartmentId }}</ng-container>
               <ng-container *ngIf="!t.requestId && !t.apartmentId">-</ng-container>
             </td>
-            <td>
-              <button class="btn btn-sm btn-outline-primary" disabled>Ver</button>
-              <!-- TODO: Añadir acciones -->
+
+            <td class="text-end">
+              <button class="btn btn-sm btn-outline-primary tp-btn--sm" disabled>Ver</button>
             </td>
+          </tr>
+
+          <!-- Estado vacío (opcional, no rompe la lógica) -->
+          <tr *ngIf="transactions?.length === 0">
+            <td colspan="6" class="text-center text-muted py-4">No hay transacciones para los filtros seleccionados.</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <!-- TODO: Añadir timeline, detalles expandibles, paginación -->
-    <div class="d-flex justify-content-center align-items-center mt-3">
-      <button class="btn btn-outline-secondary me-2" (click)="firstPage()" [disabled]="currentPage === 1">Primera</button>
-      <button class="btn btn-outline-secondary me-2" (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
-      <span>Página {{ currentPage }} de {{ totalPages }}</span>
-      <button class="btn btn-outline-secondary ms-2" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
-      <button class="btn btn-outline-secondary ms-2" (click)="lastPage()" [disabled]="currentPage === totalPages">Última</button>
+
+    <!-- Paginación -->
+    <div class="tp-pagination d-flex justify-content-center align-items-center gap-2 p-3 border-top">
+      <button class="btn btn-outline-secondary tp-btn--sm" (click)="firstPage()" [disabled]="currentPage === 1">Primera</button>
+      <button class="btn btn-outline-secondary tp-btn--sm" (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
+      <span class="tp-pageinfo">Página {{ currentPage }} de {{ totalPages }}</span>
+      <button class="btn btn-outline-secondary tp-btn--sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
+      <button class="btn btn-outline-secondary tp-btn--sm" (click)="lastPage()" [disabled]="currentPage === totalPages">Última</button>
     </div>
   </div>
 </div>

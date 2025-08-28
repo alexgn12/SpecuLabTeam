@@ -1,51 +1,69 @@
-<div class="container mt-4">
-  <h2 class="mb-4">Panel de Patrimonio</h2>
+<div class="budget-page">
+  <div class="container budget-container">
+    <header class="budget-header">
+      <h2 class="page-title">Panel de Patrimonio</h2>
+      <p class="page-subtitle">Resumen financiero y actividad reciente</p>
+    </header>
 
-  <!-- Loading -->
-  <div *ngIf="loading" class="alert alert-info text-center">
-    Cargando datos...
+    <!-- Loading -->
+    <div *ngIf="loading" class="alert alert-info text-center">
+      Cargando datos...
+    </div>
+
+    <!-- Error -->
+    <div *ngIf="error" class="alert alert-danger text-center">
+      {{ error }}
+    </div>
+
+    <!-- Contenido -->
+    <ng-container *ngIf="!loading && !error">
+      <!-- Row tarjetas principales -->
+      <section class="row g-4 budget-cards">
+        <div class="col-12 col-md-4">
+          <sl-info-card
+            class="flex-fill"
+            [label]="'Cantidad en cartera'"
+            [value]="totalAmount"
+            [currency]="'EUR'"
+            [badge]="''"
+            [badgeClass]="'bg-primary-subtle text-primary fw-semibold'">
+          </sl-info-card>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <sl-info-card
+            class="flex-fill"
+            [label]="'Patrimonio Total'"
+            [value]="totalPatrimony"
+            [currency]="'EUR'"
+            [badge]="''"
+            [badgeClass]="'bg-success-subtle text-success fw-semibold'">
+          </sl-info-card>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <app-edificios-comprados-count></app-edificios-comprados-count>
+        </div>
+      </section>
+
+      <!-- Separador -->
+      <div class="section-divider" role="separator" aria-hidden="true"></div>
+
+      <!-- Sección: Gasto mensual + Transacciones -->
+      <section class="section-card">
+        <div class="section-card__header">
+          <h3 class="section-title">Actividad</h3>
+          <p class="section-subtitle">Gasto mensual y movimientos</p>
+        </div>
+
+        <div class="section-card__body">
+          <gasto-mensual></gasto-mensual>
+
+          <div class="soft-divider" role="separator" aria-hidden="true"></div>
+
+          <transactions-page></transactions-page>
+        </div>
+      </section>
+    </ng-container>
   </div>
-
-
-
-  <!-- Error -->
-  <div *ngIf="error" class="alert alert-danger text-center">
-    {{ error }}
-  </div>
-
-  <!-- Tarjetas principales -->
-  <div *ngIf="!loading && !error" class="row g-4">
-  <div class="col-12 col-md-4">
-      <sl-info-card
-        class="flex-fill"
-        [label]="'Cantidad en cartera'"
-        [value]="totalAmount"
-        [currency]="'EUR'"
-        [badgeClass]="'bg-primary-subtle text-primary fw-semibold'">
-      </sl-info-card>
-    </div>
-  <div class="col-12 col-md-4">
-      <sl-info-card
-        class="flex-fill"
-        [label]="'Patrimonio Total'"
-        [value]="totalPatrimony"
-        [currency]="'EUR'"
-        [badgeClass]="'bg-success-subtle text-success fw-semibold'">
-      </sl-info-card>
-    </div>
-  <div class="col-12 col-md-4">
-      <app-edificios-comprados-count></app-edificios-comprados-count>
-    </div>
-
- 
-
-  <!-- Gasto mensual como componente -->
-  <div class="row mt-5">
-    <div class="col-12">
-      <gasto-mensual></gasto-mensual>
-      <div class="my-5"><transactions-page></transactions-page></div>
-    </div>
-  </div>
-
-  </div>
-    </div>
+</div>

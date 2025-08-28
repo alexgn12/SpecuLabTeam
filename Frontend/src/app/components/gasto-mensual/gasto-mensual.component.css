@@ -1,0 +1,72 @@
+/* Paleta fría y tokens estilo iOS solo para este componente */
+:host {
+  --gm-bg: #f6f8fb;            /* fondo suave */
+  --gm-card: #ffffff;          /* tarjeta blanca */
+  --gm-border: #e8edf5;        /* borde sutil */
+  --gm-shadow: 0 10px 30px rgba(20, 24, 40, 0.06);
+  --gm-text: #0f172a;          /* slate-900 */
+  --gm-muted: #64748b;         /* slate-500/600 */
+  --gm-accent: #3b82f6;        /* azul suave */
+}
+
+.gm-section {
+  background: linear-gradient(180deg, var(--gm-bg) 0%, #ffffff 100%);
+  border-radius: 20px;
+  padding: clamp(12px, 2.2vw, 20px);
+}
+
+/* Toolbar de filtros */
+.gm-toolbar {
+  background: var(--gm-card);
+  border: 1px solid var(--gm-border);
+  border-radius: 14px;
+  padding: 8px 12px;
+  box-shadow: var(--gm-shadow);
+}
+
+.gm-label {
+  color: var(--gm-muted);
+  font-weight: 500;
+}
+
+/* Select compacto, integrado con Bootstrap */
+.gm-select {
+  border-radius: 12px;
+  border: 1px solid var(--gm-border);
+  background-color: #fff;
+  color: var(--gm-text);
+  padding: 6px 28px 6px 10px;
+  line-height: 1.2;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+.gm-select:focus {
+  border-color: #cfe2ff;
+  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
+  outline: none;
+}
+
+/* Tarjeta contenedora del gráfico */
+.gm-card {
+  background: var(--gm-card);
+  border: 1px solid var(--gm-border) !important;
+  box-shadow: var(--gm-shadow);
+  overflow: hidden;
+}
+
+.gm-card__header {
+  color: var(--gm-text);
+  border-bottom: 1px solid var(--gm-border);
+  padding: 14px 18px;
+  letter-spacing: 0.01em;
+}
+
+.gm-card__body {
+  padding: clamp(14px, 2.5vw, 24px);
+}
+
+/* Ajustes responsivos sutiles */
+@media (max-width: 480px) {
+  .gm-section { border-radius: 16px; }
+  .gm-card { border-radius: 16px; }
+  .gm-toolbar { border-radius: 12px; }
+}
