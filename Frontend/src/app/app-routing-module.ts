@@ -5,7 +5,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { Home } from './pages/home/home';
 import { Requests } from './pages/requests/requests';
 import { Budget } from './pages/budget/budget';
-import { History } from './pages/history/history';
+// import { History } from './pages/history/history';
 import { Formulario } from './pages/formulario/formulario';
 import { PatrimonyComponent } from './pages/patrimony/patrimony';
 
@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: '', component: Home },             // Ruta raíz: / 
   { path: 'requests', component: Requests }, // /requests
   { path: 'budget', component: Budget},     // /budget
-  { path: 'history', component: History }, // /history (antiguo)
+  // { path: 'history', component: History }, // /history (antiguo)
   { path: 'request-history', component: RequestHistoryComponent }, // /request-history (nuevo)
   { path: 'formulario', component: Formulario }, // /formulario
   { path: 'formulario/:buildingCode', component: Formulario }, // /formulario/:buildingCode
