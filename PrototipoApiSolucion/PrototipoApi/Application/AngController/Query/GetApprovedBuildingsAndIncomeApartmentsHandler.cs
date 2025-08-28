@@ -60,29 +60,15 @@ namespace PrototipoApi.Application.AngController.Query
                 );
             }
 
-            // 2. Apartamentos con ingresos
-            var ingresoType = await _transactionTypes.GetOneAsync(t => t.TransactionName == "INGRESO");
-            var incomeApartments = new List<Entities.Apartment>();
-            if (ingresoType != null)
-            {
-                var incomeTransactions = await _transactions.SelectListAsync<Entities.Transaction>(
-                    t => t.TransactionTypeId == ingresoType.TransactionTypeId && t.ApartmentId != null,
-                    null,
-                    t => t,
-                    0,
-                    int.MaxValue,
-                    cancellationToken
-                );
-                var apartmentIds = incomeTransactions.Select(t => t.ApartmentId.Value).Distinct().ToList();
-                incomeApartments = await _apartments.SelectListAsync<Entities.Apartment>(
-                    a => apartmentIds.Contains(a.ApartmentId),
-                    null,
-                    a => a,
-                    0,
-                    int.MaxValue,
-                    cancellationToken
-                );
-            }
+            // 2. Obtener todos los apartamentos (sin filtrar por transacciones)
+            var allApartments = await _apartments.SelectListAsync<Entities.Apartment>(
+                null,
+                null,
+                a => a,
+                0,
+                int.MaxValue,
+                cancellationToken
+            );
 
             // Map to DTOs
             var result = new ApprovedBuildingsAndIncomeApartmentsDto
@@ -98,7 +84,7 @@ namespace PrototipoApi.Application.AngController.Query
                     FloorCount = b.FloorCount,
                     YearBuilt = b.YearBuilt
                 }).ToList(),
-                IncomeApartments = incomeApartments.Select(a => new ApartmentDto
+                IncomeApartments = allApartments.Select(a => new ApartmentDto
                 {
                     ApartmentId = a.ApartmentId,
                     ApartmentCode = a.ApartmentCode,
