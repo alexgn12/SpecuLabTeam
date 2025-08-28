@@ -42,7 +42,9 @@ namespace PrototipoApi.Application.Transaction.Queries.GetAllTransaction.ListRes
                 TransactionTypeId = t.TransactionTypeId,
                 Description = t.Description,
                 BuildingAmount = t.Request != null ? (decimal)t.Request.BuildingAmount : 0,
-                Amount = (decimal)t.Amount
+                Amount = (decimal)t.Amount,
+                ApartmentId = t.ApartmentId, // Ya añadido
+                BuildingId = t.Request != null ? t.Request.BuildingId : (int?)null // Añadido para mapear el BuildingId
             };
 
             Func<IQueryable<TransactionEntity>, IOrderedQueryable<TransactionEntity>> orderBy = q =>

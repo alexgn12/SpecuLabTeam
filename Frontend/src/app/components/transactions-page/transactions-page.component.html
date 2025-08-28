@@ -46,8 +46,6 @@
             <th scope="col">Tipo</th>
             <th scope="col" class="text-end">Importe</th>
             <th scope="col">Descripción</th>
-            <th scope="col">Relacionado con</th>
-            <th scope="col" class="text-end">Acciones</th>
           </tr>
         </thead>
         <tbody>
@@ -56,7 +54,12 @@
 
             <td>
               <span class="badge tp-badge"
-                [ngClass]="{ 'tp-badge--in': t.type === 'INGRESO', 'tp-badge--out': t.type === 'GASTO' }">
+                [ngClass]="{
+                  'bg-success text-light': t.type === 'INGRESO',
+                  'bg-danger text-light': t.type === 'GASTO',
+                  'tp-badge--in': t.type === 'INGRESO',
+                  'tp-badge--out': t.type === 'GASTO'
+                }">
                 {{ t.type }}
               </span>
             </td>
@@ -67,14 +70,18 @@
 
             <td class="tp-desc">{{ t.description }}</td>
 
-            <td class="tp-related">
+            <!-- <td class="tp-related">
               <ng-container *ngIf="t.requestId">Solicitud #{{ t.requestId }}</ng-container>
               <ng-container *ngIf="t.apartmentId">Apartamento #{{ t.apartmentId }}</ng-container>
               <ng-container *ngIf="!t.requestId && !t.apartmentId">-</ng-container>
-            </td>
+            </td> -->
 
             <td class="text-end">
-              <button class="btn btn-sm btn-outline-primary tp-btn--sm" disabled>Ver</button>
+              <button class="btn btn-sm btn-outline-primary tp-btn--sm" (click)="onViewClick(t)">Ver</button>
+              <!-- Modal de detalle de apartamento -->
+              <apartment-detail-modal *ngIf="showApartmentModal" [apartment]="selectedApartment" [close]="closeApartmentModal"></apartment-detail-modal>
+              <!-- Modal de detalle de edificio -->
+              <building-detail-modal *ngIf="showBuildingModal" [building]="selectedBuilding" [close]="closeBuildingModal"></building-detail-modal>
             </td>
           </tr>
 
