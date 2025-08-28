@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch.Operations;
 using PrototipoApi.Application.Requests.Commands.CreateRequest;
 using PrototipoApi.Application.Requests.Commands.UpdateRequest;
 using PrototipoApi.Application.Requests.Queries.GetRequestById;
@@ -20,11 +22,13 @@ public class RequestsController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly ILoguer _loguer;
+    private readonly ContextoBaseDatos _context;
 
-    public RequestsController(IMediator mediator, ILoguer loguer)
+    public RequestsController(IMediator mediator, ILoguer loguer, ContextoBaseDatos context)
     {
         _mediator = mediator;
         _loguer = loguer;
+        _context = context;
     }
 
     [HttpGet]
@@ -111,5 +115,55 @@ public class RequestsController : ControllerBase
         }
         _loguer.LogInfo($"Status actualizado para la request con id {id}");
         return NoContent();
+    }
+
+
+    [HttpPatch("{id}")]
+    public async Task<IActionResult> PatchRequest(int id, [FromBody] JsonPatchDocument<Request> patchDoc)
+    {
+        if (patchDoc == null)
+            return BadRequest("Se requiere el documento de operaciones PATCH.");
+
+        var request = await _context.Requests.Include(r => r.Status).FirstOrDefaultAsync(r => r.RequestId == id);
+        if (request == null)
+            return NotFound($"Request con id {id} no encontrada");
+
+        var oldStatusId = request.StatusId;
+        string? comment = null;
+
+        // Extrae y elimina la operación /comment del patch
+        var commentOp = patchDoc.Operations.FirstOrDefault(op => op.path.ToLower() == "/comment" && op.OperationType == OperationType.Replace);
+        if (commentOp != null)
+        {
+            comment = commentOp.value?.ToString();
+            patchDoc.Operations.Remove(commentOp); // Elimina la operación para evitar el error
+        }
+
+        patchDoc.ApplyTo(request, (error) =>
+        {
+            ModelState.AddModelError(error.AffectedObject?.ToString() ?? "patch", error.ErrorMessage);
+        });
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var status = await _context.Statuses.FindAsync(request.StatusId);
+        if (status == null)
+            return NotFound($"Status con id '{request.StatusId}' no encontrado");
+
+        var history = new RequestStatusHistory
+        {
+            RequestId = request.RequestId,
+            OldStatusId = oldStatusId,
+            NewStatusId = request.StatusId,
+            ChangeDate = DateTime.UtcNow,
+            Comment = comment
+        };
+        _context.RequestStatusHistories.Add(history);
+
+        _context.Requests.Update(request);
+        await _context.SaveChangesAsync();
+
+        // Devuelve siempre el ID del historial creado
+        return Ok(new { RequestStatusHistoryId = history.RequestStatusHistoryId });
     }
 }
