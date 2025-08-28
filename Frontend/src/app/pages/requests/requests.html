@@ -102,6 +102,7 @@
     <ul class="rq-list list-unstyled">
       <li *ngFor="let request of requestsData" class="rq-item">
         <sl-request-card
+          class="rq-card"
           [request]="request"
           [building]="request.building"
           (statusChanged)="onStatusChanged()">

@@ -10,6 +10,7 @@ import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
 import { Home } from './pages/home/home';
 import { Requests } from './pages/requests/requests';
+// import { History } from './pages/history/history';
 import { Budget } from './pages/budget/budget';
 
 import { InfoCard } from './components/info-card/info-card';
@@ -23,6 +24,7 @@ import { RequestHistoryComponent } from './components/request-history/request-hi
     App,
     Header,
     Footer,
+  // History,
   ],
   imports: [
     BrowserModule,
