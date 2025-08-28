@@ -1,8 +1,12 @@
-<div class="container mt-4">
-  <h2>Patrimonio</h2>
-  <div *ngIf="loading" class="alert alert-info">Cargando...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <div class="patrimony-flex" *ngIf="!loading && !error">
+<div class="requests-page">
+  <div class="container requests-container">
+    <header class="rq-header">
+      <h2 class="rq-title text-center">Panel de Bienes en propiedad</h2>
+      <p class="page-subtitle text-center">Edificios comprados y apartamentos alquilados</p>
+    </header>
+    <div *ngIf="loading" class="alert alert-info text-center">Cargando...</div>
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+    <div class="patrimony-flex" *ngIf="!loading && !error">
     <div class="patrimony-col">
       <h4 class="text-center">Edificios Comprados</h4>
       <div class="table-responsive">
@@ -43,8 +47,6 @@
               <th>Precio</th>
               <th>Habit.</th>
               <th>Baños</th>
-              <th>Garage</th>
-              <th>Ascensor</th>
             </tr>
           </thead>
           <tbody>
@@ -55,11 +57,9 @@
               <td>{{ a.apartmentPrice | currency:'EUR':'symbol':'1.0-0' }}</td>
               <td>{{ a.numberOfRooms }}</td>
               <td>{{ a.numberOfBathrooms }}</td>
-              <td>{{ a.hasGarage ? 'Sí' : 'No' }}</td>
-              <td>{{ a.hasLift ? 'Sí' : 'No' }}</td>
             </tr>
             <tr *ngIf="incomeApartments.length === 0">
-              <td colspan="8" class="text-center text-muted">No hay apartamentos alquilados</td>
+              <td colspan="6" class="text-center text-muted">No hay apartamentos alquilados</td>
             </tr>
           </tbody>
         </table>

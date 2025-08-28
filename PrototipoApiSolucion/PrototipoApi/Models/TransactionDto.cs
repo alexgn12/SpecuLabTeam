@@ -10,6 +10,8 @@
         // Relaciones
         public decimal BuildingAmount { get; set; } // Relación con Request
         public decimal Amount { get; set; }
+        public int? ApartmentId { get; set; } // Relación con Apartment
+        public int? BuildingId { get; set; } // Relación con Building
         //public int ManagementBudgetId { get; set; }
     }
 }

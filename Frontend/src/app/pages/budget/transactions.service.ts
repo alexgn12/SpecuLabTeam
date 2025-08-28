@@ -10,6 +10,7 @@ export interface Transaction {
   description: string;
   requestId?: number;
   apartmentId?: number;
+  buildingId?: number;
   buildingAmount?: number;
   amount?: number;
 }
@@ -58,8 +59,9 @@ export class TransactionsService {
     const buildingAmount  = dto.buildingAmount ?? dto.BuildingAmount;
     const amount          = dto.amount ?? dto.Amount;
     const description     = dto.description ?? dto.Description;
-    const requestId       = dto.requestId ?? dto.RequestId;
-    const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
+  const requestId       = dto.requestId ?? dto.RequestId;
+  const apartmentId     = dto.apartmentId ?? dto.ApartmentId;
+  const buildingId      = dto.buildingId ?? dto.BuildingId;
 
     // El backend tiene TransactionTypeId + TransactionType (entidad).
     // Intentamos derivar un string 'INGRESO'/'GASTO' de forma robusta.
@@ -83,6 +85,7 @@ export class TransactionsService {
       description,
       requestId,
       apartmentId,
+      buildingId,
     };
   }
 
