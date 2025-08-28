@@ -81,8 +81,20 @@ export class RequestsService {
     return this.http.get<any>('https://localhost:7092/api/Ang/resumen-requests');
   }
 
-  updateRequestStatus(requestId: number, statusType: string): Observable<any> {
-    const url = `${this.apiUrl}/${requestId}/status`;
-    return this.http.put(url, { statusType });
+  /**
+   * Actualiza el estado de una request usando PATCH y operaciones JSON Patch.
+   * @param requestId ID de la request
+   * @param statusId Nuevo statusId (por ejemplo, 2 para Pendiente)
+   */
+  updateRequestStatusPatch(requestId: number, statusId: number): Observable<any> {
+    const url = `${this.apiUrl}/${requestId}`;
+    const body = [
+      {
+        path: "/statusid",
+        op: "replace",
+        value: statusId
+      }
+    ];
+    return this.http.patch(url, body);
   }
 }

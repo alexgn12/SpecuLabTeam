@@ -51,9 +51,9 @@ export class Formulario {
     if (this.form.valid) {
       // Aquí iría la llamada real al backend
       this.successMsg = '¡Petición enviada correctamente a la empresa de mantenimiento!';
-      // Cambiar estado a Pendiente si hay requestId
+      // Cambiar estado a Pendiente (statusId = 2) si hay requestId
       if (this.requestId) {
-        this.requestsService.updateRequestStatus(this.requestId, 'Pendiente').subscribe({
+        this.requestsService.updateRequestStatusPatch(this.requestId, 2).subscribe({
           next: () => {
             // Estado actualizado, continuar con el flujo normal
             alert(this.successMsg);

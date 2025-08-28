@@ -60,7 +60,8 @@ export class RequestCard {
 
   aceptarRequest() {
     if (confirm('¿Quieres aceptar esta petición?')) {
-      this.requestsService.updateRequestStatus(this.request.requestId, 'Aprobado').subscribe({
+      // statusId = 3 para Aprobado
+      this.requestsService.updateRequestStatusPatch(this.request.requestId, 3).subscribe({
         next: () => {
           alert('La petición ha sido aceptada');
           this.statusChanged.emit();
@@ -72,7 +73,8 @@ export class RequestCard {
 
   rechazarRequest() {
     if (confirm('¿Quieres rechazar esta petición?')) {
-      this.requestsService.updateRequestStatus(this.request.requestId, 'Rechazado').subscribe({
+      // statusId = 4 para Rechazado
+      this.requestsService.updateRequestStatusPatch(this.request.requestId, 4).subscribe({
         next: () => {
           alert('La petición ha sido rechazada');
           this.statusChanged.emit();
