@@ -7,32 +7,43 @@
     </header>
 
     <!-- Infocards -->
-    <section class="row g-3 mb-3 mt-2">
-      <div class="col-12 col-md-3">
-        <sl-info-card class="flex-fill"
-          label="Total"
-          [value]="getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido')">
-        </sl-info-card>
-      </div>
-      <div class="col-12 col-md-3">
-        <sl-info-card class="flex-fill"
-          label="Pendientes"
-          [value]="getEstadoTotal('Pendiente')">
-        </sl-info-card>
-      </div>
-      <div class="col-12 col-md-3">
-        <sl-info-card class="flex-fill"
-          label="En Revisión"
-          [value]="getEstadoTotal('Recibido')">
-        </sl-info-card>
-      </div>
-      <div class="col-12 col-md-3">
-        <sl-info-card class="flex-fill"
-          label="Completadas"
-          [value]="getEstadoTotal('Aprobado')">
-        </sl-info-card>
-      </div>
-    </section>
+ <section class="requests-kpis row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3 mb-3 mt-2">
+  <!-- Total -->
+  <div class="col">
+    <sl-info-card label="Total"
+                  [value]="getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido')">
+      <img class="ic-mini" src="../../../assets/icons/bell.svg" alt="" />
+    </sl-info-card>
+  </div>
+
+  <!-- Recibidos (antes “En Revisión”) -->
+  <div class="col">
+    <sl-info-card label="Recibidos" [value]="getEstadoTotal('Recibido')">
+      <img class="ic-mini" src="../../../assets/icons/inbox.svg" alt="" />
+    </sl-info-card>
+  </div>
+
+  <!-- Pendientes -->
+  <div class="col">
+    <sl-info-card label="Pendientes" [value]="getEstadoTotal('Pendiente')">
+      <img class="ic-mini" src="../../../assets/icons/alert.svg" alt="" />
+    </sl-info-card>
+  </div>
+
+  <!-- Completadas (Aprobado) -->
+  <div class="col">
+    <sl-info-card label="Completadas" [value]="getEstadoTotal('Aprobado')">
+      <img class="ic-mini" src="../../../assets/icons/check-circle.svg" alt="" />
+    </sl-info-card>
+  </div>
+
+  <!-- Rechazadas -->
+  <div class="col">
+    <sl-info-card label="Rechazadas" [value]="getEstadoTotal('Rechazado')">
+      <img class="ic-mini" src="../../../assets/icons/x-circle.svg" alt="" />
+    </sl-info-card>
+  </div>
+</section>
 
     <!-- Tabs segmentados (como en la imagen) -->
     <section class="rq-tabs mb-3">
