@@ -10,11 +10,13 @@ import { Formulario } from './pages/formulario/formulario';
 import { PatrimonyComponent } from './pages/patrimony/patrimony';
 
 // Definición de rutas
+import { RequestHistoryComponent } from './components/request-history/request-history.component';
 const routes: Routes = [
   { path: '', component: Home },             // Ruta raíz: / 
   { path: 'requests', component: Requests }, // /requests
   { path: 'budget', component: Budget},     // /budget
-    { path: 'history', component: History }, // /history
+  { path: 'history', component: History }, // /history (antiguo)
+  { path: 'request-history', component: RequestHistoryComponent }, // /request-history (nuevo)
   { path: 'formulario', component: Formulario }, // /formulario
   { path: 'formulario/:buildingCode', component: Formulario }, // /formulario/:buildingCode
   { path: 'formulario/:buildingCode/:requestId', component: Formulario }, // /formulario/:buildingCode/:requestId
