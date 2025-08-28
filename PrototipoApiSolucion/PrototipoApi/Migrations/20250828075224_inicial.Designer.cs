@@ -12,8 +12,8 @@ using PrototipoApi.BaseDatos;
 namespace PrototipoApi.Migrations
 {
     [DbContext(typeof(ContextoBaseDatos))]
-    [Migration("20250821104101_CambioSeeder")]
-    partial class CambioSeeder
+    [Migration("20250828075224_inicial")]
+    partial class inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -188,7 +188,7 @@ namespace PrototipoApi.Migrations
                     b.Property<int>("NewStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OldStatusId")
+                    b.Property<int?>("OldStatusId")
                         .HasColumnType("int");
 
                     b.Property<int>("RequestId")
@@ -202,7 +202,7 @@ namespace PrototipoApi.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("RequestStatusHistory");
+                    b.ToTable("RequestStatusHistories");
                 });
 
             modelBuilder.Entity("PrototipoApi.Entities.Status", b =>
@@ -339,8 +339,7 @@ namespace PrototipoApi.Migrations
                     b.HasOne("PrototipoApi.Entities.Status", "OldStatus")
                         .WithMany()
                         .HasForeignKey("OldStatusId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("PrototipoApi.Entities.Request", "Request")
                         .WithMany("StatusHistory")
