@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PrototipoApi.Migrations
 {
     /// <inheritdoc />
-    public partial class Inicial : Migration
+    public partial class inicial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -118,34 +118,34 @@ namespace PrototipoApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RequestStatusHistory",
+                name: "RequestStatusHistories",
                 columns: table => new
                 {
                     RequestStatusHistoryId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     RequestId = table.Column<int>(type: "int", nullable: false),
-                    OldStatusId = table.Column<int>(type: "int", nullable: false),
+                    OldStatusId = table.Column<int>(type: "int", nullable: true),
                     NewStatusId = table.Column<int>(type: "int", nullable: false),
                     ChangeDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Comment = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RequestStatusHistory", x => x.RequestStatusHistoryId);
+                    table.PrimaryKey("PK_RequestStatusHistories", x => x.RequestStatusHistoryId);
                     table.ForeignKey(
-                        name: "FK_RequestStatusHistory_Requests_RequestId",
+                        name: "FK_RequestStatusHistories_Requests_RequestId",
                         column: x => x.RequestId,
                         principalTable: "Requests",
                         principalColumn: "RequestId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RequestStatusHistory_Statuses_NewStatusId",
+                        name: "FK_RequestStatusHistories_Statuses_NewStatusId",
                         column: x => x.NewStatusId,
                         principalTable: "Statuses",
                         principalColumn: "StatusId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_RequestStatusHistory_Statuses_OldStatusId",
+                        name: "FK_RequestStatusHistories_Statuses_OldStatusId",
                         column: x => x.OldStatusId,
                         principalTable: "Statuses",
                         principalColumn: "StatusId",
@@ -229,18 +229,18 @@ namespace PrototipoApi.Migrations
                 column: "StatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RequestStatusHistory_NewStatusId",
-                table: "RequestStatusHistory",
+                name: "IX_RequestStatusHistories_NewStatusId",
+                table: "RequestStatusHistories",
                 column: "NewStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RequestStatusHistory_OldStatusId",
-                table: "RequestStatusHistory",
+                name: "IX_RequestStatusHistories_OldStatusId",
+                table: "RequestStatusHistories",
                 column: "OldStatusId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RequestStatusHistory_RequestId",
-                table: "RequestStatusHistory",
+                name: "IX_RequestStatusHistories_RequestId",
+                table: "RequestStatusHistories",
                 column: "RequestId");
 
             migrationBuilder.CreateIndex(
@@ -266,7 +266,7 @@ namespace PrototipoApi.Migrations
                 name: "ManagementBudgets");
 
             migrationBuilder.DropTable(
-                name: "RequestStatusHistory");
+                name: "RequestStatusHistories");
 
             migrationBuilder.DropTable(
                 name: "Transactions");

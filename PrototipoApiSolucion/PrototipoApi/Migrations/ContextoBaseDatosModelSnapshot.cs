@@ -199,7 +199,7 @@ namespace PrototipoApi.Migrations
 
                     b.HasIndex("RequestId");
 
-                    b.ToTable("RequestStatusHistory");
+                    b.ToTable("RequestStatusHistories");
                 });
 
             modelBuilder.Entity("PrototipoApi.Entities.Status", b =>
