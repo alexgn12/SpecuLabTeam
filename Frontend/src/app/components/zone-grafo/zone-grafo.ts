@@ -22,29 +22,51 @@ export class ZoneGrafo implements OnInit {
   public barChartOptions: ChartConfiguration<'bar'>['options'] = {
     responsive: true,
     maintainAspectRatio: false,
-    indexAxis: 'y',
-    layout: { padding: { left: 140, right: 120, top: 16, bottom: 12 } },
+    indexAxis: 'x', // Barras verticales
+    animation: {
+      duration: 1200,
+      easing: 'easeOutBounce'
+    },
+    layout: { padding: { left: 24, right: 24, top: 24, bottom: 32 } },
     plugins: {
       legend: { display: false },
       title: { display: false },
-      tooltip: { enabled: false },
-      datalabels: { clamp: true }
+      tooltip: {
+        enabled: true,
+        callbacks: {
+          label: (ctx: any) => `Operaciones: ${ctx.parsed.y}`
+        }
+      },
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+        color: '#222',
+        font: { size: 16, weight: 700 },
+        formatter: (v: number) => `${v}`
+      }
     },
-    // Siempre inicializamos scales
     scales: {
       x: {
-        grid: { display: false, drawBorder: false },
-        ticks: { display: false, font: { size: 16 }, padding: 10 }
+        grid: { display: false },
+        ticks: { color: '#0b3a6b', font: { size: 14, weight: '400' } }
       },
       y: {
-        grid: { display: true, drawBorder: false, color: 'rgba(13,27,42,0.05)' },
-        ticks: { display: false, font: { size: 18 }, padding: 16 }
+        grid: { color: 'rgba(13,27,42,0.08)' },
+        beginAtZero: true,
+        ticks: { color: '#888', font: { size: 14 } }
       }
     },
     elements: {
       bar: {
-        borderRadius: 10,
-        borderSkipped: false
+        borderRadius: 12,
+        borderSkipped: false,
+        backgroundColor: (ctx: any) => {
+          // Gradiente de verde a rojo según valor
+          const v = ctx.parsed.y;
+          if (v < 2) return '#22c55e'; // verde
+          if (v < 4) return '#eab308'; // amarillo
+          return '#ef4444'; // rojo
+        }
       }
     }
   };
@@ -54,46 +76,11 @@ export class ZoneGrafo implements OnInit {
     datasets: [
       {
         data: [],
-        backgroundColor: 'rgba(13,27,42,0.08)',
-        borderRadius: 50,
-        barThickness: 6,
-        categoryPercentage: 0.52,
-        barPercentage: 0.5,
-        order: 1,
-        datalabels: { display: false }
-      },
-      {
-        data: [],
-        backgroundColor: '#0b3a6b',
-        borderRadius: 50,
-        barThickness: 6,
-        categoryPercentage: 0.52,
-        barPercentage: 0.5,
-        order: 2,
-        datalabels: {
-          labels: {
-            name: {
-              display: true,
-              anchor: 'start',
-              align: 'start',
-              color: '#96989bff',
-              font: { size: 14, weight: 500 },
-              offset: 8,
-              clip: false,
-              formatter: (_: number, ctx: any) => String(ctx.chart.data.labels?.[ctx.dataIndex] ?? '')
-            },
-            value: {
-              display: true,
-              anchor: 'end',
-              align: 'end',
-              color: '#0d1b2a',
-              font: { size: 16, weight: 700 },
-              offset: 8,
-              clip: false,
-              formatter: (v: number) => `${v}`
-            }
-          }
-        }
+        // backgroundColor se define en options.elements.bar.backgroundColor
+        borderRadius: 12,
+        barPercentage: 0.7,
+        categoryPercentage: 0.7,
+        datalabels: { display: true }
       }
     ]
   };
@@ -107,29 +94,11 @@ export class ZoneGrafo implements OnInit {
       next: (data: BuildingsCountByDistrict[]) => {
         const labels = data.map(d => d.district);
         const values = data.map(d => Number(d.count));
-        const max = Math.max(...values);
-        const track = Array(values.length).fill(max);
         this.barChartData = {
           labels,
           datasets: [
-            { ...this.barChartData.datasets[0], data: track },
-            { ...this.barChartData.datasets[1], data: values }
+            { ...this.barChartData.datasets[0], data: values }
           ]
-        };
-        // Ajusta el máximo del eje X para acortar las barras
-  const currentScales = (this.barChartOptions && this.barChartOptions.scales) ? this.barChartOptions.scales : {};
-        this.barChartOptions = {
-          ...this.barChartOptions,
-          scales: {
-            ...currentScales,
-            x: {
-              ...(currentScales["x"] || {}),
-              max: max * 1.2
-            },
-            y: {
-              ...(currentScales["y"] || {})
-            }
-          }
         };
         this.loading = false;
       },
