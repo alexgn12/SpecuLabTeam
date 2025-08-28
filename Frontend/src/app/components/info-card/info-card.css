@@ -32,18 +32,15 @@
   letter-spacing: 0.01em;
   margin-bottom: 0.25rem;
 }
-
 .info-card__value {
   color: var(--ic-text);
   line-height: 1.1;
-  /* Tamaño fluido: más grande en pantallas amplias */
   font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
   margin-bottom: 0.5rem;
   word-break: break-word;
 }
 
-/* Badge: se integra con tu badgeClass sin pelear estilos.
-   Solo aporta padding y forma. Los colores vendrán de badgeClass. */
+/* Badge */
 .info-card__badge {
   border-radius: 999px;
   padding: 0.375rem 0.65rem;
@@ -51,28 +48,28 @@
   letter-spacing: 0.01em;
 }
 
-/* Ajustes sutiles del body */
+/* Body y hueco para el icono */
 .card-body {
   padding: clamp(14px, 2.2vw, 22px) !important;
 }
+.card.info-card .card-body {
+  position: relative;
+  padding-left: 44px; /* deja hueco para el icono mini */
+}
 
-/* Accesibilidad: foco visible si se navega con teclado */
+/* Accesibilidad */
 .info-card:focus-visible {
-  outline: 2px solid #93c5fd; /* azul suave */
+  outline: 2px solid #93c5fd;
   outline-offset: 2px;
 }
 
-/* Compatibilidad con modo compacto (opcional, añade clase desde el padre si la quieres) */
-.info-card--compact .card-body {
-  padding: 12px !important;
-}
+/* Modo compacto */
+.info-card--compact .card-body { padding: 12px !important; }
 .info-card--compact .info-card__value {
   font-size: clamp(1.2rem, 1rem + 1.1vw, 1.6rem);
 }
 
-/* Responsive sutil en móviles muy pequeños */
+/* Responsive */
 @media (max-width: 360px) {
-  .info-card {
-    border-radius: 16px;
-  }
+  .info-card { border-radius: 16px; }
 }

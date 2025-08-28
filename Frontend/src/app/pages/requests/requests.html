@@ -10,90 +10,93 @@
  <section class="requests-kpis row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3 mb-3 mt-2">
   <!-- Total -->
   <div class="col">
-    <sl-info-card label="Total"
-                  [value]="getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido')">
-      <img class="ic-mini" src="../../../assets/icons/bell.svg" alt="" />
-    </sl-info-card>
+<sl-info-card label="Total" [value]="getEstadoTotal('Total')">
+  <i class="bi bi-bell ic-mini ic-total"></i>
+</sl-info-card>
   </div>
 
-  <!-- Recibidos (antes “En Revisión”) -->
+  <!-- Recibidos -->
   <div class="col">
-    <sl-info-card label="Recibidos" [value]="getEstadoTotal('Recibido')">
-      <img class="ic-mini" src="../../../assets/icons/inbox.svg" alt="" />
-    </sl-info-card>
+<sl-info-card label="Recibidos" [value]="getEstadoTotal('Recibido')">
+  <i class="bi bi-inbox ic-mini ic-recibidos"></i>
+</sl-info-card>
   </div>
 
   <!-- Pendientes -->
   <div class="col">
-    <sl-info-card label="Pendientes" [value]="getEstadoTotal('Pendiente')">
-      <img class="ic-mini" src="../../../assets/icons/alert.svg" alt="" />
-    </sl-info-card>
+<sl-info-card label="Pendientes" [value]="getEstadoTotal('Pendiente')">
+  <i class="bi bi-exclamation-triangle ic-mini ic-pendientes"></i>
+</sl-info-card>
   </div>
 
   <!-- Completadas (Aprobado) -->
   <div class="col">
-    <sl-info-card label="Completadas" [value]="getEstadoTotal('Aprobado')">
-      <img class="ic-mini" src="../../../assets/icons/check-circle.svg" alt="" />
-    </sl-info-card>
+<sl-info-card label="Completadas" [value]="getEstadoTotal('Aprobado')">
+  <i class="bi bi-check-circle ic-mini ic-completadas"></i>
+</sl-info-card>
   </div>
 
   <!-- Rechazadas -->
   <div class="col">
-    <sl-info-card label="Rechazadas" [value]="getEstadoTotal('Rechazado')">
-      <img class="ic-mini" src="../../../assets/icons/x-circle.svg" alt="" />
-    </sl-info-card>
+<sl-info-card label="Rechazadas" [value]="getEstadoTotal('Rechazado')">
+  <i class="bi bi-x-circle ic-mini ic-rechazadas"></i>
+</sl-info-card>
   </div>
 </section>
 
-    <!-- Tabs segmentados (como en la imagen) -->
-    <section class="rq-tabs mb-3">
-      <div class="rq-segment">
-        <button
-          type="button"
-          class="rq-segment__btn"
-          [class.active]="!selectedStatus"
-          (click)="selectedStatus=''; onStatusChange()">
-          Todas ({{ getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido') }})
-        </button>
+    <!-- Tabs segmentados -->
+<section class="rq-tabs mb-3">
+  <div class="rq-segment" role="tablist" aria-label="Filtros de requests">
+    <button type="button" class="rq-segment__btn"
+            [class.active]="!selectedStatus"
+            (click)="selectedStatus=''; onStatusChange()"
+            role="tab" [attr.aria-selected]="!selectedStatus">
+      Todas ({{ getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido') }})
+    </button>
 
-        <button
-  type="button"
-  class="rq-segment__btn"
-  [class.active]="selectedStatus==='Recibido'"
-  (click)="selectedStatus='Recibido'; onStatusChange()">
-  Recibidas ({{ getEstadoTotal('Recibido') }})
-</button>
+    <button type="button" class="rq-segment__btn"
+            [class.active]="selectedStatus==='Recibido'"
+            (click)="selectedStatus='Recibido'; onStatusChange()"
+            role="tab" [attr.aria-selected]="selectedStatus==='Recibido'">
+      Recibidas ({{ getEstadoTotal('Recibido') }})
+    </button>
 
-<button
-  type="button"
-  class="rq-segment__btn"
-  [class.active]="selectedStatus==='Pendiente'"
-  (click)="selectedStatus='Pendiente'; onStatusChange()">
-  Pendientes ({{ getEstadoTotal('Pendiente') }})
-</button>
+    <button type="button" class="rq-segment__btn"
+            [class.active]="selectedStatus==='Pendiente'"
+            (click)="selectedStatus='Pendiente'; onStatusChange()"
+            role="tab" [attr.aria-selected]="selectedStatus==='Pendiente'">
+      Pendientes ({{ getEstadoTotal('Pendiente') }})
+    </button>
 
+    <button type="button" class="rq-segment__btn"
+            [class.active]="selectedStatus==='Aprobado'"
+            (click)="selectedStatus='Aprobado'; onStatusChange()"
+            role="tab" [attr.aria-selected]="selectedStatus==='Aprobado'">
+      Completadas ({{ getEstadoTotal('Aprobado') }})
+    </button>
 
-        <button
-          type="button"
-          class="rq-segment__btn"
-          [class.active]="selectedStatus==='Aprobado'"
-          (click)="selectedStatus='Aprobado'; onStatusChange()">
-          Completadas ({{ getEstadoTotal('Aprobado') }})
-        </button>
-      </div>
-    </section>
+    <button type="button" class="rq-segment__btn"
+            [class.active]="selectedStatus==='Rechazado'"
+            (click)="selectedStatus='Rechazado'; onStatusChange()"
+            role="tab" [attr.aria-selected]="selectedStatus==='Rechazado'">
+      Rechazadas ({{ getEstadoTotal('Rechazado') }})
+    </button>
+  </div>
+</section>
 
-    <!-- (Opcional) Select de estado para móvil o accesibilidad -->
-    <div class="rq-toolbar mb-3 d-lg-none d-flex justify-content-center">
-      <select class="form-select rq-select w-auto" [(ngModel)]="selectedStatus" (ngModelChange)="onStatusChange()">
-        <option value="">Todas</option>
-<option value="Recibido">Recibidas</option>
-<option value="Pendiente">Pendientes</option>
+    <!--Select de estado para móvil o accesibilidad -->
+<div class="rq-toolbar mb-3 d-lg-none d-flex justify-content-center">
+  <select class="form-select rq-select w-auto"
+          [(ngModel)]="selectedStatus"
+          (ngModelChange)="onStatusChange()">
+    <option value="">Todas</option>
+    <option value="Recibido">Recibidas</option>
+    <option value="Pendiente">Pendientes</option>
+    <option value="Aprobado">Completadas</option>
+    <option value="Rechazado">Rechazadas</option>
+  </select>
+</div>
 
-        <option value="Aprobado">Completadas</option>
-        <option value="Rechazado">Rechazadas</option>
-      </select>
-    </div>
 
     <!-- Lista de requests -->
     <ul class="rq-list list-unstyled">
