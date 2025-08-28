@@ -6,7 +6,7 @@ export interface BuildingsCountByDistrict {
   district: string;
   count: number;
 }
-
+//Cambio pequeño
 @Injectable({
   providedIn: 'root',
 })

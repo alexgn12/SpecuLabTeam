@@ -61,22 +61,6 @@ public class RequestsController : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = result.RequestId }, result);
     }
 
-    [HttpPut("{id}/amounts")]
-    public async Task<IActionResult> UpdateAmounts(int id, [FromBody] UpdateRequestDto dto)
-    {
-        _loguer.LogInfo($"Actualizando montos de la request con id {id}");
-        var success = await _mediator.Send(new UpdateRequestCommand(id, dto));
-
-        if (!success)
-        {
-            _loguer.LogWarning($"No se encontró la solicitud con ID {id} para actualizar");
-            return NotFound($"No se encontró la solicitud con ID {id}");
-        }
-
-        _loguer.LogInfo($"Montos actualizados para la request con id {id}");
-        return NoContent();
-    }
-
     [HttpPut("{buildingCode}/amounts")]
     public async Task<IActionResult> UpdateAmountsByBuildingCode(string buildingCode, [FromBody] UpdateRequestDto dto)
     {
