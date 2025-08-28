@@ -53,5 +53,12 @@ namespace PrototipoApi.Controllers
             var count = await _mediator.Send(new GetEdificiosCompradosCountQuery());
             return Ok(new { EdificiosComprados = count });
         }
+
+        [HttpGet("aprobados-e-ingresos")]
+        public async Task<IActionResult> GetApprovedBuildingsAndIncomeApartments()
+        {
+            var result = await _mediator.Send(new GetApprovedBuildingsAndIncomeApartmentsQuery());
+            return Ok(result);
+        }
     }
 }
