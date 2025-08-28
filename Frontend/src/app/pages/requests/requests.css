@@ -76,14 +76,6 @@
   width: 100%;
   display:flex; justify-content:center;
 }
-.rq-card{
-  width: 100%;
-  max-width: 1100px;           /* similar al mock */
-  border-radius: 16px;         /* por si el child no lo trae */
-  box-shadow: var(--shadow);   /* sombra suave, sin invadir estilos internos */
-  border: 1px solid var(--border);
-  background: var(--card);
-}
 
 /* ===== Paginación centrada con pill suave ===== */
 .rq-pagination{
@@ -124,6 +116,40 @@
 .ic-pendientes  { color: #f59e0b; } /* ámbar */
 .ic-completadas { color: #10b981; } /* verde */
 .ic-rechazadas  { color: #ef4444; } /* rojo */
+
+.requests-container {
+  background: transparent !important; /* quita fondo blanco */
+  box-shadow: none !important;        /* por si tuviera sombra */
+  border: none !important;            /* por si tuviera borde */
+}
+.requests-page {
+  background: #f1f5f9; /* o el gris azulado que uses */
+  min-height: 100vh;   /* opcional: ocupa toda la altura */
+  padding: 1rem;       /* para que las cards no peguen al borde */
+}
+/* La lista ya no centra: que estire al 100% */
+.rq-list{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;          /* separación entre cards */
+  align-items: stretch;  /* ← antes: center */
+  padding-left: 0;    /* por si acaso */
+  margin-bottom: 0;   /* sin hueco extra al final */
+}
+
+/* Cada item ocupa todo el ancho disponible */
+.rq-item{
+  width: 100%;
+  display: block;     /* no hace falta wrapper de centrado */
+}
+
+/* El contenedor ya limita el ancho global */
+.requests-container{
+  max-width: 1280px;
+  margin: 0 auto;     /* centra todo el bloque */
+  background: transparent !important;
+}
+
 
 
 
