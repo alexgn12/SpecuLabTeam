@@ -1,0 +1,29 @@
+.request-history-container {
+  padding: 2rem;
+}
+
+.filters {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.history-table table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.history-table th, .history-table td {
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  text-align: left;
+}
+
+.history-table th {
+  background-color: #f5f5f5;
+}
+
+mat-paginator {
+  margin-top: 1rem;
+}

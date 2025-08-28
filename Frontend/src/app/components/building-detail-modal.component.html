@@ -1,0 +1,25 @@
+<div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalle de Edificio</h5>
+        <button type="button" class="btn-close" (click)="close()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="building; else noData">
+          <p><strong>ID:</strong> {{ building.buildingId }}</p>
+          <p *ngIf="building.buildingCode"><strong>Código:</strong> {{ building.buildingCode }}</p>
+          <p *ngIf="building.buildingName"><strong>Nombre:</strong> {{ building.buildingName }}</p>
+          <p *ngIf="building.street"><strong>Calle:</strong> {{ building.street }}</p>
+          <p *ngIf="building.district"><strong>Distrito:</strong> {{ building.district }}</p>
+          <p *ngIf="building.floorCount"><strong>Nº Plantas:</strong> {{ building.floorCount }}</p>
+          <p *ngIf="building.yearBuilt"><strong>Año construcción:</strong> {{ building.yearBuilt }}</p>
+          <p *ngIf="building.createdDate"><strong>Fecha creación:</strong> {{ building.createdDate | date:'short' }}</p>
+        </ng-container>
+        <ng-template #noData>
+          <p>No hay datos del edificio.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
