@@ -51,6 +51,22 @@ export class RequestCard {
       this.request.maintenanceAmount > 0
     );
   }
+  get titleText(): string {
+  // Derivamos un título “bonito” según el estado (como en tu mock)
+  switch (this.request?.statusType) {
+    case 'Recibido':
+      return 'Nueva solicitud de compra';
+    case 'Pendiente':
+      return 'Presupuesto requiere revisión';
+    case 'Aprobado':
+      return 'Solicitud aprobada';
+    case 'Rechazado':
+      return 'Solicitud rechazada';
+    default:
+      return 'Solicitud de compra';
+  }
+}
+
 
   get totalAmountText(): string {
     return this.showTotalAmount

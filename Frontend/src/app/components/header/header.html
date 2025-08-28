@@ -1,36 +1,43 @@
-<!-- Navbar sencilla usando clases de Bootstrap -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3 py-0">
-  <!-- Logo o nombre de la app -->
-  <a class="navbar-brand d-flex align-items-center" routerLink="/">
-    <img src="../../../assets/images/Logo_1.png" alt="Logo" width="60" height="60" class="me-2">
-  </a>
+<nav class="navbar navbar-expand-lg app-header border-0">
+  <div class="container header-container">
+    <!-- Logo -->
+    <a class="navbar-brand d-flex align-items-center gap-2" routerLink="/" aria-label="Inicio">
+      <img class="brand-logo" src="../../../assets/images/Logo_1.png" alt="Logo" />
+      <span class="brand-text">SpecuLab</span>
+    </a>
 
-  <!-- Botón colapsable para móviles -->
-  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <!-- Botón hamburguesa -->
+    <button
+      class="navbar-toggler header-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Abrir navegación"
+    >
+      <span class="toggler-icon"></span>
+    </button>
 
-  <!-- Enlaces -->
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav ms-auto">
-      <!-- routerLink navega entre componentes -->
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/requests">Requests</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/budget">Budget</a>
-      </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/history">History</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" routerLink="/patrimony">Patrimony</a>
-            </li>
-    </ul>
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto header-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/requests" routerLinkActive="active">Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/budget" routerLinkActive="active">Budget</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/history" routerLinkActive="active">History</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/patrimony" routerLinkActive="active">Patrimony</a>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
-

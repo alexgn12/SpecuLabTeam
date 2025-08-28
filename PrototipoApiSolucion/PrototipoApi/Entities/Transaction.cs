@@ -9,9 +9,9 @@ namespace PrototipoApi.Entities
         public int TransactionId { get; set; }
 
         // Relaciones
-        public int RequestId { get; set; }
+        public int? RequestId { get; set; } // Ahora nullable
         [ForeignKey("RequestId")]
-        public Request Request { get; set; } = null!;
+        public Request? Request { get; set; } // Ahora nullable
         public DateTime TransactionDate { get; set; }
         public double Amount { get; set; }
 
