@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using PrototipoApi.Models;
 using System;
 
+
 namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
 {
     public class UpdateRequestStatusHandler : IRequestHandler<UpdateRequestStatusCommand, bool?>
     {
         private readonly IRepository<Request> _requests;
-        private readonly IRepository<Status> _statuses;
+        private readonly IRepository<PrototipoApi.Entities.Status> _statuses;
         private readonly IRepository<PrototipoApi.Entities.Transaction> _transactions;
         private readonly IRepository<TransactionType> _transactionTypes;
         public UpdateRequestStatusHandler(
             IRepository<Request> requests,
-            IRepository<Status> statuses,
+            IRepository<PrototipoApi.Entities.Status> statuses,
             IRepository<PrototipoApi.Entities.Transaction> transactions,
             IRepository<TransactionType> transactionTypes)
         {
@@ -74,3 +75,4 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
         }
     }
 }
+
