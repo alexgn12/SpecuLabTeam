@@ -8,8 +8,8 @@ namespace PrototipoApi.Models
         [Range(0.01, double.MaxValue, ErrorMessage = "El monto de construcción debe ser positivo.")]
         public double BuildingAmount { get; set; }
 
-        [Range(0.01, double.MaxValue, ErrorMessage = "El monto de mantenimiento debe ser positivo.")]
-        public double MaintenanceAmount { get; set; }
+        [Range(0, double.MaxValue, ErrorMessage = "El monto de mantenimiento debe ser igual o mayor que cero.")]
+        public double MaintenanceAmount { get; set; } = 0;
 
         [Required(ErrorMessage = "La descripción es obligatoria.")]
         [StringLength(500, ErrorMessage = "La descripción no puede exceder 500 caracteres.")]

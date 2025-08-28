@@ -73,7 +73,7 @@ public class RequestsController : ControllerBase
         return NoContent();
     }
 
-    [HttpPut("by-buildingcode/{buildingCode}/amounts")]
+    [HttpPut("{buildingCode}/amounts")]
     public async Task<IActionResult> UpdateAmountsByBuildingCode(string buildingCode, [FromBody] UpdateRequestDto dto)
     {
         _loguer.LogInfo($"Actualizando montos de la request para el edificio con código {buildingCode}");
