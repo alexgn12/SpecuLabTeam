@@ -120,6 +120,10 @@ public class RequestsController : ControllerBase
             patchDoc.Operations.Remove(commentOp); // Elimina la operación para evitar el error
         }
 
+        // Detecta si hay un replace a /statusid con valor 3
+        var statusReplaceOp = patchDoc.Operations.FirstOrDefault(op => op.path.ToLower() == "/statusid" && op.OperationType == OperationType.Replace && op.value != null && int.TryParse(op.value.ToString(), out var v) && v == 3);
+        bool aprobar = statusReplaceOp != null;
+
         patchDoc.ApplyTo(request, (error) =>
         {
             ModelState.AddModelError(error.AffectedObject?.ToString() ?? "patch", error.ErrorMessage);
@@ -143,6 +147,30 @@ public class RequestsController : ControllerBase
 
         _context.Requests.Update(request);
         await _context.SaveChangesAsync();
+
+        // Si se aprobó (statusid == 3), crear transacción de gasto
+        if (aprobar)
+        {
+            var gastoType = await _context.TransactionsTypes.FirstOrDefaultAsync(t => t.TransactionName == "GASTO");
+            if (gastoType == null)
+            {
+                gastoType = new TransactionType { TransactionName = "GASTO" };
+                _context.TransactionsTypes.Add(gastoType);
+                await _context.SaveChangesAsync();
+            }
+            var amount = request.BuildingAmount + request.MaintenanceAmount;
+            var transaction = new PrototipoApi.Entities.Transaction
+            {
+                RequestId = request.RequestId,
+                TransactionTypeId = gastoType.TransactionTypeId,
+                TransactionsType = gastoType,
+                TransactionDate = DateTime.UtcNow,
+                Amount = amount,
+                Description = $"Gasto generado automáticamente al aprobar la solicitud {request.RequestId}"
+            };
+            _context.Transactions.Add(transaction);
+            await _context.SaveChangesAsync();
+        }
 
         // Devuelve siempre el ID del historial creado
         return Ok(new { RequestStatusHistoryId = history.RequestStatusHistoryId });

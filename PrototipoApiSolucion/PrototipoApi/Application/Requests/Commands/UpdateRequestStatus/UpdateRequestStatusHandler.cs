@@ -63,6 +63,7 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
                     {
                         RequestId = entity.RequestId,
                         TransactionTypeId = gastoType.TransactionTypeId,
+                        TransactionsType = gastoType, // Asignar la navegación también
                         TransactionDate = DateTime.UtcNow,
                         Amount = amount,
                         Description = $"Gasto generado automáticamente al aprobar la solicitud {entity.RequestId}"
