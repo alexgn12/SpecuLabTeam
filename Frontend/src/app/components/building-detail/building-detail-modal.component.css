@@ -1,13 +1,13 @@
 .modal { display: block; }
 .modal-content {
-	border: 2px solid #16a34a;
+	border: 2px solid #0b3a6b;
 	border-radius: 18px;
-	background: #f0fdf4;
+	background: #f8fafc;
 }
 .modal-header {
-	background: #16a34a;
+	background: #0b3a6b;
 	color: #fff;
-	border-bottom: 1px solid #16a34a;
+	border-bottom: 1px solid #0b3a6b;
 	border-radius: 16px 16px 0 0;
 }
 .modal-title {
@@ -16,5 +16,5 @@
 }
 .modal-body p {
 	margin-bottom: 0.5rem;
-	color: #166534;
+	color: #0b3a6b;
 }

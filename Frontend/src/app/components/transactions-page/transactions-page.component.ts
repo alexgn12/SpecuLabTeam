@@ -5,7 +5,7 @@ import { TransactionsService, Transaction } from '../../pages/budget/transaction
 import { ApartmentService, Apartment } from '../../services/apartment.service';
 import { BuildingService, Building } from '../../services/building.service';
 import { ApartmentDetailModalComponent } from '../apartment-detail/apartment-detail-modal.component';
-import { BuildingDetailModalComponent } from '../building-detail-modal.component';
+import { BuildingDetailModalComponent } from '../building-detail/building-detail-modal.component';
 
 @Component({
   selector: 'transactions-page',
