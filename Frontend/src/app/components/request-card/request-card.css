@@ -1,156 +1,105 @@
-:host {
-  --rq-card: #ffffff;
-  --rq-bg: #f8fafc;
-  --rq-border: #e6ecf4;
-  --rq-shadow: 0 10px 30px rgba(20,24,40,.06);
-  --rq-text: #0f172a;
-  --rq-muted: #64748b;
-
-  --rq-ok: #10b981;
-  --rq-warn: #f59e0b;
-  --rq-bad: #ef4444;
-  --rq-info: #3b82f6;
+.card.request-card{
+  border:1px solid #e8edf5!important;border-radius:16px;
+  box-shadow:0 8px 20px rgba(20,24,40,.06);
+  max-width:1000px; margin:12px auto; /* evita un ancho enorme con mucho vacío */
 }
+.card.request-card .card-header{
+  background:#f8fafc;border-bottom:1px solid #e8edf5;
+  padding:.6rem .9rem; border-top-left-radius:16px!important;border-top-right-radius:16px!important;
+}
+.card.request-card .badge{padding:6px 12px;border-radius:999px;font-weight:600;font-size:.8rem}
 
-/* ===== Card general ===== */
-.card {
-  border: 1px solid var(--rq-border) !important;
-  border-radius: 20px !important;
-  background: var(--rq-card) !important;
-  box-shadow: var(--rq-shadow) !important;
-  overflow: hidden;
+/* GRID principal */
+.rc-grid{
+  display:grid; grid-template-columns: 1.2fr .9fr; gap:12px 24px;
+  align-items:start; padding:14px 16px;
 }
 
-/* ===== Header ===== */
-.card-header {
-  background: #fff;
-  border-bottom: 1px solid var(--rq-border);
-  font-weight: 600;
-  padding: 14px 18px !important;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+/* Columna izquierda */
+.rc-info .card-title{margin-bottom:4px;font-weight:600}
+.rc-info .card-text{color:#475569;font-size:.92rem}
+
+/* Lista de importes en fila (label izquierda, valor derecha) */
+.rc-list .list-group-item{
+  display:flex; justify-content:space-between; align-items:baseline;
+  padding:6px 0; border:none;
+}
+.rc-label{color:#64748b;font-size:.9rem}
+.rc-value{font-variant-numeric:tabular-nums;font-weight:700}
+
+/* Total destacado pero compacto */
+.rc-total{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:8px 10px; border:1px dashed #e6ebf3; border-radius:12px; margin-top:4px;
+}
+.rc-total span{color:#334155;font-size:.9rem}
+.rc-total strong{font-size:1.05rem}
+
+/* Acciones a la derecha, sin ocupar toda la fila */
+.rc-actions{display:flex; gap:8px; justify-content:flex-end; margin-top:10px}
+.rc-actions .btn{border-radius:10px; padding:.4rem .8rem; font-size:.85rem}
+
+/* Detalle ocupa todo el ancho del grid, justo debajo */
+.rc-detail{grid-column:1 / -1; margin-top:8px}
+
+/* Densidad general */
+.card.request-card .card-body{padding:0} /* ya controlamos con rc-grid */
+
+/* Responsive: en móvil apila y reduce espacios */
+@media (max-width: 640px){
+  .rc-grid{grid-template-columns:1fr; gap:10px}
+  .rc-actions{justify-content:flex-start; flex-wrap:wrap}
+  .rc-total strong{font-size:1rem}
+}
+/* Más aire en la tarjeta */
+.card.request-card .card-body {
+  padding: 1.5rem 1.8rem;  /* antes 0 / 1rem */
 }
 
-/* Pills de estado uniformes */
-.badge {
-  border-radius: 999px !important;
-  padding: 0.4rem 0.75rem !important;
-  font-weight: 600;
-  font-size: 0.85rem;
-  min-width: 7rem;
-  text-align: center;
+/* Grid con más separación interna */
+.rc-grid {
+  gap: 20px 32px;          /* más espacio entre columnas y filas */
 }
 
-.bg-success {
-  background: rgba(16,185,129,0.12) !important;
-  color: #065f46 !important;
-  border: 1px solid rgba(16,185,129,0.25) !important;
+/* Títulos y textos con margen inferior extra */
+.rc-info .card-title {
+  margin-bottom: 10px;
 }
-.bg-warning {
-  background: rgba(245,158,11,0.12) !important;
-  color: #7c4a03 !important;
-  border: 1px solid rgba(245,158,11,0.25) !important;
-}
-.bg-danger {
-  background: rgba(239,68,68,0.12) !important;
-  color: #7f1d1d !important;
-  border: 1px solid rgba(239,68,68,0.25) !important;
-}
-.bg-primary {
-  background: rgba(59,130,246,0.12) !important;
-  color: #1e3a8a !important;
-  border: 1px solid rgba(59,130,246,0.25) !important;
+.rc-info .card-text {
+  margin-bottom: 12px;
 }
 
-/* ===== Body ===== */
-.card-body {
-  background: var(--rq-bg);
-  padding: clamp(14px, 2.2vw, 22px) !important;
+/* Lista de importes con más respiración */
+.rc-list .list-group-item {
+  padding: 8px 0;   /* antes 6px */
 }
 
-/* Campos en grid sin cambiar el HTML */
-.list-group {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
-  gap: 10px 18px;
-  border: 1px solid var(--rq-border);
-  border-radius: 12px;
-  background: #fff;
+/* Total con más aire dentro */
+.rc-total {
+  padding: 12px 14px;
   margin-top: 12px;
-  margin-bottom: 16px !important;
 }
 
-.list-group-item {
-  border: none !important;
-  background: transparent !important;
-  padding: 8px 4px !important;
+/* Botones más despejados */
+.rc-actions {
+  margin-top: 14px;
 }
 
-.list-group-item strong {
-  display: block;
-  font-size: 0.85rem;
-  color: var(--rq-muted);
-  margin-bottom: 2px;
-}
-.list-group-item:not(:last-child) {
-  border-bottom: none !important;
+/* Quitar espacio sobrante del body al final */
+.card.request-card .card-body {
+  padding-bottom: 1rem; /* más compacto, antes 1.5rem o más */
 }
 
-/* Total */
-.fw-bold.h4 {
-  font-size: 1.1rem !important;
-  margin: 0;
+/* Elimina margen/padding de la lista en la parte baja */
+.card.request-card .list-group {
+  margin-bottom: 0 !important;
+}
+.card.request-card .list-group-item:last-child {
+  padding-bottom: 6px; /* controla que no quede hueco */
 }
 
-/* ===== Acciones ===== */
-.d-flex.gap-4 button,
-.d-flex.gap-4 a,
-sl-boton {
-  border-radius: 12px !important;
-  padding: 8px 14px !important;
-  font-weight: 600 !important;
-  flex: 1 1 auto;
-  transition: background-color 160ms ease, box-shadow 160ms ease;
+/* Si sigue sobrando, fuerza que el grid se ajuste */
+.rc-grid {
+  align-items: start;
 }
 
-/* Verde (Aceptar) */
-.btn-outline-success {
-  background: rgba(16,185,129,0.12) !important;
-  color: #065f46 !important;
-  border: 1px solid rgba(16,185,129,0.25) !important;
-}
-.btn-outline-success:hover {
-  background: rgba(16,185,129,0.18) !important;
-}
-
-/* Rojo (Rechazar) */
-.btn-outline-danger,
-sl-boton[tipo="rechazar"] button {
-  background: rgba(239,68,68,0.12) !important;
-  color: #7f1d1d !important;
-  border: 1px solid rgba(239,68,68,0.25) !important;
-}
-.btn-outline-danger:hover,
-sl-boton[tipo="rechazar"] button:hover {
-  background: rgba(239,68,68,0.18) !important;
-}
-
-/* Amarillo (Solicitar presupuesto) */
-.btn-outline-warning {
-  background: rgba(245,158,11,0.12) !important;
-  color: #7c4a03 !important;
-  border: 1px solid rgba(245,158,11,0.25) !important;
-}
-.btn-outline-warning:hover {
-  background: rgba(245,158,11,0.18) !important;
-}
-
-/* Botón detalles */
-.btn-outline-info {
-  border-radius: 999px !important;
-  padding: 4px 12px !important;
-  font-weight: 500;
-  color: #0ea5e9 !important;
-  border-color: #bae6fd !important;
-}
