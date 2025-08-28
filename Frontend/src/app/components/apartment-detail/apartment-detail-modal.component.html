@@ -1,0 +1,28 @@
+<div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Detalle de Apartamento</h5>
+        <button type="button" class="btn-close" (click)="close()"></button>
+      </div>
+      <div class="modal-body">
+        <ng-container *ngIf="apartment; else noData">
+          <p><strong>ID:</strong> {{ apartment.apartmentId }}</p>
+          <p *ngIf="apartment.apartmentCode"><strong>Código:</strong> {{ apartment.apartmentCode }}</p>
+          <p *ngIf="apartment.apartmentDoor"><strong>Puerta:</strong> {{ apartment.apartmentDoor }}</p>
+          <p *ngIf="apartment.apartmentFloor"><strong>Piso:</strong> {{ apartment.apartmentFloor }}</p>
+          <p *ngIf="apartment.apartmentPrice"><strong>Precio:</strong> {{ apartment.apartmentPrice | currency:'EUR':'symbol':'1.0-0' }}</p>
+          <p *ngIf="apartment.numberOfRooms"><strong>Habitaciones:</strong> {{ apartment.numberOfRooms }}</p>
+          <p *ngIf="apartment.numberOfBathrooms"><strong>Baños:</strong> {{ apartment.numberOfBathrooms }}</p>
+          <p *ngIf="apartment.buildingId"><strong>ID Edificio:</strong> {{ apartment.buildingId }}</p>
+          <p *ngIf="apartment.hasLift !== undefined"><strong>Ascensor:</strong> {{ apartment.hasLift ? 'Sí' : 'No' }}</p>
+          <p *ngIf="apartment.hasGarage !== undefined"><strong>Garaje:</strong> {{ apartment.hasGarage ? 'Sí' : 'No' }}</p>
+          <p *ngIf="apartment.createdDate"><strong>Fecha creación:</strong> {{ apartment.createdDate | date:'short' }}</p>
+        </ng-container>
+        <ng-template #noData>
+          <p>No hay datos del apartamento.</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
