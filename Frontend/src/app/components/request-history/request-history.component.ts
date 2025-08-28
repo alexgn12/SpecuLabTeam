@@ -14,6 +14,11 @@ import { DatePipe } from '@angular/common';
   imports: [CommonModule, FormsModule]
 })
 export class RequestHistoryComponent implements OnInit {
+  formatToEuropean(date: string): string {
+    if (!date) return '';
+    const [year, month, day] = date.split('-');
+    return `${day}/${month}/${year}`;
+  }
   history: RequestStatusHistoryDto[] = [];
   page = 1;
   pageSize = 10;
@@ -34,11 +39,14 @@ export class RequestHistoryComponent implements OnInit {
 
   fetchHistory(): void {
     this.errorMsg = null;
+    // Enviar fechas en formato YYYY-MM-DDTHH:mm:ss
+    let fromDateParam = this.fromDate ? `${this.fromDate}T00:00:00` : undefined;
+    let toDateParam = this.toDate ? `${this.toDate}T23:59:59` : undefined;
     this.historyService.getHistory(
       this.page,
       this.pageSize,
-      this.fromDate || undefined,
-      this.toDate || undefined,
+      fromDateParam,
+      toDateParam,
       this.requestId || undefined
     ).subscribe({
       next: (response: RequestStatusHistoryApiResponse) => {
@@ -56,6 +64,8 @@ export class RequestHistoryComponent implements OnInit {
       }
     });
   }
+
+  // Ya no se necesita la conversión a ISO, se envía YYYY-MM-DD directamente
 
   onPageChange(event: any): void {
     this.page = event.pageIndex + 1;
