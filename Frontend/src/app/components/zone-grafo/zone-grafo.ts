@@ -27,12 +27,17 @@ export class ZoneGrafo implements OnInit {
       duration: 1200,
       easing: 'easeOutBounce'
     },
-    layout: { padding: { left: 24, right: 24, top: 24, bottom: 32 } },
+  layout: { padding: { left: 12, right: 12, top: 18, bottom: 24 } },
     plugins: {
       legend: { display: false },
       title: { display: false },
       tooltip: {
         enabled: true,
+        backgroundColor: '#0b3a6b',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        borderColor: '#0b3a6b',
+        borderWidth: 1,
         callbacks: {
           label: (ctx: any) => `Operaciones: ${ctx.parsed.y}`
         }
@@ -40,32 +45,34 @@ export class ZoneGrafo implements OnInit {
       datalabels: {
         anchor: 'end',
         align: 'end',
-        color: '#222',
-        font: { size: 16, weight: 700 },
+        color: '#0b3a6b',
+        font: { size: 15, weight: 600 },
         formatter: (v: number) => `${v}`
       }
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { color: '#0b3a6b', font: { size: 14, weight: '400' } }
+        ticks: { color: '#0b3a6b', font: { size: 13, weight: '500' } }
       },
       y: {
-        grid: { color: 'rgba(13,27,42,0.08)' },
+        grid: { color: 'rgba(13,27,42,0.06)' },
         beginAtZero: true,
-        ticks: { color: '#888', font: { size: 14 } }
+        ticks: { color: '#b6c2d1', font: { size: 13 } }
       }
     },
     elements: {
       bar: {
-        borderRadius: 12,
+        borderRadius: 10,
         borderSkipped: false,
         backgroundColor: (ctx: any) => {
-          // Gradiente de verde a rojo según valor
+          // Paleta corporativa: azul, verde, amarillo, naranja, rojo
           const v = ctx.parsed.y;
-          if (v < 2) return '#22c55e'; // verde
-          if (v < 4) return '#eab308'; // amarillo
-          return '#ef4444'; // rojo
+          if (v < 2) return '#16a34a'; // verde corporativo
+          if (v < 4) return '#22d3ee'; // azul claro
+          if (v < 7) return '#eab308'; // amarillo
+          if (v < 10) return '#f97316'; // naranja
+          return '#dc2626'; // rojo
         }
       }
     }
@@ -76,10 +83,9 @@ export class ZoneGrafo implements OnInit {
     datasets: [
       {
         data: [],
-        // backgroundColor se define en options.elements.bar.backgroundColor
-        borderRadius: 12,
-        barPercentage: 0.7,
-        categoryPercentage: 0.7,
+        borderRadius: 10,
+        barPercentage: 0.35,
+        categoryPercentage: 0.55,
         datalabels: { display: true }
       }
     ]
