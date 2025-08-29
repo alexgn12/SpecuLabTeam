@@ -1,94 +1,194 @@
-<div class="request-history-container">
-  <header class="history-header mb-4">
-    <h2 class="page-title">Historial de Solicitudes</h2>
-    <p class="page-subtitle">Consulta los cambios de estado de tus solicitudes</p>
-  </header>
+<div class="container">
+  <div class="request-history-container">
+    <header class="history-header mb-4">
+      <h2 class="page-title">Historial de Solicitudes</h2>
+      <p class="page-subtitle">
+        Consulta los cambios de estado de tus solicitudes
+      </p>
+    </header>
 
-  <div class="card mb-4 border-0 rounded-4 shadow-sm">
-    <div class="card-body">
-      <form class="row g-3 align-items-end">
-        <div class="col-md-3">
-          <label for="requestId" class="form-label">ID de Solicitud</label>
-          <input id="requestId" type="number" [(ngModel)]="requestId" class="form-control" name="requestId">
-        </div>
-        <div class="col-md-3">
-          <label for="fromDate" class="form-label">Desde</label>
-          <input id="fromDate" type="date" [(ngModel)]="fromDate" class="form-control" name="fromDate">
-        </div>
-        <div class="col-md-3">
-          <label for="toDate" class="form-label">Hasta</label>
-          <input id="toDate" type="date" [(ngModel)]="toDate" class="form-control" name="toDate">
-        </div>
-        <div class="col-md-3 d-flex gap-2">
-          <button type="button" class="btn btn-primary w-100" (click)="applyFilters()">Aplicar Filtros</button>
-          <button type="button" class="btn btn-outline-secondary w-100" (click)="resetFilters()">Resetear</button>
-        </div>
-      </form>
-    </div>
-  </div>
-  
-  <div *ngIf="errorMsg" class="error-message" style="color: red; margin-bottom: 1rem;">
-    {{ errorMsg }}
-  </div>
-
-  <div class="card border-0 rounded-4 shadow-sm mt-4">
-    <div class="card-body p-0">
-      <div class="table-responsive">
-        <table *ngIf="history.length > 0" class="table table-striped table-hover align-middle mb-0">
-          <thead class="table-primary">
-            <tr>
-              <th>ID de Solicitud</th>
-              <th>Descripción</th>
-              <th>Estado Anterior</th>
-              <th>Estado Nuevo</th>
-              <th>Fecha de Cambio</th>
-              <th>Comentario</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let item of history">
-              <td>{{ item.requestId }}</td>
-              <td>{{ item.requestDescription }}</td>
-              <td>
-                <span class="badge"
-                  [ngClass]="{
-                    'bg-success': item.oldStatusType === 'Aprobado' || item.oldStatusType === 'Completado',
-                    'bg-warning': item.oldStatusType === 'Pendiente',
-                    'bg-danger': item.oldStatusType === 'Rechazado' || item.oldStatusType === 'Cancelado',
-                    'bg-info': item.oldStatusType === 'En proceso' || item.oldStatusType === 'Revisando',
-                    'bg-secondary': !(item.oldStatusType === 'Aprobado' || item.oldStatusType === 'Completado' || item.oldStatusType === 'Pendiente' || item.oldStatusType === 'Rechazado' || item.oldStatusType === 'Cancelado' || item.oldStatusType === 'En proceso' || item.oldStatusType === 'Revisando')
-                  }">
-                  {{ item.oldStatusType }}
-                </span>
-              </td>
-              <td>
-                <span class="badge"
-                  [ngClass]="{
-                    'bg-success': item.newStatusType === 'Aprobado' || item.newStatusType === 'Completado',
-                    'bg-warning': item.newStatusType === 'Pendiente',
-                    'bg-danger': item.newStatusType === 'Rechazado' || item.newStatusType === 'Cancelado',
-                    'bg-info': item.newStatusType === 'En proceso' || item.newStatusType === 'Revisando',
-                    'bg-secondary': !(item.newStatusType === 'Aprobado' || item.newStatusType === 'Completado' || item.newStatusType === 'Pendiente' || item.newStatusType === 'Rechazado' || item.newStatusType === 'Cancelado' || item.newStatusType === 'En proceso' || item.newStatusType === 'Revisando')
-                  }">
-                  {{ item.newStatusType }}
-                </span>
-              </td>
-              <td>{{ formatDate(item.changeDate) }}</td>
-              <td>{{ item.comment }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div *ngIf="history.length === 0" class="text-center text-muted py-4">No hay historial para los filtros seleccionados.</div>
+    <div class="card mb-4 border-0 rounded-4 shadow-sm">
+      <div class="card-body">
+        <form class="row g-3 align-items-end">
+          <div class="col-md-3">
+            <label for="requestId" class="form-label">ID de Solicitud</label>
+            <input
+              id="requestId"
+              type="number"
+              [(ngModel)]="requestId"
+              class="form-control"
+              name="requestId"
+            />
+          </div>
+          <div class="col-md-3">
+            <label for="fromDate" class="form-label">Desde</label>
+            <input
+              id="fromDate"
+              type="date"
+              [(ngModel)]="fromDate"
+              class="form-control"
+              name="fromDate"
+            />
+          </div>
+          <div class="col-md-3">
+            <label for="toDate" class="form-label">Hasta</label>
+            <input
+              id="toDate"
+              type="date"
+              [(ngModel)]="toDate"
+              class="form-control"
+              name="toDate"
+            />
+          </div>
+          <div class="col-md-3 d-flex gap-2">
+            <button
+              type="button"
+              class="btn btn-primary w-100"
+              (click)="applyFilters()"
+            >
+              Aplicar Filtros
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-secondary w-100"
+              (click)="resetFilters()"
+            >
+              Resetear
+            </button>
+          </div>
+        </form>
       </div>
     </div>
-  </div>
-  
 
-  <div class="pagination-controls d-flex justify-content-center align-items-center gap-2 p-3 border-top">
-    <button class="btn btn-outline-secondary btn-sm" (click)="firstPage()" [disabled]="page === 1">Primera</button>
-    <button class="btn btn-outline-secondary btn-sm" (click)="previousPage()" [disabled]="page === 1">Anterior</button>
-    <span class="px-2">Página {{ page }}</span>
-    <button class="btn btn-outline-secondary btn-sm" (click)="nextPage()" [disabled]="history.length < pageSize">Siguiente</button>
-    <button class="btn btn-outline-secondary btn-sm" (click)="lastPage()" [disabled]="history.length < pageSize">Última</button>
+    <div
+      *ngIf="errorMsg"
+      class="error-message"
+      style="color: red; margin-bottom: 1rem"
+    >
+      {{ errorMsg }}
+    </div>
+
+    <div class="card border-0 rounded-4 shadow-sm mt-4">
+      <div class="card-body p-0">
+        <div class="table-responsive">
+          <table
+            *ngIf="history.length > 0"
+            class="table table-striped table-hover align-middle mb-0"
+          >
+            <thead class="table-primary">
+              <tr>
+                <th>ID de Solicitud</th>
+                <th>Descripción</th>
+                <th>Estado Anterior</th>
+                <th>Estado Nuevo</th>
+                <th>Fecha de Cambio</th>
+                <th>Comentario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of history">
+                <td>{{ item.requestId }}</td>
+                <td>{{ item.requestDescription }}</td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-success':
+                        item.oldStatusType === 'Aprobado' ||
+                        item.oldStatusType === 'Completado',
+                      'bg-warning': item.oldStatusType === 'Pendiente',
+                      'bg-danger':
+                        item.oldStatusType === 'Rechazado' ||
+                        item.oldStatusType === 'Cancelado',
+                      'bg-info':
+                        item.oldStatusType === 'En proceso' ||
+                        item.oldStatusType === 'Revisando',
+                      'bg-secondary': !(
+                        item.oldStatusType === 'Aprobado' ||
+                        item.oldStatusType === 'Completado' ||
+                        item.oldStatusType === 'Pendiente' ||
+                        item.oldStatusType === 'Rechazado' ||
+                        item.oldStatusType === 'Cancelado' ||
+                        item.oldStatusType === 'En proceso' ||
+                        item.oldStatusType === 'Revisando'
+                      )
+                    }"
+                  >
+                    {{ item.oldStatusType }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge"
+                    [ngClass]="{
+                      'bg-success':
+                        item.newStatusType === 'Aprobado' ||
+                        item.newStatusType === 'Completado',
+                      'bg-warning': item.newStatusType === 'Pendiente',
+                      'bg-danger':
+                        item.newStatusType === 'Rechazado' ||
+                        item.newStatusType === 'Cancelado',
+                      'bg-info':
+                        item.newStatusType === 'En proceso' ||
+                        item.newStatusType === 'Revisando',
+                      'bg-secondary': !(
+                        item.newStatusType === 'Aprobado' ||
+                        item.newStatusType === 'Completado' ||
+                        item.newStatusType === 'Pendiente' ||
+                        item.newStatusType === 'Rechazado' ||
+                        item.newStatusType === 'Cancelado' ||
+                        item.newStatusType === 'En proceso' ||
+                        item.newStatusType === 'Revisando'
+                      )
+                    }"
+                  >
+                    {{ item.newStatusType }}
+                  </span>
+                </td>
+                <td>{{ formatDate(item.changeDate) }}</td>
+                <td>{{ item.comment }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="history.length === 0" class="text-center text-muted py-4">
+            No hay historial para los filtros seleccionados.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="pagination-controls d-flex justify-content-center align-items-center gap-2 p-3 border-top"
+    >
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        (click)="firstPage()"
+        [disabled]="page === 1"
+      >
+        Primera
+      </button>
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        (click)="previousPage()"
+        [disabled]="page === 1"
+      >
+        Anterior
+      </button>
+      <span class="px-2">Página {{ page }}</span>
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        (click)="nextPage()"
+        [disabled]="history.length < pageSize"
+      >
+        Siguiente
+      </button>
+      <button
+        class="btn btn-outline-secondary btn-sm"
+        (click)="lastPage()"
+        [disabled]="history.length < pageSize"
+      >
+        Última
+      </button>
+    </div>
   </div>
 </div>
