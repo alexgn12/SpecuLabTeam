@@ -25,7 +25,8 @@ public class CreateBuildingHandler : IRequestHandler<CreateBuildingCommand, Buil
             District = dto.District,
             CreatedDate = dto.CreatedDate,
             FloorCount = dto.FloorCount,
-            YearBuilt = dto.YearBuilt
+            YearBuilt = dto.YearBuilt,
+            ApartmentCount = dto.ApartmentCount // Añadido
         };
 
         await _repository.AddAsync(entity);
@@ -40,7 +41,8 @@ public class CreateBuildingHandler : IRequestHandler<CreateBuildingCommand, Buil
             District = entity.District,
             CreatedDate = entity.CreatedDate,
             FloorCount = entity.FloorCount,
-            YearBuilt = entity.YearBuilt
+            YearBuilt = entity.YearBuilt,
+            ApartmentCount = entity.ApartmentCount // Añadido
         };
     }
 }

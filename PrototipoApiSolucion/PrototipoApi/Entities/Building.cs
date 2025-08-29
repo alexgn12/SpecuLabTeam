@@ -11,6 +11,7 @@ namespace PrototipoApi.Entities
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public int FloorCount { get; set; }
         public int YearBuilt { get; set; }
+        public int ApartmentCount { get; set; }
 
         // Relación inversa: un edificio tiene muchos apartamentos
         public ICollection<Apartment> Apartments { get; set; } = new List<Apartment>();

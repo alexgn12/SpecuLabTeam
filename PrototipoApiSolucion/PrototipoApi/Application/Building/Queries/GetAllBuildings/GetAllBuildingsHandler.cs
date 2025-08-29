@@ -34,7 +34,8 @@ namespace PrototipoApi.Application.Building.Queries.GetAllBuildings
                 District = b.District,
                 CreatedDate = b.CreatedDate,
                 FloorCount = b.FloorCount,
-                YearBuilt = b.YearBuilt
+                YearBuilt = b.YearBuilt,
+                ApartmentCount = b.ApartmentCount // Añadido
             }).ToList();
         }
     }
