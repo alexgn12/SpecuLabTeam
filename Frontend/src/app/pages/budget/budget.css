@@ -135,4 +135,41 @@
   min-height: 100%;
   padding: clamp(16px, 2.5vw, 28px) 0 2rem;
 }
+.budget-page {
+  background: linear-gradient(180deg,#f8fafc 0%, #f1f5f9 100%); /* contraste con tarjetas */
+}
+
+.section-divider { margin: 24px 0; }
+
+.section-card {
+  background: #fff;
+  border: 1px solid #e9eef5;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(16,24,40,0.06);
+  padding: 20px;
+  margin-bottom: 24px; /* separa las dos tarjetas */
+}
+
+.section-card__header {
+  margin-bottom: 12px;
+}
+
+.section-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.section-subtitle {
+  margin: 4px 0 0 0;
+  color: #64748b;
+  font-size: .95rem;
+}
+
+.section-card__body {
+  /* Si el gráfico necesita más aire */
+  padding-top: 8px;
+}
+
 

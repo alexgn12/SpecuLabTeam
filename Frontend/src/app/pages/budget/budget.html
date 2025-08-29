@@ -1,7 +1,7 @@
 <div class="budget-page">
   <div class="container budget-container">
     <header class="budget-header">
-      <h2 class="page-title">Panel de Patrimonio</h2>
+      <h2 class="page-title">Presupuestos</h2>
       <p class="page-subtitle">Resumen financiero y actividad reciente</p>
     </header>
 
@@ -50,20 +50,28 @@
       <div class="section-divider" role="separator" aria-hidden="true"></div>
 
       <!-- Sección: Gasto mensual + Transacciones -->
-      <section class="section-card">
-        <div class="section-card__header">
-          <h3 class="section-title">Actividad</h3>
-          <p class="section-subtitle">Gasto mensual y movimientos</p>
-        </div>
+<!-- Sección: Gasto mensual -->
+<section class="section-card">
+  <div class="section-card__header">
+    <h3 class="section-title">Gasto mensual</h3>
+    <p class="section-subtitle">Evolución por meses</p>
+  </div>
+  <div class="section-card__body">
+    <gasto-mensual></gasto-mensual>
+  </div>
+</section>
 
-        <div class="section-card__body">
-          <gasto-mensual></gasto-mensual>
+<!-- Sección: Transacciones -->
+<section class="section-card">
+  <div class="section-card__header">
+    <h3 class="section-title">Transacciones</h3>
+    <p class="section-subtitle">Movimientos recientes</p>
+  </div>
+  <div class="section-card__body">
+    <transactions-page></transactions-page>
+  </div>
+</section>
 
-          <div class="soft-divider" role="separator" aria-hidden="true"></div>
-
-          <transactions-page></transactions-page>
-        </div>
-      </section>
     </ng-container>
   </div>
 </div>
