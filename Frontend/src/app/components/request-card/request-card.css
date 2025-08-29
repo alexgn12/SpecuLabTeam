@@ -102,4 +102,12 @@
 .rc-grid {
   align-items: start;
 }
+/* Haz la card tan ancha como permita requests-container */
+.card.request-card{
+  width: 100%;
+  max-width: clamp(1100px, 92vw, 1280px);
+  margin: 12px 0;         /* centrada por el contenedor, no por max-width */
+  min-height: 220px;      /* uniforma la altura visual mínima */
+}
+
 
