@@ -125,5 +125,40 @@
 .ic-completadas { color: #10b981; } /* verde */
 .ic-rechazadas  { color: #ef4444; } /* rojo */
 
+.requests-container {
+  background: transparent !important; /* quita fondo blanco */
+  box-shadow: none !important;        /* por si tuviera sombra */
+  border: none !important;            /* por si tuviera borde */
+}
+/* La lista ya no centra: que estire al 100% */
+.rq-list{
+  display: flex;
+  flex-direction: column;
+  gap: 16px;          /* separación entre cards */
+  align-items: stretch;  /* ← antes: center */
+  padding-left: 0;    /* por si acaso */
+  margin-bottom: 0;   /* sin hueco extra al final */
+}
+
+/* Cada item ocupa todo el ancho disponible */
+.rq-item{
+  width: 100%;
+  display: block;     /* no hace falta wrapper de centrado */
+}
+
+/* El contenedor ya limita el ancho global */
+.requests-container{
+  max-width: 1280px;
+  margin: 0 auto;     /* centra todo el bloque */
+  background: transparent !important;
+}
+.card.request-card .card-header{
+  border-bottom-color: #eef2f7; /* más sutil */
+}
+
+
+
+
+
 
 

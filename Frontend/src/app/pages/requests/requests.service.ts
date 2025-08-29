@@ -85,14 +85,20 @@ export class RequestsService {
    * Actualiza el estado de una request usando PATCH y operaciones JSON Patch.
    * @param requestId ID de la request
    * @param statusId Nuevo statusId (por ejemplo, 2 para Pendiente)
+   * @param comment Comentario a registrar en la request
    */
-  updateRequestStatusPatch(requestId: number, statusId: number): Observable<any> {
+  updateRequestStatusPatch(requestId: number, statusId: number, comment: string): Observable<any> {
     const url = `${this.apiUrl}/${requestId}`;
     const body = [
       {
         path: "/statusid",
         op: "replace",
         value: statusId
+      },
+      {
+        path: "/comment",
+        op: "replace",
+        value: comment
       }
     ];
     return this.http.patch(url, body);

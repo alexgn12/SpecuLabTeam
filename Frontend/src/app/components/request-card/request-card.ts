@@ -74,10 +74,13 @@ export class RequestCard {
       : 'Por determinar';
   }
 
+
   aceptarRequest() {
     if (confirm('¿Quieres aceptar esta petición?')) {
       // statusId = 3 para Aprobado
-      this.requestsService.updateRequestStatusPatch(this.request.requestId, 3).subscribe({
+      const buildingCode = this.building?.buildingCode || '';
+      const comment = `El edificio ${buildingCode} ha sido aceptado`;
+      this.requestsService.updateRequestStatusPatch(this.request.requestId, 3, comment).subscribe({
         next: () => {
           alert('La petición ha sido aceptada');
           this.statusChanged.emit();
@@ -90,7 +93,9 @@ export class RequestCard {
   rechazarRequest() {
     if (confirm('¿Quieres rechazar esta petición?')) {
       // statusId = 4 para Rechazado
-      this.requestsService.updateRequestStatusPatch(this.request.requestId, 4).subscribe({
+      const buildingCode = this.building?.buildingCode || '';
+      const comment = `El edificio ${buildingCode} ha sido rechazado`;
+      this.requestsService.updateRequestStatusPatch(this.request.requestId, 4, comment).subscribe({
         next: () => {
           alert('La petición ha sido rechazada');
           this.statusChanged.emit();

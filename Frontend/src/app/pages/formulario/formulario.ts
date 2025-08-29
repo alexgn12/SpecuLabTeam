@@ -53,7 +53,9 @@ export class Formulario {
       this.successMsg = '¡Petición enviada correctamente a la empresa de mantenimiento!';
       // Cambiar estado a Pendiente (statusId = 2) si hay requestId
       if (this.requestId) {
-        this.requestsService.updateRequestStatusPatch(this.requestId, 2).subscribe({
+        const buildingCode = this.form.get('buildingCode')?.value || '';
+        const comment = `el edificio ${buildingCode} esta pendiente de presupuesto`;
+        this.requestsService.updateRequestStatusPatch(this.requestId, 2, comment).subscribe({
           next: () => {
             // Estado actualizado, continuar con el flujo normal
             alert(this.successMsg);

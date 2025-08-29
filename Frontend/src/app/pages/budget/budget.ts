@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BudgetService, ManagementBudget } from './budget.service';
 import { TransactionsService, Transaction } from './transactions.service';
+import { PieGastoIngresoComponent } from '../../components/pie-gasto-ingreso/pie-gasto-ingreso.component';
 import { CommonModule } from '@angular/common';
 import { InfoCard } from '../../components/info-card/info-card';
 import { TransactionsPageComponent } from "../../components/transactions-page/transactions-page.component";
@@ -12,24 +13,41 @@ import { EdificiosCompradosCountComponent } from '../../components/edificios-com
   templateUrl: './budget.html',
   styleUrls: ['./budget.css'],
   standalone: true,
-  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent, EdificiosCompradosCountComponent]
+  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent, EdificiosCompradosCountComponent, PieGastoIngresoComponent]
 })
 
 export class Budget implements OnInit {
   totalAmount: number = 0;
   totalPatrimony: number = 0;
   buildingsCount: number = 0;
+  ingresoTotal: number = 0;
+  gastoTotal: number = 0;
 
   loading = true;
   error: string | null = null;
-
 
   constructor(private budgetService: BudgetService, private transactionsService: TransactionsService) {}
 
   ngOnInit(): void {
     this.loadBudgets();
     this.loadBuildings();
+    this.loadGastoIngresoTotales();
     this.loading = false;
+  }
+  private loadGastoIngresoTotales() {
+    this.budgetService.getMonthlyGastoIngreso().subscribe({
+      next: (data) => {
+        const currentYear = new Date().getFullYear();
+        this.ingresoTotal = data.filter(d => d.transactionType === 'INGRESO' && d.año === currentYear)
+          .reduce((sum, d) => sum + (d.totalGasto || 0), 0);
+        this.gastoTotal = data.filter(d => d.transactionType === 'GASTO' && d.año === currentYear)
+          .reduce((sum, d) => sum + (d.totalGasto || 0), 0);
+      },
+      error: () => {
+        this.ingresoTotal = 0;
+        this.gastoTotal = 0;
+      }
+    });
   }
 
 
