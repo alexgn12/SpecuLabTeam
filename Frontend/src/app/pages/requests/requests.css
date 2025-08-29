@@ -152,6 +152,10 @@
   margin: 0 auto;     /* centra todo el bloque */
   background: transparent !important;
 }
+.card.request-card .card-header{
+  border-bottom-color: #eef2f7; /* más sutil */
+}
+
 
 
 

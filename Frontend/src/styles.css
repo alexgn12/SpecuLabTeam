@@ -1,1 +1,31 @@
+:root{
+  /* alto del footer y separación extra */
+  --footer-h: 56px;            /* ajusta si tu footer es más alto/bajo */
+  --footer-gap: calc(var(--footer-h) + 16px);
+}
+
+/* Footer */
+.app-footer{
+  padding: 10px 20px;
+  box-shadow: 0 -2px 6px rgba(0,0,0,.12);
+  align-items: center;
+}
+
+/* Evita que el contenido quede tapado por el footer fijo */
+body{
+  padding-bottom: var(--footer-h);
+}
+
+/* Espacio específico para la paginación */
+.rq-pagination{
+  margin-bottom: var(--footer-gap);
+}
+
+/* (Opcional) Mejoras visuales Bootstrap paginación */
+.rq-pagination .pagination .page-link{
+  border-radius: .5rem;
+}
+.rq-pagination .pagination{
+  gap: .25rem;                 /* separa ligeramente los items */
+}
 
