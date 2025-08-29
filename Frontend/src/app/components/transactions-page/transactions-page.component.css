@@ -93,6 +93,11 @@
   font-weight: 700;
   letter-spacing: .02em;
   box-shadow: 0 2px 8px rgba(16,24,40,.06);
+  min-width: 90px; /* Fuerza el mismo ancho mínimo para ambos tipos */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
 }
 .tp-badge--in  { background: #eaf7ee !important; color: #166534 !important; border-color: #bfe7cc; }
 .tp-badge--out { background: #feeced !important; color: #991b1b !important; border-color: #ffd1d6; }
