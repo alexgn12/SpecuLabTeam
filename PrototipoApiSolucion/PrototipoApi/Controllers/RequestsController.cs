@@ -154,6 +154,16 @@ public class RequestsController : ControllerBase
             };
             _context.Transactions.Add(transaction);
             await _context.SaveChangesAsync();
+
+            // Actualizar el presupuesto global (restar el gasto)
+            var budget = await _context.ManagementBudgets.FirstOrDefaultAsync();
+            if (budget != null)
+            {
+                budget.CurrentAmount -= amount;
+                budget.LastUpdatedDate = transaction.TransactionDate;
+                _context.ManagementBudgets.Update(budget);
+                await _context.SaveChangesAsync();
+            }
         }
 
         // Devuelve siempre el ID del historial creado

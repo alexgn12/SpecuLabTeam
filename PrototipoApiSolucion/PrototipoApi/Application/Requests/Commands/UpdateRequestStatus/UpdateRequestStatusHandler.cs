@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using PrototipoApi.Models;
 using System;
+using System.Linq;
 
 
 namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
@@ -15,16 +16,19 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
         private readonly IRepository<PrototipoApi.Entities.Status> _statuses;
         private readonly IRepository<PrototipoApi.Entities.Transaction> _transactions;
         private readonly IRepository<TransactionType> _transactionTypes;
+        private readonly IRepository<PrototipoApi.Entities.ManagementBudget> _budgetRepository;
         public UpdateRequestStatusHandler(
             IRepository<Request> requests,
             IRepository<PrototipoApi.Entities.Status> statuses,
             IRepository<PrototipoApi.Entities.Transaction> transactions,
-            IRepository<TransactionType> transactionTypes)
+            IRepository<TransactionType> transactionTypes,
+            IRepository<PrototipoApi.Entities.ManagementBudget> budgetRepository)
         {
             _requests = requests;
             _statuses = statuses;
             _transactions = transactions;
             _transactionTypes = transactionTypes;
+            _budgetRepository = budgetRepository;
         }
         public async Task<bool?> Handle(UpdateRequestStatusCommand request, CancellationToken cancellationToken)
         {
@@ -70,6 +74,16 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
                     };
                     await _transactions.AddAsync(transaction);
                     await _transactions.SaveChangesAsync();
+
+                    // Actualizar el presupuesto global (restar el gasto)
+                    var budget = (await _budgetRepository.GetAllAsync()).FirstOrDefault();
+                    if (budget != null)
+                    {
+                        budget.CurrentAmount -= amount;
+                        budget.LastUpdatedDate = transaction.TransactionDate;
+                        await _budgetRepository.UpdateAsync(budget);
+                        await _budgetRepository.SaveChangesAsync();
+                    }
                 }
             }
             return true;
