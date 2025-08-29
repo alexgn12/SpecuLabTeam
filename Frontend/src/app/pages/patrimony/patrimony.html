@@ -24,6 +24,7 @@
                 <th>Dirección</th>
                 <th>Distrito</th>
                 <th>Año</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -33,6 +34,9 @@
                 <td>{{ b.street }}</td>
                 <td>{{ b.district }}</td>
                 <td>{{ b.yearBuilt }}</td>
+                <td>
+                  <button class="btn-details" (click)="viewBuildingDetails(b)">Ver detalles</button>
+                </td>
               </tr>
               <tr *ngIf="pagedBuildings.length === 0">
                 <td colspan="5" class="text-center text-muted">No hay edificios comprados</td>
@@ -58,6 +62,7 @@
                 <th>Precio</th>
                 <th>Habit.</th>
                 <th>Baños</th>
+                <th></th>
               </tr>
             </thead>
             <tbody>
@@ -68,6 +73,9 @@
                 <td>{{ a.apartmentPrice | currency:'EUR':'symbol':'1.0-0' }}</td>
                 <td>{{ a.numberOfRooms }}</td>
                 <td>{{ a.numberOfBathrooms }}</td>
+                <td>
+                  <button class="btn-details" (click)="viewApartmentDetails(a)">Ver detalles</button>
+                </td>
               </tr>
               <tr *ngIf="pagedApartments.length === 0">
                 <td colspan="6" class="text-center text-muted">No hay apartamentos alquilados</td>

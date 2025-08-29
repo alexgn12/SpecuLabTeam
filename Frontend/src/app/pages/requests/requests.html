@@ -10,7 +10,7 @@
  <section class="requests-kpis row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3 mb-3 mt-2">
   <!-- Total -->
   <div class="col">
-<sl-info-card label="Total" [value]="getEstadoTotal('Total')">
+<sl-info-card label="Total" [value]="getEstadoTotal('Recibido') + getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado')">
   <i class="bi bi-bell ic-mini ic-total"></i>
 </sl-info-card>
   </div>
@@ -51,35 +51,35 @@
             [class.active]="!selectedStatus"
             (click)="selectedStatus=''; onStatusChange()"
             role="tab" [attr.aria-selected]="!selectedStatus">
-      Todas ({{ getEstadoTotal('Pendiente') + getEstadoTotal('Aprobado') + getEstadoTotal('Rechazado') + getEstadoTotal('Recibido') }})
+  Todas
     </button>
 
     <button type="button" class="rq-segment__btn"
             [class.active]="selectedStatus==='Recibido'"
             (click)="selectedStatus='Recibido'; onStatusChange()"
             role="tab" [attr.aria-selected]="selectedStatus==='Recibido'">
-      Recibidas ({{ getEstadoTotal('Recibido') }})
+  Recibidas
     </button>
 
     <button type="button" class="rq-segment__btn"
             [class.active]="selectedStatus==='Pendiente'"
             (click)="selectedStatus='Pendiente'; onStatusChange()"
             role="tab" [attr.aria-selected]="selectedStatus==='Pendiente'">
-      Pendientes ({{ getEstadoTotal('Pendiente') }})
+  Pendientes
     </button>
 
     <button type="button" class="rq-segment__btn"
             [class.active]="selectedStatus==='Aprobado'"
             (click)="selectedStatus='Aprobado'; onStatusChange()"
             role="tab" [attr.aria-selected]="selectedStatus==='Aprobado'">
-      Completadas ({{ getEstadoTotal('Aprobado') }})
+  Completadas
     </button>
 
     <button type="button" class="rq-segment__btn"
             [class.active]="selectedStatus==='Rechazado'"
             (click)="selectedStatus='Rechazado'; onStatusChange()"
             role="tab" [attr.aria-selected]="selectedStatus==='Rechazado'">
-      Rechazadas ({{ getEstadoTotal('Rechazado') }})
+  Rechazadas
     </button>
   </div>
 </section>

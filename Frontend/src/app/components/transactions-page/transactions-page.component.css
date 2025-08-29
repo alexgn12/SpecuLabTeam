@@ -1,48 +1,40 @@
-/* ===== Paleta y tokens iOS-like (gama fría) ===== */
+/* ===== Tokens locales ===== */
 :host {
   --tp-card: #ffffff;
-  --tp-bg: #f6f8fb;
   --tp-border: #e8edf5;
-  --tp-shadow: 0 10px 30px rgba(20, 24, 40, 0.06);
-  --tp-text: #0f172a;     /* slate-900 */
-  --tp-muted: #64748b;    /* slate-500/600 */
-  --tp-in: #10b981;       /* verde suave */
-  --tp-out: #ef4444;      /* rojo suave */
-  --tp-focus: #93c5fd;    /* azul foco */
+  --tp-shadow: 0 10px 30px rgba(20,24,40,.06);
+  --tp-text: #0f172a;
+  --tp-muted: #64748b;
+  --tp-success: #16a34a;
+  --tp-danger: #ef4444;
+  --tp-primary: #2563eb;
 }
 
 /* ===== Filtros ===== */
-.tp-filters {
-  background: var(--tp-card);
-  border: 1px solid var(--tp-border);
-  box-shadow: var(--tp-shadow);
+.tp-filters .card-body {
+  padding: 14px 16px;
 }
-
 .tp-label {
   color: var(--tp-muted);
-  font-weight: 500;
+  font-weight: 600;
 }
-
 .tp-select {
-  border-radius: 12px;
   border: 1px solid var(--tp-border);
-  transition: border-color 160ms ease, box-shadow 160ms ease;
+  border-radius: 12px;
+  padding: 8px 12px;
+  box-shadow: none;
 }
-
 .tp-select:focus {
   border-color: #cfe2ff;
-  box-shadow: 0 0 0 4px rgba(59,130,246,0.15);
-  outline: none;
+  box-shadow: 0 0 0 4px rgba(59,130,246,.12);
 }
 
+/* Botones filtros */
 .tp-btn {
   border-radius: 12px;
+  font-weight: 600;
 }
-
-.tp-btn--sm {
-  border-radius: 10px;
-  padding: 6px 10px;
-}
+.tp-btn.w-100 { padding: 10px 12px; }
 
 /* ===== Card tabla ===== */
 .tp-card {
@@ -52,113 +44,98 @@
   overflow: hidden;
 }
 
-/* ===== Tabla ===== */
+/* Tabla */
 .tp-table {
-  width: 100%;
+  --bs-table-bg: #fff;
   margin: 0;
-  border-collapse: separate;
-  border-spacing: 0;
-  color: var(--tp-text);
-  --row-sep: var(--tp-border);
-  font-variant-numeric: tabular-nums;
 }
 
 .tp-thead th {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: #ffffff;
-  border-bottom: 1px solid var(--tp-border);
+  background: linear-gradient(180deg,#fff 0%, #fbfdff 100%);
+  border-bottom: 1px solid var(--tp-border) !important;
   color: var(--tp-muted);
-  font-weight: 600;
-  letter-spacing: 0.01em;
+  font-weight: 700;
+  letter-spacing: .01em;
   padding: 12px 16px;
   white-space: nowrap;
-}
-
-.tp-table tbody tr + tr {
-  border-top: 1px solid var(--tp-border);
 }
 
 .tp-row td {
   padding: 12px 16px;
+  border-top: 1px solid var(--tp-border);
   vertical-align: middle;
 }
 
-/* Zebra muy sutil */
-.tp-table tbody tr:nth-child(odd) {
-  background: #fafcff;
+/* Hover sutil por fila */
+.tp-row:hover td {
+  background: #f9fbff;
 }
 
-/* Hover suave */
-.tp-table tbody tr:hover {
-  background: #f3f7ff;
-}
-
-/* ===== Celdas especializadas ===== */
-.tp-date {
-  color: var(--tp-text);
+/* Fecha y descripción */
+.tp-date { color: var(--tp-muted); font-variant-numeric: tabular-nums; }
+.tp-desc {
+  max-width: 520px;             /* evita estirarse demasiado */
   white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
-.tp-desc,
-.tp-related {
-  color: var(--tp-text);
-}
+/* Importe (color semántico) */
+.tp-amount { font-weight: 700; letter-spacing: .01em; }
+.tp-amount--in  { color: var(--tp-success); }
+.tp-amount--out { color: var(--tp-danger); }
 
-/* Importe con color y monoespaciado tabular */
-.tp-amount {
-  font-weight: 700;
-}
-
-.tp-amount--in { color: var(--tp-in); }
-.tp-amount--out { color: var(--tp-out); }
-
-/* Badge tipo */
+/* Badges tipo */
 .tp-badge {
-  border-radius: 999px;
-  padding: 0.35rem 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.01em;
   border: 1px solid transparent;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  box-shadow: 0 2px 8px rgba(16,24,40,.06);
 }
+.tp-badge--in  { background: #eaf7ee !important; color: #166534 !important; border-color: #bfe7cc; }
+.tp-badge--out { background: #feeced !important; color: #991b1b !important; border-color: #ffd1d6; }
 
-.tp-badge--in {
-  background: rgba(16,185,129,0.12);
-  color: #065f46;
-  border-color: rgba(16,185,129,0.25);
-}
-
-.tp-badge--out {
-  background: rgba(239,68,68,0.12);
-  color: #7f1d1d;
-  border-color: rgba(239,68,68,0.25);
+/* Botón "Ver" pequeño */
+.tp-btn--sm {
+  border-radius: 10px;
+  padding: 4px 10px;
+  font-weight: 600;
 }
 
 /* ===== Paginación ===== */
 .tp-pagination {
   background: #fff;
 }
-
+.tp-pagination .btn {
+  border-radius: 10px;
+  padding: 6px 12px;
+}
 .tp-pageinfo {
   color: var(--tp-muted);
-  min-width: 140px;
-  text-align: center;
+  font-weight: 600;
 }
 
 /* ===== Responsivo ===== */
 @media (max-width: 768px) {
-  .tp-thead th:nth-child(4), /* Descripción */
-  .tp-row td:nth-child(4),
-  .tp-thead th:nth-child(5), /* Relacionado con */
-  .tp-row td:nth-child(5) {
-    display: none;
-  }
+  .tp-desc { max-width: 260px; }
+  .tp-filters .row > [class*="col-"] { margin-bottom: .25rem; }
 }
 
-@media (max-width: 480px) {
-  .tp-thead th:nth-child(6),
-  .tp-row td:nth-child(6) {
-    white-space: nowrap;
+@media (max-width: 576px) {
+  .tp-thead { display: none; } /* mobile: tabla simplificada */
+  .tp-table tbody tr.tp-row td {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 6px 10px;
   }
+  .tp-table tbody tr.tp-row td.text-end { justify-content: end; }
+  .tp-date::before      { content: "Fecha"; color: var(--tp-muted); font-weight: 600; }
+  .tp-amount::before    { content: "Importe"; color: var(--tp-muted); font-weight: 600; }
+  .tp-row td:nth-child(2)::before { content: "Tipo"; color: var(--tp-muted); font-weight: 600; }
+  .tp-desc::before      { content: "Descripción"; color: var(--tp-muted); font-weight: 600; }
 }
+
+/* Separación del footer fijo (si lo usas) */
+.tp-card { margin-bottom: 24px; }
