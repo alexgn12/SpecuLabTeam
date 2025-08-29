@@ -10,6 +10,6 @@
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
         public int FloorCount { get; set; }
         public int YearBuilt { get; set; }
-        public string ApartmentCount { get; set; } = string.Empty; // Añadido
+        public int ApartmentCount { get; set; }
     }
 }
