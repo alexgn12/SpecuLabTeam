@@ -1,29 +1,26 @@
 /* ===== Tokens de tema (gama fría iOS) ===== */
 .budget-page {
-  --bg: #f6f8fb;            /* gris muy claro azulado */
-  --card: #ffffff;          /* blanco puro */
-  --border: #e8edf5;        /* borde sutil */
-  --shadow: 0 10px 30px rgba(20, 24, 40, 0.06);
-  --text: #0f172a;          /* slate-900 */
-  --muted: #64748b;         /* slate-500/600 */
-  --accent: #3b82f6;        /* azul suave */
+  --bg: #f1f5f9;             /* slate-100/200 */
+  --card: #ffffff;
+  --border: #e8edf5;
+  --shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+  --text: #0f172a;           /* slate-900 */
+  --muted: #64748b;          /* slate-500/600 */
+  --accent: #3b82f6;
 
-  background: linear-gradient(180deg, var(--bg) 0%, #ffffff 100%);
+  background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
   min-height: 100%;
   padding: clamp(16px, 2.5vw, 28px) 0 2rem;
 }
 
-/* Contenedor principal con respiro lateral */
-.budget-container {
-  max-width: 1200px;
-}
+/* Contenedor principal */
+.budget-container { max-width: 1200px; }
 
 /* ===== Header de página ===== */
 .budget-header {
   margin-bottom: clamp(12px, 2vw, 20px);
   padding: 0 clamp(6px, 1vw, 10px);
 }
-
 .page-title {
   color: var(--text);
   font-weight: 700;
@@ -31,7 +28,6 @@
   margin: 0 0 4px 0;
   font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
 }
-
 .page-subtitle {
   color: var(--muted);
   margin: 0;
@@ -39,22 +35,13 @@
 }
 
 /* ===== Tarjetas superiores ===== */
-.budget-cards .col-12 > * {
-  /* Asegura radios y sombras consistentes si las tarjetas internas aún no los tienen */
-  border-radius: 20px;
-}
+.budget-cards .col-12 > * { border-radius: 20px; }
 
 /* ===== Separadores ===== */
 .section-divider {
   width: 100%;
   height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    var(--border) 10%,
-    var(--border) 90%,
-    transparent 100%
-  );
+  background: linear-gradient(to right, transparent 0%, var(--border) 10%, var(--border) 90%, transparent 100%);
   margin: clamp(12px, 2vw, 20px) 0 clamp(16px, 2.5vw, 28px);
 }
 
@@ -65,111 +52,46 @@
   border-radius: 1px;
 }
 
-/* ===== Section card contenedora (Actividad) ===== */
+/* ===== Section card (tarjetas de gráfico y tabla, separadas) ===== */
 .section-card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 20px;
+  border-radius: 16px;
   box-shadow: var(--shadow);
-  overflow: hidden;
+  padding: 20px;
+  margin-bottom: 24px; /* separa una tarjeta de la otra */
 }
 
 .section-card__header {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: clamp(14px, 2.2vw, 20px) clamp(16px, 2.5vw, 24px);
-  border-bottom: 1px solid var(--border);
-  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  margin-bottom: 12px;
 }
-
 .section-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
   color: var(--text);
-  font-size: clamp(1.05rem, 0.95rem + 0.6vw, 1.35rem);
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  margin: 0;
 }
-
 .section-subtitle {
+  margin: 4px 0 0 0;
   color: var(--muted);
-  font-size: 0.95rem;
-  margin: 0;
+  font-size: .95rem;
 }
+.section-card__body { padding-top: 8px; }
 
-.section-card__body {
-  padding: clamp(14px, 2.5vw, 24px);
-  background: var(--card);
-}
-
-/* ===== Alertas integradas en la gama ===== */
+/* ===== Alertas ===== */
 .alert-info {
   background-color: #eef5ff;
   border-color: #d9e7ff;
   color: #1e3a8a;
 }
-
 .alert-danger {
   background-color: #fdecec;
   border-color: #f7d6d6;
   color: #7f1d1d;
 }
 
-/* ===== Responsivo ===== */
+/* ===== Responsive ===== */
 @media (max-width: 575.98px) {
   .page-title { font-size: clamp(1.2rem, 1rem + 3vw, 1.6rem); }
   .section-card { border-radius: 16px; }
 }
-/* ===== Tokens de tema (gama fría iOS) ===== */
-.budget-page {
-  /* Fondo más oscuro para contraste */
-  --bg: #e2e8f0;            /* slate-200 (gris azulado) */
-  --card: #ffffff;          /* blanco puro */
-  --border: #d0d7e3;        /* borde sutil más visible */
-  --shadow: 0 10px 30px rgba(20, 24, 40, 0.08);
-  --text: #0f172a;          /* slate-900 */
-  --muted: #475569;         /* slate-600 */
-  --accent: #3b82f6;        /* azul suave */
-
-  background: linear-gradient(180deg, var(--bg) 0%, #f8fafc 100%);
-  min-height: 100%;
-  padding: clamp(16px, 2.5vw, 28px) 0 2rem;
-}
-.budget-page {
-  background: linear-gradient(180deg,#f8fafc 0%, #f1f5f9 100%); /* contraste con tarjetas */
-}
-
-.section-divider { margin: 24px 0; }
-
-.section-card {
-  background: #fff;
-  border: 1px solid #e9eef5;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(16,24,40,0.06);
-  padding: 20px;
-  margin-bottom: 24px; /* separa las dos tarjetas */
-}
-
-.section-card__header {
-  margin-bottom: 12px;
-}
-
-.section-title {
-  margin: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.section-subtitle {
-  margin: 4px 0 0 0;
-  color: #64748b;
-  font-size: .95rem;
-}
-
-.section-card__body {
-  /* Si el gráfico necesita más aire */
-  padding-top: 8px;
-}
-
-

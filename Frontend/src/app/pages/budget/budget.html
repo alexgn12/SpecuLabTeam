@@ -51,13 +51,21 @@
 
       <!-- Sección: Gasto mensual + Transacciones -->
 <!-- Sección: Gasto mensual -->
+
 <section class="section-card">
   <div class="section-card__header">
     <h3 class="section-title">Gasto mensual</h3>
     <p class="section-subtitle">Evolución por meses</p>
   </div>
   <div class="section-card__body">
-    <gasto-mensual></gasto-mensual>
+    <div class="row">
+      <div class="col-12 col-md-8 mb-3 mb-md-0">
+        <gasto-mensual></gasto-mensual>
+      </div>
+      <div class="col-12 col-md-4 d-flex align-items-center justify-content-center">
+        <sl-pie-gasto-ingreso [ingreso]="ingresoTotal" [gasto]="gastoTotal"></sl-pie-gasto-ingreso>
+      </div>
+    </div>
   </div>
 </section>
 

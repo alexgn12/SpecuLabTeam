@@ -1,0 +1,18 @@
+.pie-gasto-ingreso-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* contenedor cuadrado y fluido */
+.pie-gasto-ingreso {
+  width: 100%;
+  max-width: 380px;  /* ajusta si quieres más grande/pequeño */
+  aspect-ratio: 1 / 1;
+}
+
+/* mejora nitidez en pantallas con fondo claro */
+.pie-gasto-ingreso canvas {
+  display: block;
+}
