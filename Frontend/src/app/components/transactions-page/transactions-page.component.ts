@@ -11,7 +11,8 @@ import { BuildingDetailModalComponent } from '../building-detail/building-detail
   selector: 'transactions-page',
   standalone: true,
   imports: [CommonModule, FormsModule, ApartmentDetailModalComponent, BuildingDetailModalComponent],
-  templateUrl: './transactions-page.component.html'
+  templateUrl: './transactions-page.component.html',
+  styleUrls: ['./transactions-page.component.css']
 })
 export class TransactionsPageComponent implements OnInit {
   transactions: Transaction[] = [];
