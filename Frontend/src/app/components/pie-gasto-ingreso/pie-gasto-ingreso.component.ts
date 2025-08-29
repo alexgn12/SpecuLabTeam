@@ -93,14 +93,14 @@ pieChartOptions: ChartOptions<'doughnut'> = {
       const cx = (chartArea.left + chartArea.right) / 2;
       const cy = (chartArea.top + chartArea.bottom) / 2;
 
-      // Línea principal
+      // Centrar verticalmente el texto principal
       ctx.fillStyle = '#0f172a';
       ctx.font = '600 16px system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.fillText(this.centerMain, cx, cy - 6);
+      ctx.fillText(this.centerMain, cx, cy);
 
-      // Subtítulo
+      // Subtítulo (no se usa, pero se deja la lógica por si se reactiva)
       if (this.centerSub) {
         ctx.fillStyle = '#64748b';
         ctx.font = '500 12px system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial';
@@ -143,14 +143,14 @@ pieChartOptions: ChartOptions<'doughnut'> = {
       ]
     };
 
-    // Texto centro: Total y % de gasto (o “Sin datos”)
+    // Texto centro: Solo % de gasto (o “Sin datos”)
     if (total === 0) {
       this.centerMain = 'Sin datos';
       this.centerSub = '';
     } else {
-      this.centerMain = this.nf.format(total);
       const pctGasto = Math.round((gasto / total) * 100);
-      this.centerSub = `Gasto ${pctGasto}%`;
+      this.centerMain = `Gasto ${pctGasto}%`;
+      this.centerSub = '';
     }
   }
 }

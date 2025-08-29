@@ -1,4 +1,3 @@
-/* ===== Fondo y layout general ===== */
 .requests-page {
 	--bg: #e2e8f0;
 	--card: #ffffff;
@@ -12,6 +11,41 @@
 	padding: clamp(16px,2.5vw,28px) 0 2rem;
 }
 .requests-container { max-width: 1280px; }
+
+/* ===== Segmented Control (iOS style) ===== */
+.segmented-control-wrapper {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1.5rem;
+}
+.segmented-control {
+	display: inline-flex;
+	background: #f1f5f9;
+	border-radius: 16px;
+	box-shadow: 0 2px 8px rgba(60,60,60,0.04);
+	padding: 4px;
+	gap: 0;
+}
+.segmented-control button {
+	border: none;
+	background: none;
+	color: var(--muted);
+	font-weight: 500;
+	font-size: 1rem;
+	padding: 0.5rem 1.5rem;
+	border-radius: 12px;
+	transition: background 0.2s, color 0.2s;
+	cursor: pointer;
+	outline: none;
+}
+.segmented-control button.active {
+	background: var(--accent);
+	color: #fff;
+	box-shadow: 0 2px 8px rgba(59,130,246,0.10);
+}
+.segmented-control button:not(.active):hover {
+	background: #e0e7ef;
+}
 
 /* ===== Header ===== */
 .rq-header { margin-bottom: .5rem; }
@@ -51,20 +85,72 @@
 	margin: 0 auto;
 }
 
-/* ===== Tablas ===== */
+
+/* ===== Tablas (iOS style) ===== */
 table {
 	background: #fff;
-	border-radius: 12px;
-	box-shadow: var(--shadow);
+	border-radius: 16px;
+	box-shadow: 0 4px 16px rgba(20,24,40,.07);
 	border: 1px solid var(--border);
 	overflow: hidden;
+	margin-bottom: 0.5rem;
 }
-th, td { text-align: center; }
+th, td {
+	text-align: center;
+	vertical-align: middle;
+	padding: 0.65rem 0.5rem;
+	font-size: 1rem;
+}
 .table-light th {
-	background: #f1f5f9;
+	background: #f6faff;
 	font-weight: 600;
+	color: var(--accent);
+	border-bottom: 1px solid #e5eaf2;
 }
 .text-muted { color: #64748b !important; }
+
+tbody tr {
+	transition: background 0.15s;
+}
+tbody tr:hover {
+	background: #f3f7fd;
+}
+
+/* ===== Paginación (iOS style) ===== */
+.pagination-wrapper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 1rem;
+	margin: 1rem 0 0.5rem 0;
+}
+.pagination-wrapper button {
+	background: var(--card);
+	border: 1px solid var(--border);
+	color: var(--accent);
+	font-size: 1.2rem;
+	border-radius: 50%;
+	width: 2.2rem;
+	height: 2.2rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 0 1px 4px rgba(59,130,246,0.07);
+	transition: background 0.2s, color 0.2s;
+	cursor: pointer;
+	outline: none;
+}
+.pagination-wrapper button:disabled {
+	background: #f1f5f9;
+	color: #b6c3d1;
+	cursor: not-allowed;
+	border-color: #e5eaf2;
+}
+.pagination-wrapper span {
+	color: var(--muted);
+	font-size: 1rem;
+	font-weight: 500;
+}
 
 /* ===== Alertas ===== */
 .alert-info {
@@ -93,9 +179,25 @@ th, td { text-align: center; }
 		max-width: 100%;
 		width: 100%;
 	}
+	.segmented-control button {
+		padding: 0.5rem 1rem;
+		font-size: 0.98rem;
+	}
 }
 @media (max-width: 575.98px) {
 	.rq-title { font-size: clamp(1.2rem, 1rem + 3vw, 1.6rem); }
+	.segmented-control {
+		border-radius: 12px;
+		padding: 2px;
+	}
+	.segmented-control button {
+		font-size: 0.95rem;
+		padding: 0.45rem 0.7rem;
+		border-radius: 8px;
+	}
+	.pagination-wrapper span {
+		font-size: 0.95rem;
+	}
 }
 
 
