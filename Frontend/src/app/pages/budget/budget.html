@@ -20,14 +20,7 @@
       <!-- Row tarjetas principales -->
       <section class="row g-4 budget-cards">
         <div class="col-12 col-md-4">
-          <sl-info-card
-            class="flex-fill"
-            [label]="'Cantidad en cartera'"
-            [value]="totalAmount"
-            [currency]="'EUR'"
-            [badge]="''"
-            [badgeClass]="'bg-primary-subtle text-primary fw-semibold'">
-          </sl-info-card>
+          <sl-current-amount-card></sl-current-amount-card>
         </div>
 
         <div class="col-12 col-md-4">
