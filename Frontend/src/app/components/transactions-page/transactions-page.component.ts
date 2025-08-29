@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionsService, Transaction } from '../../pages/budget/transactions.service';
@@ -6,11 +6,12 @@ import { ApartmentService, Apartment } from '../../services/apartment.service';
 import { BuildingService, Building } from '../../services/building.service';
 import { ApartmentDetailModalComponent } from '../apartment-detail/apartment-detail-modal.component';
 import { BuildingDetailModalComponent } from '../building-detail/building-detail-modal.component';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'transactions-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ApartmentDetailModalComponent, BuildingDetailModalComponent],
+  imports: [CommonModule, FormsModule, ApartmentDetailModalComponent, BuildingDetailModalComponent, MatDialogModule],
   templateUrl: './transactions-page.component.html',
   styleUrls: ['./transactions-page.component.css']
 })
@@ -47,10 +48,7 @@ export class TransactionsPageComponent implements OnInit {
   pageSize = 20;
   totalItems = 0;
 
-  showApartmentModal = false;
-  selectedApartment: Apartment | null = null;
-  showBuildingModal = false;
-  selectedBuilding: Building | null = null;
+  private dialog = inject(MatDialog);
 
   constructor(
     private tx: TransactionsService,
@@ -62,37 +60,37 @@ export class TransactionsPageComponent implements OnInit {
     if (t.type === 'INGRESO' && t.apartmentId) {
       this.apartmentService.getApartmentById(t.apartmentId).subscribe({
         next: (apartment) => {
-          this.selectedApartment = apartment;
-          this.showApartmentModal = true;
+          this.dialog.open(ApartmentDetailModalComponent, {
+            data: { apartment },
+            panelClass: 'custom-modal-panel'
+          });
         },
         error: () => {
-          this.selectedApartment = null;
-          this.showApartmentModal = true;
+          this.dialog.open(ApartmentDetailModalComponent, {
+            data: { apartment: null },
+            panelClass: 'custom-modal-panel'
+          });
         }
       });
     } else if (t.type === 'GASTO' && t.buildingId) {
       this.buildingService.getBuildingById(t.buildingId).subscribe({
         next: (building) => {
-          this.selectedBuilding = building;
-          this.showBuildingModal = true;
+          this.dialog.open(BuildingDetailModalComponent, {
+            data: { building },
+            panelClass: 'custom-modal-panel'
+          });
         },
         error: () => {
-          this.selectedBuilding = null;
-          this.showBuildingModal = true;
+          this.dialog.open(BuildingDetailModalComponent, {
+            data: { building: null },
+            panelClass: 'custom-modal-panel'
+          });
         }
       });
     }
   }
 
-  closeApartmentModal = () => {
-    this.showApartmentModal = false;
-    this.selectedApartment = null;
-  }
 
-  closeBuildingModal = () => {
-    this.showBuildingModal = false;
-    this.selectedBuilding = null;
-  }
 
   ngOnInit(): void {
     this.fetch();

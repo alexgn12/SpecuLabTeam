@@ -78,10 +78,6 @@
 
             <td class="text-end">
               <button class="btn btn-sm btn-outline-primary tp-btn--sm" (click)="onViewClick(t)">Ver</button>
-              <!-- Modal de detalle de apartamento -->
-              <apartment-detail-modal *ngIf="showApartmentModal" [apartment]="selectedApartment" [close]="closeApartmentModal"></apartment-detail-modal>
-              <!-- Modal de detalle de edificio -->
-              <building-detail-modal *ngIf="showBuildingModal" [building]="selectedBuilding" [close]="closeBuildingModal"></building-detail-modal>
             </td>
           </tr>
 
