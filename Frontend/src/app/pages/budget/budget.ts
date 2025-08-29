@@ -4,6 +4,7 @@ import { TransactionsService, Transaction } from './transactions.service';
 import { PieGastoIngresoComponent } from '../../components/pie-gasto-ingreso/pie-gasto-ingreso.component';
 import { CommonModule } from '@angular/common';
 import { InfoCard } from '../../components/info-card/info-card';
+import { CurrentAmountCard } from '../../components/current-amount-card/current-amount-card';
 import { TransactionsPageComponent } from "../../components/transactions-page/transactions-page.component";
 import { GastoMensualComponent } from '../../components/gasto-mensual/gasto-mensual.component';
 import { EdificiosCompradosCountComponent } from '../../components/edificios-comprados-count/edificios-comprados-count';
@@ -13,7 +14,7 @@ import { EdificiosCompradosCountComponent } from '../../components/edificios-com
   templateUrl: './budget.html',
   styleUrls: ['./budget.css'],
   standalone: true,
-  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent, EdificiosCompradosCountComponent, PieGastoIngresoComponent]
+  imports: [CommonModule, InfoCard, TransactionsPageComponent, GastoMensualComponent, EdificiosCompradosCountComponent, PieGastoIngresoComponent, CurrentAmountCard]
 })
 
 export class Budget implements OnInit {

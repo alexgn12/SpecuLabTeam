@@ -1,0 +1,8 @@
+<sl-info-card
+  class="flex-fill"
+  [label]="'Cantidad en cartera'"
+  [value]="amount !== null ? amount : (loading ? 'Cargando...' : (error ? 'Error' : ''))"
+  [currency]="'EUR'"
+  [badge]="''"
+  [badgeClass]="'bg-primary-subtle text-primary fw-semibold'">
+</sl-info-card>
