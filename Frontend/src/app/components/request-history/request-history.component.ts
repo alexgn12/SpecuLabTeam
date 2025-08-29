@@ -14,6 +14,13 @@ import { DatePipe } from '@angular/common';
   imports: [CommonModule, FormsModule]
 })
 export class RequestHistoryComponent implements OnInit {
+  resetFilters(): void {
+    this.requestId = null;
+    this.fromDate = null;
+    this.toDate = null;
+    this.page = 1;
+    this.fetchHistory();
+  }
   formatToEuropean(date: string): string {
     if (!date) return '';
     const [year, month, day] = date.split('-');
@@ -92,6 +99,21 @@ export class RequestHistoryComponent implements OnInit {
   nextPage(): void {
     if (this.history.length === this.pageSize) {
       this.page++;
+      this.fetchHistory();
+    }
+  }
+
+  firstPage(): void {
+    if (this.page !== 1) {
+      this.page = 1;
+      this.fetchHistory();
+    }
+  }
+
+  lastPage(): void {
+    const totalPages = Math.ceil(this.totalRecords / this.pageSize);
+    if (this.page !== totalPages && totalPages > 0) {
+      this.page = totalPages;
       this.fetchHistory();
     }
   }
