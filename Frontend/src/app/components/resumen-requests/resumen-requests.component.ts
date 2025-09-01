@@ -36,21 +36,22 @@ export class ResumenRequestsComponent implements OnInit {
   // Normalización eliminada, ya no es necesaria con la nueva estructura
 
   /** Mapea nombres comunes a clases visuales */
-  badgeClass(s: string): string {
-    const key = s.toLowerCase();
-    if (key.includes('pend')) return 'pending';
-    if (key.includes('aprob') || key.includes('appr')) return 'approved';
-    if (key.includes('rech') || key.includes('reject')) return 'rejected';
-    return 'neutral';
-  }
-
-  label(s: string): string {
-    // Normaliza etiquetas: Pending -> Pendientes, etc.
-    const key = s.toLowerCase();
-    if (key.includes('pend')) return 'Pendientes';
-    if (key.includes('aprob') || key.includes('appr')) return 'Aprobadas';
-    if (key.includes('rech') || key.includes('reject')) return 'Rechazadas';
-    // Capitaliza por defecto
-    return s.charAt(0).toUpperCase() + s.slice(1);
-  }
+ badgeClass(s: string): string {
+  const key = s.toLowerCase();
+  if (key.includes('pend')) return 'pending';
+  if (key.includes('rev') || key.includes('revisión') || key.includes('revision')) return 'review';
+  if (key.includes('aprob') || key.includes('appr')) return 'approved';
+  if (key.includes('deneg') || key.includes('rech') || key.includes('reject')) return 'rejected';
+  return 'neutral';
 }
+
+label(s: string): string {
+  const key = s.toLowerCase();
+  if (key.includes('pend')) return 'Pendientes';
+  if (key.includes('rev') || key.includes('revisión') || key.includes('revision')) return 'En Revisión';
+  if (key.includes('aprob') || key.includes('appr')) return 'Aprobadas';
+  if (key.includes('deneg') || key.includes('rech') || key.includes('reject')) return 'Denegadas';
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+};
+

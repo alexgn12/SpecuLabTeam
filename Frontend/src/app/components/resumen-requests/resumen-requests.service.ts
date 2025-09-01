@@ -22,3 +22,4 @@ export class ResumenRequestsService {
     return this.http.get<ResumenRequestResponse>(this.apiUrl);
   }
 }
+
