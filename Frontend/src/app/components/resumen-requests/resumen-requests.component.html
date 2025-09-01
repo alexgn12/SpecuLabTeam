@@ -7,10 +7,13 @@
   <div *ngIf="loading" class="state">Cargando…</div>
   <div *ngIf="!loading && error" class="state error">{{ error }}</div>
 
-  <div *ngIf="!loading && !error" class="req-grid">
-    <div class="req-badge" *ngFor="let it of items" [class]="badgeClass(it.status)">
-      <span class="label">{{ label(it.status) }}</span>
-      <span class="num">{{ it.count }}</span>
-    </div>
-  </div>
+  <ul *ngIf="!loading && !error" class="req-list">
+    <li *ngFor="let it of items" class="req-item">
+      <span class="dot" [ngClass]="badgeClass(it.status)"></span>
+      <div class="text">
+        <div class="label">{{ label(it.status) }}</div>
+        <div class="count">{{ it.count }}</div>
+      </div>
+    </li>
+  </ul>
 </div>

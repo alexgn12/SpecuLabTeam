@@ -1,51 +1,60 @@
 :host {
   --bd: #e9edf3;
-  --bg: #fff;
   --text: #0f172a;
-  --muted: #64748b;
+  --muted: #6b7280;
 }
 
+/* Card contenedor (coherente con el dashboard) */
 .card {
-  background: var(--bg);
+  background: #fff;
   border: 1px solid var(--bd);
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(20,24,40,.06);
+  box-shadow: 0 10px 28px rgba(20,24,40,.07);
   padding: 14px;
 }
 
 .card-head {
   display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .card-head h3 { margin: 0; font-size: 1rem; font-weight: 800; color: var(--text); }
-.card-link { font-size: .85rem; color: #2563eb; text-decoration: none; }
+.card-link { font-size: .86rem; color: #2563eb; text-decoration: none; }
 .card-link:hover { text-decoration: underline; }
 
 .state { padding: 8px; color: var(--muted); }
 .state.error { color: #b91c1c; }
 
-.req-grid {
+/* === Lista estilo “mock” === */
+.req-list {
+  list-style: none; padding: 0; margin: 0;
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  grid-template-columns: 1fr 1fr;  /* dos columnas */
+  gap: 10px 24px;
+}
+@media (max-width: 520px) {
+  .req-list { grid-template-columns: 1fr; }
 }
 
-.req-badge {
-  display: flex; align-items: center; justify-content: space-between;
-  border: 1px solid var(--bd);
-  border-radius: 12px;
-  padding: 10px 12px;
-  font-weight: 700; color: var(--text);
-  background: #fafcff;
+.req-item {
+  display: grid;
+  grid-template-columns: 14px 1fr; /* punto y texto */
+  align-items: start;
+  column-gap: 8px;
 }
-.req-badge .num { font-weight: 800; }
 
-/* Colores por estado (heurísticos) */
-.req-badge.pending  { border-color:#fde68a; background:#fffbeb; }
-.req-badge.approved { border-color:#bbf7d0; background:#f0fdf4; }
-.req-badge.rejected { border-color:#fecaca; background:#fef2f2; }
-.req-badge.neutral  { border-color:#e9edf3; background:#f8fafc; }
-
-@media (max-width: 900px) {
-  .req-grid { grid-template-columns: 1fr; }
+.dot {
+  width: 10px; height: 10px; margin-top: 4px;
+  border-radius: 50%;
+  display: inline-block;
 }
+
+/* Colores de estado */
+.dot.pending   { background: #f59e0b; } /* naranja */
+.dot.review    { background: #3b82f6; } /* azul */
+.dot.approved  { background: #10b981; } /* verde */
+.dot.rejected  { background: #ef4444; } /* rojo */
+.dot.neutral   { background: #9ca3af; } /* gris */
+
+.text { line-height: 1.15; }
+.label { font-weight: 700; color: var(--text); }
+.count { color: var(--muted); font-size: .9rem; margin-top: 2px; }
