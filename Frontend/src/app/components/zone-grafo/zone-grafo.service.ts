@@ -11,7 +11,7 @@ export interface BuildingsCountByDistrict {
   providedIn: 'root',
 })
 export class ZoneGrafoService {
-  private apiUrl = 'https://localhost:7092/api/Ang/buildings-count-by-district';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/Ang/buildings-count-by-district';
 
   constructor(private http: HttpClient) {}
 

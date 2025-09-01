@@ -18,7 +18,7 @@ export interface Apartment {
 
 @Injectable({ providedIn: 'root' })
 export class ApartmentService {
-  private baseUrl = `https://localhost:7092/api/Apartments`;
+  private baseUrl = `https://devdemoapi3.azurewebsites.net/api/Apartments`;
 
   constructor(private http: HttpClient) {}
 
