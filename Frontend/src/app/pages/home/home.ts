@@ -56,7 +56,14 @@ export class HomeComponent implements OnInit, OnDestroy {
           // preparar chart
           this.barData = {
             labels: byDist.map(x => x.district),
-            datasets: [{ data: byDist.map(x => x.count), borderRadius: 6, barThickness: 16, categoryPercentage: 0.7 }]
+            datasets: [{
+              data: byDist.map(x => x.count),
+              borderRadius: 6,
+              barThickness: 16,
+              categoryPercentage: 0.7,
+              backgroundColor: 'rgba(37, 99, 235, 0.35)',
+              hoverBackgroundColor: 'rgba(37, 99, 235, 0.65)'
+            }]
           };
 
           this.loading = false;
