@@ -11,18 +11,21 @@ export class Header {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
-    // Forzar reflow para asegurar transición en móviles
-    setTimeout(() => {
-      const nav = document.getElementById('navbarNav');
-      if (nav) nav.classList.toggle('show', this.isMenuOpen);
-    }, 0);
+    if (window.innerWidth < 992) {
+      setTimeout(() => {
+        const nav = document.getElementById('navbarNav');
+        if (nav) nav.classList.toggle('show', this.isMenuOpen);
+      }, 0);
+    }
   }
 
   closeMenu() {
     this.isMenuOpen = false;
-    setTimeout(() => {
-      const nav = document.getElementById('navbarNav');
-      if (nav) nav.classList.remove('show');
-    }, 0);
+    if (window.innerWidth < 992) {
+      setTimeout(() => {
+        const nav = document.getElementById('navbarNav');
+        if (nav) nav.classList.remove('show');
+      }, 0);
+    }
   }
 }

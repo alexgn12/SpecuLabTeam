@@ -1,13 +1,16 @@
 /* Transición suave para el menú hamburguesa */
-.navbar-collapse {
-  transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
-  overflow: hidden;
-  max-height: 0;
-  opacity: 0;
-}
-.navbar-collapse.show {
-  max-height: 500px;
-  opacity: 1;
+/* Solo colapsar el menú en móvil */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+  }
+  .navbar-collapse.show {
+    max-height: 500px;
+    opacity: 1;
+  }
 }
 /* --- Mobile improvements --- */
 @media (max-width: 991.98px) {
