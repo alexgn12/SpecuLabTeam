@@ -1,0 +1,7 @@
+<div class="pagination-wrapper">
+  <button (click)="goToFirst()" [disabled]="currentPage === 1" title="Primera página" class="first-last-btn">«</button>
+  <button (click)="goToPage(currentPage - 1)" [disabled]="currentPage === 1">&lt;</button>
+  <span>Página {{ currentPage }} de {{ totalPages }}</span>
+  <button (click)="goToPage(currentPage + 1)" [disabled]="currentPage === totalPages">&gt;</button>
+  <button (click)="goToLast()" [disabled]="currentPage === totalPages" title="Última página" class="first-last-btn">»</button>
+</div>

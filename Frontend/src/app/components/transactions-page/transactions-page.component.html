@@ -90,12 +90,10 @@
     </div>
 
     <!-- Paginación -->
-    <div class="tp-pagination d-flex justify-content-center align-items-center gap-2 p-3 border-top">
-      <button class="btn btn-outline-secondary tp-btn--sm" (click)="firstPage()" [disabled]="currentPage === 1">Primera</button>
-      <button class="btn btn-outline-secondary tp-btn--sm" (click)="prevPage()" [disabled]="currentPage === 1">Anterior</button>
-      <span class="tp-pageinfo">Página {{ currentPage }} de {{ totalPages }}</span>
-      <button class="btn btn-outline-secondary tp-btn--sm" (click)="nextPage()" [disabled]="currentPage === totalPages">Siguiente</button>
-      <button class="btn btn-outline-secondary tp-btn--sm" (click)="lastPage()" [disabled]="currentPage === totalPages">Última</button>
-    </div>
+    <app-paginacion
+      [currentPage]="currentPage"
+      [totalPages]="totalPages"
+      (pageChange)="fetch($event)">
+    </app-paginacion>
   </div>
 </div>

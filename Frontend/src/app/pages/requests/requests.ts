@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { RequestsService, IRequest } from './requests.service';
 import { RequestCard } from '../../components/request-card/request-card';
 import { InfoCard } from '../../components/info-card/info-card';
+import { PaginacionComponent } from '../../components/paginacion/paginacion.component';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { InfoCard } from '../../components/info-card/info-card';
   templateUrl: './requests.html',
   styleUrls: ['./requests.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RequestCard, InfoCard]
+  imports: [CommonModule, FormsModule, RequestCard, InfoCard, PaginacionComponent]
 })
 export class Requests implements OnInit, OnDestroy {
   requestsData: IRequest[] = [];
@@ -92,6 +93,10 @@ export class Requests implements OnInit, OnDestroy {
       this.page++;
       this.loadRequests();
     }
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.getEstadoTotal(this.selectedStatus) / this.size));
   }
 
   ngOnDestroy() {

@@ -110,19 +110,11 @@
     </ul>
 
     <!-- Paginación -->
-    <nav aria-label="Paginación de requests" class="rq-pagination">
-      <ul class="pagination mb-0">
-        <li class="page-item" [class.disabled]="page === 1">
-          <button class="page-link" (click)="prevPage()" [disabled]="page === 1">Anterior</button>
-        </li>
-        <li class="page-item disabled">
-          <span class="page-link">Página {{ page }}</span>
-        </li>
-        <li class="page-item" [class.disabled]="requestsData.length < size">
-          <button class="page-link" (click)="nextPage()" [disabled]="requestsData.length < size">Siguiente</button>
-        </li>
-      </ul>
-    </nav>
+    <app-paginacion
+      [currentPage]="page"
+      [totalPages]="totalPages"
+      (pageChange)="page = $event; loadRequests()">
+    </app-paginacion>
 
     <p *ngIf="requestsData.length === 0" class="text-center text-muted mt-3">No hay requests disponibles.</p>
   </div>

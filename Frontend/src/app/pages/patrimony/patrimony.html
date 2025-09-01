@@ -44,11 +44,12 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination-wrapper" *ngIf="buildingsTotalPages > 1">
-          <button (click)="prevPage('buildings')" [disabled]="buildingsPage === 1">‹</button>
-          <span>Página {{ buildingsPage }} de {{ buildingsTotalPages }}</span>
-          <button (click)="nextPage('buildings')" [disabled]="buildingsPage === buildingsTotalPages">›</button>
-        </div>
+        <app-paginacion
+          *ngIf="buildingsTotalPages > 1"
+          [currentPage]="buildingsPage"
+          [totalPages]="buildingsTotalPages"
+          (pageChange)="buildingsPage = $event">
+        </app-paginacion>
       </div>
       <div class="patrimony-col" *ngIf="selectedTab === 'apartments'">
         <h4 class="text-center">Apartamentos Alquilados</h4>
@@ -83,11 +84,12 @@
             </tbody>
           </table>
         </div>
-        <div class="pagination-wrapper" *ngIf="apartmentsTotalPages > 1">
-          <button (click)="prevPage('apartments')" [disabled]="apartmentsPage === 1">‹</button>
-          <span>Página {{ apartmentsPage }} de {{ apartmentsTotalPages }}</span>
-          <button (click)="nextPage('apartments')" [disabled]="apartmentsPage === apartmentsTotalPages">›</button>
-        </div>
+        <app-paginacion
+          *ngIf="apartmentsTotalPages > 1"
+          [currentPage]="apartmentsPage"
+          [totalPages]="apartmentsTotalPages"
+          (pageChange)="apartmentsPage = $event">
+        </app-paginacion>
       </div>
     </div>
   </div>

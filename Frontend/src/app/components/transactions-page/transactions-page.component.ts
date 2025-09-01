@@ -6,12 +6,13 @@ import { ApartmentService, Apartment } from '../../services/apartment.service';
 import { BuildingService, Building } from '../../services/building.service';
 import { ApartmentDetailModalComponent } from '../apartment-detail/apartment-detail-modal.component';
 import { BuildingDetailModalComponent } from '../building-detail/building-detail-modal.component';
+import { PaginacionComponent } from '../paginacion/paginacion.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'transactions-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ApartmentDetailModalComponent, BuildingDetailModalComponent, MatDialogModule],
+  imports: [CommonModule, FormsModule, ApartmentDetailModalComponent, BuildingDetailModalComponent, MatDialogModule, PaginacionComponent],
   templateUrl: './transactions-page.component.html',
   styleUrls: ['./transactions-page.component.css']
 })
