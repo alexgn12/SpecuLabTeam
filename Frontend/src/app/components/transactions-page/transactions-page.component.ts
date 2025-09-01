@@ -4,15 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { TransactionsService, Transaction } from '../../pages/budget/transactions.service';
 import { ApartmentService, Apartment } from '../../services/apartment.service';
 import { BuildingService, Building } from '../../services/building.service';
-import { ApartmentDetailModalComponent } from '../apartment-detail/apartment-detail-modal.component';
-import { BuildingDetailModalComponent } from '../building-detail/building-detail-modal.component';
+import { PatrimonyDetailModalComponent } from '../patrimony-detail-modal/patrimony-detail-modal.component';
 import { PaginacionComponent } from '../paginacion/paginacion.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'transactions-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, ApartmentDetailModalComponent, BuildingDetailModalComponent, MatDialogModule, PaginacionComponent],
+  imports: [CommonModule, FormsModule, PatrimonyDetailModalComponent, MatDialogModule, PaginacionComponent],
   templateUrl: './transactions-page.component.html',
   styleUrls: ['./transactions-page.component.css']
 })
@@ -61,14 +60,14 @@ export class TransactionsPageComponent implements OnInit {
     if (t.type === 'INGRESO' && t.apartmentId) {
       this.apartmentService.getApartmentById(t.apartmentId).subscribe({
         next: (apartment) => {
-          this.dialog.open(ApartmentDetailModalComponent, {
-            data: { apartment },
+          this.dialog.open(PatrimonyDetailModalComponent, {
+            data: { type: 'apartment', item: apartment },
             panelClass: 'custom-modal-panel'
           });
         },
         error: () => {
-          this.dialog.open(ApartmentDetailModalComponent, {
-            data: { apartment: null },
+          this.dialog.open(PatrimonyDetailModalComponent, {
+            data: { type: 'apartment', item: null },
             panelClass: 'custom-modal-panel'
           });
         }
@@ -76,14 +75,14 @@ export class TransactionsPageComponent implements OnInit {
     } else if (t.type === 'GASTO' && t.buildingId) {
       this.buildingService.getBuildingById(t.buildingId).subscribe({
         next: (building) => {
-          this.dialog.open(BuildingDetailModalComponent, {
-            data: { building },
+          this.dialog.open(PatrimonyDetailModalComponent, {
+            data: { type: 'building', item: building },
             panelClass: 'custom-modal-panel'
           });
         },
         error: () => {
-          this.dialog.open(BuildingDetailModalComponent, {
-            data: { building: null },
+          this.dialog.open(PatrimonyDetailModalComponent, {
+            data: { type: 'building', item: null },
             panelClass: 'custom-modal-panel'
           });
         }
