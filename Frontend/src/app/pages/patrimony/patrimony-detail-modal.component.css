@@ -1,0 +1,136 @@
+/* Ancho y responsive */
+:host ::ng-deep .mat-mdc-dialog-surface,
+:host ::ng-deep .cdk-overlay-pane .mat-mdc-dialog-surface {
+  width: min(520px, 92vw) !important;
+  border-radius: 28px !important;
+  background: #f7f8fa !important;
+  box-shadow: 0 8px 32px rgba(20,24,40,0.13) !important;
+  border: 3px solid #d1d5db !important;
+  padding: 0 !important;
+}
+
+/* Header: menos alto visual y chip más limpio */
+.modal-header {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.modal-title {
+  font-size: 1.22rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.2em 0;
+  text-align: left;
+  line-height: 1.2;
+  padding-left: 2px;
+}
+.type-chip {
+  padding: 2px 8px;                 /* más compacto */
+  line-height: 1.2;
+  border-radius: 999px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+}
+
+/* Body: más aire y alineación impecable */
+:host ::ng-deep .modal-body {
+  padding: 14px 16px 6px !important;
+  gap: 12px !important;
+  background: #fff !important;
+  border-radius: 18px !important;
+  box-shadow: 0 2px 12px 0 rgba(180,185,200,0.10) !important;
+  border: 1.5px solid #e5e7eb !important;
+}
+.field {
+  grid-template-columns: 150px 1fr;  /* columna de label un poco más ancha */
+  align-items: center;
+}
+.label {
+  color: #000000;                    /* un pelín más oscuro para contraste */
+  font-weight: 600;
+}
+.value {
+  color: var(--text);
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;            /* evita overflow en direcciones largas */
+}
+
+/* Divider entre body y actions ya está, suavizamos actions */
+.modal-actions {
+  padding: 10px 16px 14px;
+  background: #fff;
+}
+
+
+/* Botón cerrar más atractivo */
+.btn-cool-close {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.18rem 0.6rem 0.18rem 0.5rem;
+  box-shadow: 0 1px 4px rgba(59,130,246,0.08);
+  cursor: pointer;
+  outline: none;
+  transition: background 0.18s, box-shadow 0.18s, transform 0.13s;
+  position: relative;
+  overflow: hidden;
+}
+.btn-cool-close:hover, .btn-cool-close:focus {
+  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+  box-shadow: 0 2px 8px rgba(59,130,246,0.13);
+  transform: translateY(-1px) scale(1.02);
+}
+.btn-cool-close-icon {
+  font-size: 1em;
+  margin-right: 0.03em;
+  opacity: 0.8;
+  transition: opacity 0.18s;
+}
+.btn-cool-close-text {
+  letter-spacing: 0.01em;
+  font-weight: 600;
+}
+
+/* Pequeño realce en labels clave (opcional) */
+.field:nth-last-child(1) .label {
+  color: #334155;                    /* “Fecha alta” resalta un poco */
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+  .field { grid-template-columns: 1fr; row-gap: 2px; }
+  .modal-header, .modal-body, .modal-actions { padding-left: 14px; padding-right: 14px; }
+}
+.type-chip {
+  font-size: .8rem;
+  font-weight: 600;
+  padding: 3px 10px 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px; /* espacio entre icono y texto */
+  line-height: 1.2;
+}
+
+.type-chip.is-building {
+  border-color: #c7e1ff;
+  background: #eef6ff;
+  color: #000000;
+}
+.type-chip.is-apartment {
+  border-color: #cdeccd;
+  background: #f0fbf3;
+  color: #000000;
+}
+

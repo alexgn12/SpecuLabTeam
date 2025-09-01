@@ -1,3 +1,22 @@
+/* --- MODAL PATRIMONY: Forzar fondo y borde --- */
+.mat-mdc-dialog-surface {
+  width: min(400px, 96vw) !important;
+  max-height: 90vh !important;
+  border-radius: 22px !important;
+  background: #f7f8fa !important;
+  box-shadow: 0 8px 32px rgba(20,24,40,0.13) !important;
+  border: 2px solid #d1d5db !important;
+  padding: 0 !important;
+  overflow-y: auto !important;
+}
+.modal-body {
+  padding: 14px 16px 6px !important;
+  gap: 12px !important;
+  background: #fff !important;
+  border-radius: 18px !important;
+  box-shadow: 0 2px 12px 0 rgba(180,185,200,0.10) !important;
+  border: 1.5px solid #e5e7eb !important;
+}
 :root{
   /* alto del footer y separación extra */
   --footer-h: 56px;            /* ajusta si tu footer es más alto/bajo */
@@ -28,4 +47,5 @@ body{
 .rq-pagination .pagination{
   gap: .25rem;                 /* separa ligeramente los items */
 }
+
 

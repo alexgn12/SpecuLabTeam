@@ -5,21 +5,25 @@ using PrototipoApi.Repositories.Interfaces;
 using PrototipoApi.Services;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Linq;
 
 public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand, TransactionDto>
 {
     private readonly IRepository<Transaction> _repository;
     private readonly IRepository<Apartment> _apartmentRepository;
     private readonly IExternalApartmentService _externalApartmentService;
+    private readonly IRepository<ManagementBudget> _budgetRepository;
 
     public CreateTransactionHandler(
         IRepository<Transaction> repository,
         IRepository<Apartment> apartmentRepository,
-        IExternalApartmentService externalApartmentService)
+        IExternalApartmentService externalApartmentService,
+        IRepository<ManagementBudget> budgetRepository)
     {
         _repository = repository;
         _apartmentRepository = apartmentRepository;
         _externalApartmentService = externalApartmentService;
+        _budgetRepository = budgetRepository;
     }
 
     public async Task<TransactionDto> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -51,17 +55,34 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
             Description = request.Description,
             Amount = (double)request.Amount,
             ApartmentId = apartmentId,
-            TransactionsType = new TransactionType { TransactionName = "INGRESO" },
+            TransactionsType = new TransactionType { TransactionName = "INGRESO" }, // Por defecto INGRESO
         };
 
         await _repository.AddAsync(transaction);
         await _repository.SaveChangesAsync();
 
+        // Recargar la transacción con el tipo real desde la base de datos (por si fue creada como GASTO en otro flujo)
+        var savedTransaction = await _repository.GetOneAsync(t => t.TransactionId == transaction.TransactionId, t => t.TransactionsType);
+        var transactionTypeName = savedTransaction?.TransactionsType?.TransactionName ?? "INGRESO";
+
+        // Actualizar el presupuesto global
+        var budget = (await _budgetRepository.GetAllAsync()).FirstOrDefault();
+        if (budget != null)
+        {
+            if (transactionTypeName == "GASTO")
+                budget.CurrentAmount -= transaction.Amount;
+            else
+                budget.CurrentAmount += transaction.Amount;
+            budget.LastUpdatedDate = transaction.TransactionDate;
+            await _budgetRepository.UpdateAsync(budget);
+            await _budgetRepository.SaveChangesAsync();
+        }
+
         return new TransactionDto
         {
             TransactionId = transaction.TransactionId,
             TransactionDate = transaction.TransactionDate,
-            TransactionType = transaction.TransactionsType.TransactionName,
+            TransactionType = transactionTypeName,
             Description = transaction.Description,
             Amount = (decimal)transaction.Amount,
         };

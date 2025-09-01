@@ -1,13 +1,17 @@
+
 import { Component, OnInit } from '@angular/core';
 import { PatrimonyService, ApprovedBuilding, IncomeApartment } from './patrimony.service';
 import { CommonModule, CurrencyPipe } from '@angular/common';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
+import { PatrimonyDetailModalComponent } from './patrimony-detail-modal.component';
 
 @Component({
   selector: 'app-patrimony',
   templateUrl: './patrimony.html',
   styleUrls: ['./patrimony.css'],
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatDialogModule, PatrimonyDetailModalComponent],
   providers: [CurrencyPipe]
 })
 export class PatrimonyComponent implements OnInit {
@@ -39,7 +43,7 @@ export class PatrimonyComponent implements OnInit {
     return Math.max(1, Math.ceil(this.incomeApartments.length / this.pageSize));
   }
 
-  constructor(private patrimonyService: PatrimonyService) {}
+  constructor(private patrimonyService: PatrimonyService, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.patrimonyService.getPatrimony().subscribe({
@@ -75,5 +79,21 @@ export class PatrimonyComponent implements OnInit {
     } else if (tab === 'apartments' && this.apartmentsPage > 1) {
       this.apartmentsPage--;
     }
+  }
+
+  viewBuildingDetails(building: ApprovedBuilding) {
+    this.dialog.open(PatrimonyDetailModalComponent, {
+      data: { type: 'building', item: building },
+      panelClass: 'mat-dialog-rounded',
+      autoFocus: false
+    });
+  }
+
+  viewApartmentDetails(apartment: IncomeApartment) {
+    this.dialog.open(PatrimonyDetailModalComponent, {
+      data: { type: 'apartment', item: apartment },
+      panelClass: 'mat-dialog-rounded',
+      autoFocus: false
+    });
   }
 }

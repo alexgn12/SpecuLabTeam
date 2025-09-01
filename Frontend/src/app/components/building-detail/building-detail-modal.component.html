@@ -1,25 +1,28 @@
-<div class="modal fade show d-block" tabindex="-1" style="background:rgba(0,0,0,0.3);">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Detalle de Edificio</h5>
-        <button type="button" class="btn-close" (click)="close()"></button>
-      </div>
-      <div class="modal-body">
-        <ng-container *ngIf="building; else noData">
-          <p><strong>ID:</strong> {{ building.buildingId }}</p>
-          <p *ngIf="building.buildingCode"><strong>Código:</strong> {{ building.buildingCode }}</p>
-          <p *ngIf="building.buildingName"><strong>Nombre:</strong> {{ building.buildingName }}</p>
-          <p *ngIf="building.street"><strong>Calle:</strong> {{ building.street }}</p>
-          <p *ngIf="building.district"><strong>Distrito:</strong> {{ building.district }}</p>
-          <p *ngIf="building.floorCount"><strong>Nº Plantas:</strong> {{ building.floorCount }}</p>
-          <p *ngIf="building.yearBuilt"><strong>Año construcción:</strong> {{ building.yearBuilt }}</p>
-          <p *ngIf="building.createdDate"><strong>Fecha creación:</strong> {{ building.createdDate | date:'short' }}</p>
-        </ng-container>
-        <ng-template #noData>
-          <p>No hay datos del edificio.</p>
-        </ng-template>
-      </div>
-    </div>
+<div class="modal-content">
+  <div class="modal-header">
+    <h2 class="modal-title">Detalles</h2>
+    <span class="type-chip is-building">
+      🏢 Edificio
+    </span>
+  </div>
+  <div class="modal-body">
+    <ng-container *ngIf="data.building; else noData">
+      <div class="field"><span class="label">Código: </span><span class="value">{{ data.building.buildingCode }}</span></div>
+      <div class="field"><span class="label">Nombre: </span><span class="value">{{ data.building.buildingName }}</span></div>
+      <div class="field"><span class="label">Dirección: </span><span class="value">{{ data.building.street }}</span></div>
+      <div class="field"><span class="label">Distrito: </span><span class="value">{{ data.building.district }}</span></div>
+      <div class="field"><span class="label">Año: </span><span class="value">{{ data.building.yearBuilt }}</span></div>
+      <div class="field"><span class="label">Plantas: </span><span class="value">{{ data.building.floorCount }}</span></div>
+      <div class="field"><span class="label">Fecha alta: </span><span class="value">{{ data.building.createdDate | date:'mediumDate' }}</span></div>
+    </ng-container>
+    <ng-template #noData>
+      <div class="field">No hay datos del edificio.</div>
+    </ng-template>
+  </div>
+  <div class="modal-actions" style="text-align:right;">
+    <button class="btn-cool-close" (click)="dialogRef.close()">
+      <span class="btn-cool-close-icon">✕</span>
+      <span class="btn-cool-close-text">Cerrar</span>
+    </button>
   </div>
 </div>

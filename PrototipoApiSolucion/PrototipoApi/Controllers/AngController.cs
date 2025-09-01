@@ -4,6 +4,9 @@ using MediatR;
 using System.Linq;
 using System.Threading.Tasks;
 using PrototipoApi.Application.AngController.Query;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using PrototipoApi.BaseDatos;
 
 
 namespace PrototipoApi.Controllers
@@ -13,10 +16,12 @@ namespace PrototipoApi.Controllers
     public class AngController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ContextoBaseDatos _context;
 
-        public AngController(IMediator mediator)
+        public AngController(IMediator mediator, ContextoBaseDatos context)
         {
             _mediator = mediator;
+            _context = context;
         }
 
         [HttpGet("resumen-requests")]
@@ -59,6 +64,15 @@ namespace PrototipoApi.Controllers
         {
             var result = await _mediator.Send(new GetApprovedBuildingsAndIncomeApartmentsQuery());
             return Ok(result);
+        }
+
+        [HttpGet("current-amount")]
+        public async Task<IActionResult> GetCurrentAmount()
+        {
+            var budget = await _context.ManagementBudgets.FirstOrDefaultAsync();
+            if (budget == null)
+                return NotFound("No existe presupuesto de gestión");
+            return Ok(new { budget.CurrentAmount });
         }
     }
 }
