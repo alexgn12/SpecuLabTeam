@@ -2,10 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-export interface ResumenRequest {
-  // Define aquí los campos que devuelve el endpoint /api/Ang/resumen-requests
-  // Por ahora lo dejamos como any[] hasta conocer la estructura real
-  [key: string]: any;
+export interface EstadoResumen {
+  estado: string;
+  total: number;
+}
+
+export interface ResumenRequestResponse {
+  totalGeneral: number;
+  porEstado: EstadoResumen[];
 }
 
 @Injectable({ providedIn: 'root' })
@@ -14,7 +18,7 @@ export class ResumenRequestsService {
 
   constructor(private http: HttpClient) {}
 
-  getResumenRequests(): Observable<ResumenRequest[]> {
-    return this.http.get<ResumenRequest[]>(this.apiUrl);
+  getResumenRequests(): Observable<ResumenRequestResponse> {
+    return this.http.get<ResumenRequestResponse>(this.apiUrl);
   }
 }
