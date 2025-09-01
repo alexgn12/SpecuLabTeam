@@ -63,6 +63,7 @@
                 <!--<th>Precio</th> -->
                 <th>Habit.</th>
                 <th>Baños</th>
+                <th>Edificio</th>
                 <th></th>
               </tr>
             </thead>
@@ -74,6 +75,7 @@
                 <!--<td>{{ a.apartmentPrice | currency:'EUR':'symbol':'1.0-0' }}</td>-->
                 <td>{{ a.numberOfRooms }}</td>
                 <td>{{ a.numberOfBathrooms }}</td>
+                <td>{{ a.buildingCode }}</td>
                 <td>
                   <button class="btn-details" (click)="viewApartmentDetails(a)">Ver detalles</button>
                 </td>

@@ -22,6 +22,7 @@ export interface IncomeApartment {
   numberOfRooms: number;
   numberOfBathrooms: number;
   buildingId: number;
+  buildingCode: string;
   hasLift: boolean;
   hasGarage: boolean;
   createdDate: string;

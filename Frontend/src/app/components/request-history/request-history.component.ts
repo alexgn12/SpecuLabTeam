@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { RequestStatusHistoryService, RequestStatusHistoryApiResponse } from '../../services/request-status-history.service';
 import { RequestStatusHistoryDto } from '../../models/request-status-history.dto';
 import { DatePipe } from '@angular/common';
+import { PaginacionComponent } from '../paginacion/paginacion.component';
 
 @Component({
   selector: 'app-request-history',
@@ -11,7 +12,7 @@ import { DatePipe } from '@angular/common';
   templateUrl: './request-history.component.html',
   styleUrls: ['./request-history.component.css'],
   providers: [DatePipe],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, PaginacionComponent]
 })
 export class RequestHistoryComponent implements OnInit {
   resetFilters(): void {
@@ -116,5 +117,9 @@ export class RequestHistoryComponent implements OnInit {
       this.page = totalPages;
       this.fetchHistory();
     }
+  }
+
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.totalRecords / this.pageSize));
   }
 }
