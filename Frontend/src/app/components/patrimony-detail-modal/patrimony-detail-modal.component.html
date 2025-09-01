@@ -1,9 +1,9 @@
 <div class="modal-content">
   <div class="modal-header">
-    <h2 mat-dialog-title class="modal-title">
-      Detalles
-    </h2>
+    <h2 mat-dialog-title class="modal-title">Detalles</h2>
+
     <span class="type-chip"
+          aria-label="Tipo de elemento"
           [class.is-building]="data.type==='building'"
           [class.is-apartment]="data.type==='apartment'">
       <ng-container *ngIf="data.type === 'building'; else aptIcon">
@@ -17,23 +17,22 @@
 
   <div mat-dialog-content class="modal-body">
     <ng-container *ngIf="data.type === 'building'; else apartmentBlock">
-      <div class="field"><span class="label">Nombre: </span><span class="value">{{ data.item.buildingName }}</span></div>
-      <div class="field"><span class="label">Dirección: </span><span class="value">{{ data.item.street }}</span></div>
-      <div class="field"><span class="label">Barrio: </span><span class="value">{{ data.item.district }}</span></div>
-      <div class="field"><span class="label">Fecha de construcción: </span><span class="value">{{ data.item.yearBuilt }}</span></div>
-      <div class="field"><span class="label">Plantas: </span><span class="value">{{ data.item.floorCount }}</span></div>
-      <div class="field"><span class="label">Fecha de alta: </span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
+      <div class="field"><span class="label">Nombre</span><span class="value">{{ data.item.buildingName }}</span></div>
+      <div class="field"><span class="label">Dirección</span><span class="value">{{ data.item.street }}</span></div>
+      <div class="field"><span class="label">Barrio</span><span class="value">{{ data.item.district }}</span></div>
+      <div class="field"><span class="label">Fecha de construcción</span><span class="value">{{ data.item.yearBuilt }}</span></div>
+      <div class="field"><span class="label">Plantas</span><span class="value">{{ data.item.floorCount }}</span></div>
+      <div class="field"><span class="label">Fecha de alta</span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
     </ng-container>
 
     <ng-template #apartmentBlock>
-      <div class="field"><span class="label">Puerta: </span><span class="value">{{ data.item.apartmentDoor }}</span></div>
-      <div class="field"><span class="label">Piso: </span><span class="value">{{ data.item.apartmentFloor }}</span></div>
-      <!--<div class="field"><span class="label">Precio: </span><span class="value">{{ data.item.apartmentPrice | currency:'EUR':'symbol':'1.0-0' }}</span></div>-->
-      <div class="field"><span class="label">Habitaciones: </span><span class="value">{{ data.item.numberOfRooms }}</span></div>
-      <div class="field"><span class="label">Baños: </span><span class="value">{{ data.item.numberOfBathrooms }}</span></div>
-      <div class="field"><span class="label">Ascensor: </span><span class="value">{{ data.item.hasLift ? 'Sí' : 'No' }}</span></div>
-      <div class="field"><span class="label">Garaje: </span><span class="value">{{ data.item.hasGarage ? 'Sí' : 'No' }}</span></div>
-      <div class="field"><span class="label">Fecha de alta: </span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
+      <div class="field"><span class="label">Puerta</span><span class="value">{{ data.item.apartmentDoor }}</span></div>
+      <div class="field"><span class="label">Piso</span><span class="value">{{ data.item.apartmentFloor }}</span></div>
+      <div class="field"><span class="label">Habitaciones</span><span class="value">{{ data.item.numberOfRooms }}</span></div>
+      <div class="field"><span class="label">Baños</span><span class="value">{{ data.item.numberOfBathrooms }}</span></div>
+      <div class="field"><span class="label">Ascensor</span><span class="value">{{ data.item.hasLift ? 'Sí' : 'No' }}</span></div>
+      <div class="field"><span class="label">Garaje</span><span class="value">{{ data.item.hasGarage ? 'Sí' : 'No' }}</span></div>
+      <div class="field"><span class="label">Fecha de alta</span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
     </ng-template>
   </div>
 

@@ -1,135 +1,113 @@
-/* Ancho y responsive */
-:host ::ng-deep .mat-mdc-dialog-surface,
-:host ::ng-deep .cdk-overlay-pane .mat-mdc-dialog-surface {
-  width: min(520px, 92vw) !important;
-  border-radius: 28px !important;
-  background: #f7f8fa !important;
-  box-shadow: 0 8px 32px rgba(20,24,40,0.13) !important;
-  border: 3px solid #d1d5db !important;
+/* === SURFACE DEL DIALOGO (compacto) === */
+.sl-modal .mat-mdc-dialog-surface,
+:host ::ng-deep .mat-mdc-dialog-surface {
+  width: min(380px, 92vw) !important;     /* antes 520px */
+  border-radius: 14px !important;         /* antes 28/16 -> más discreto */
+  background: #fff !important;
+  border: 1px solid #e8e9ee !important;
+  box-shadow: 0 12px 36px rgba(20,24,40,.12) !important; /* menos “pesado” */
   padding: 0 !important;
+  overflow: hidden !important;
 }
 
-/* Header: menos alto visual y chip más limpio */
+/* === HEADER (más bajito) === */
 .modal-header {
-  padding: 12px 16px;
+  padding: 10px 14px;
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: 0.5rem;
+  gap: .5rem;
+  border-bottom: 1px solid #eef0f3;
+  background: #fff;
 }
 .modal-title {
-  font-size: 1.22rem;
+  margin: 0;
+  font-size: 1.3rem;                 /* más pequeño */
   font-weight: 700;
   letter-spacing: -0.01em;
-  margin: 0 0 0.2em 0;
-  text-align: left;
-  line-height: 1.2;
-  padding-left: 2px;
-}
-.type-chip {
-  padding: 2px 8px;                 /* más compacto */
-  line-height: 1.2;
-  border-radius: 999px;
-  font-weight: 600;
-  border: 1px solid var(--border);
+  line-height: 1.1;
 }
 
-/* Body: más aire y alineación impecable */
-:host ::ng-deep .modal-body {
-  padding: 14px 16px 6px !important;
-  gap: 12px !important;
-  background: #fff !important;
-  border-radius: 18px !important;
-  box-shadow: 0 2px 12px 0 rgba(180,185,200,0.10) !important;
-  border: 1.5px solid #e5e7eb !important;
-}
-.field {
-  grid-template-columns: 150px 1fr;  /* columna de label un poco más ancha */
-  align-items: center;
-}
-.label {
-  color: #000000;                    /* un pelín más oscuro para contraste */
+/* Chip más pequeño */
+.type-chip {
+  font-size: .72rem;
   font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #e6e7eb;
+  background: #f6f8ff;
+  color: #0f172a;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.type-chip.is-building { border-color:#cfe4ff; background:#f2f8ff; }
+.type-chip.is-apartment{ border-color:#cfead6; background:#f3fbf6; }
+
+/* BODY */
+:host ::ng-deep .modal-body,
+.modal-body {
+  padding: 10px 14px 6px !important;  /* compacto */
+  background: #fff !important;
+  box-shadow: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Filas limpias con separador sutil */
+.field {
+  display: grid;
+  grid-template-columns: 140px 1fr;   /* etiqueta más estrecha */
+  column-gap: 10px;
+  row-gap: 2px;
+  padding: 8px 0;                     /* compacto */
+  border-bottom: 1px dashed #edf0f5;  /* separador suave */
+}
+.field:last-child { border-bottom: none; }
+
+.label {
+  color: #1f2937;
+  font-weight: 700;
+  font-size: .92rem;                  /* más pequeño */
+  line-height: 1.3;
 }
 .value {
-  color: var(--text);
-  font-weight: 600;
+  color: #0f172a;
+  font-weight: 500;
+  font-size: .92rem;
   line-height: 1.35;
-  word-break: break-word;            /* evita overflow en direcciones largas */
+  word-break: break-word;
 }
 
-/* Divider entre body y actions ya está, suavizamos actions */
+/* === ACTIONS (compactas) === */
 .modal-actions {
-  padding: 10px 16px 14px;
+  padding: 8px 12px 10px;
+  border-top: 1px solid #eef0f3;
   background: #fff;
 }
 
-
-/* Botón cerrar más atractivo */
+/* Botón cerrar más pequeño */
 .btn-cool-close {
   display: inline-flex;
   align-items: center;
-  gap: 0.22rem;
-  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
-  color: #fff;
-  border: none;
+  gap: .3rem;
+  background: #eef3ff;
+  color: #1d4ed8;
+  border: 1px solid #dbe4ff;
   border-radius: 999px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  padding: 0.18rem 0.6rem 0.18rem 0.5rem;
-  box-shadow: 0 1px 4px rgba(59,130,246,0.08);
-  cursor: pointer;
-  outline: none;
-  transition: background 0.18s, box-shadow 0.18s, transform 0.13s;
-  position: relative;
-  overflow: hidden;
+  font-weight: 700;
+  font-size: .82rem;                  /* más pequeño */
+  padding: .22rem .6rem;
+  box-shadow: 0 1px 3px rgba(13,37,88,.06);
+  transition: transform .12s ease, background .2s ease;
 }
-.btn-cool-close:hover, .btn-cool-close:focus {
-  background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
-  box-shadow: 0 2px 8px rgba(59,130,246,0.13);
-  transform: translateY(-1px) scale(1.02);
-}
-.btn-cool-close-icon {
-  font-size: 1em;
-  margin-right: 0.03em;
-  opacity: 0.8;
-  transition: opacity 0.18s;
-}
-.btn-cool-close-text {
-  letter-spacing: 0.01em;
-  font-weight: 600;
-}
+.btn-cool-close:hover { transform: translateY(-1px); background:#e5edff; }
+.btn-cool-close-icon { opacity: .8; }
 
-/* Pequeño realce en labels clave (opcional) */
-.field:nth-last-child(1) .label {
-  color: #334155;                    /* “Fecha alta” resalta un poco */
-}
-
-/* Mobile */
-@media (max-width: 480px) {
-  .field { grid-template-columns: 1fr; row-gap: 2px; }
-  .modal-header, .modal-body, .modal-actions { padding-left: 14px; padding-right: 14px; }
-}
-.type-chip {
-  font-size: .8rem;
-  font-weight: 600;
-  padding: 3px 10px 3px 8px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  display: inline-flex;
-  align-items: center;
-  gap: 4px; /* espacio entre icono y texto */
-  line-height: 1.2;
-}
-
-.type-chip.is-building {
-  border-color: #c7e1ff;
-  background: #eef6ff;
-  color: #000000;
-}
-.type-chip.is-apartment {
-  border-color: #cdeccd;
-  background: #f0fbf3;
-  color: #000000;
+/* === RESPONSIVE === */
+@media (max-width: 420px) {
+  .modal-header { padding: 10px 12px; }
+  .modal-actions { padding: 8px 10px 10px; }
+  .modal-body { padding: 10px 12px 6px !important; }
+  .field { grid-template-columns: 1fr; row-gap: 4px; }
 }
