@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ResumenRequestsService, ResumenRequest } from './resumen-requests.service';
+import { RouterModule } from '@angular/router';
+import { ResumenRequestsService, EstadoResumen, ResumenRequestResponse } from './resumen-requests.service';
 
 type Item = { status: string; count: number };
 
 @Component({
   selector: 'app-resumen-requests',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './resumen-requests.component.html',
   styleUrls: ['./resumen-requests.component.css']
 })
@@ -20,8 +21,8 @@ export class ResumenRequestsComponent implements OnInit {
 
   ngOnInit(): void {
     this.srv.getResumenRequests().subscribe({
-      next: (data) => {
-        this.items = this.normalize(data);
+      next: (data: ResumenRequestResponse) => {
+        this.items = (data.porEstado || []).map(e => ({ status: e.estado, count: e.total })).sort((a, b) => b.count - a.count);
         this.loading = false;
       },
       error: (e) => {
@@ -32,35 +33,7 @@ export class ResumenRequestsComponent implements OnInit {
     });
   }
 
-  /** Normaliza distintas formas de respuesta del endpoint */
-  private normalize(data: ResumenRequest[]): Item[] {
-    if (!data || data.length === 0) return [];
-
-    // Caso 1: array de objetos {status, count}
-    if (typeof data[0]?.status === 'string' && typeof data[0]?.count === 'number') {
-      return (data as any as Item[]).sort((a, b) => b.count - a.count);
-    }
-
-    // Caso 2: un único objeto con claves {pending: n, approved: n, ...}
-    if (data.length === 1 && typeof data[0] === 'object') {
-      const obj = data[0] as Record<string, any>;
-      return Object.keys(obj)
-        .filter(k => typeof obj[k] === 'number')
-        .map(k => ({ status: k, count: obj[k] as number }))
-        .sort((a, b) => b.count - a.count);
-    }
-
-    // Caso 3: array de objetos con cualquier shape; tomamos pares clave-numérico
-    const map = new Map<string, number>();
-    for (const row of data) {
-      for (const [k, v] of Object.entries(row)) {
-        if (typeof v === 'number') map.set(k, (map.get(k) ?? 0) + v);
-      }
-    }
-    return Array.from(map.entries())
-      .map(([status, count]) => ({ status, count }))
-      .sort((a, b) => b.count - a.count);
-  }
+  // Normalización eliminada, ya no es necesaria con la nueva estructura
 
   /** Mapea nombres comunes a clases visuales */
   badgeClass(s: string): string {

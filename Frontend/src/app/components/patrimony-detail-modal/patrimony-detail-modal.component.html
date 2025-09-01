@@ -17,6 +17,7 @@
 
   <div mat-dialog-content class="modal-body">
     <ng-container *ngIf="data.type === 'building'; else apartmentBlock">
+       <div class="field"><span class="label">Código</span><span class="value">{{ data.item.buildingCode }}</span></div>
       <div class="field"><span class="label">Nombre</span><span class="value">{{ data.item.buildingName }}</span></div>
       <div class="field"><span class="label">Dirección</span><span class="value">{{ data.item.street }}</span></div>
       <div class="field"><span class="label">Barrio</span><span class="value">{{ data.item.district }}</span></div>
@@ -26,6 +27,7 @@
     </ng-container>
 
     <ng-template #apartmentBlock>
+      <div class="field"><span class="label">Código</span><span class="value">{{ data.item.apartmentCode }}</span></div>
       <div class="field"><span class="label">Puerta</span><span class="value">{{ data.item.apartmentDoor }}</span></div>
       <div class="field"><span class="label">Piso</span><span class="value">{{ data.item.apartmentFloor }}</span></div>
       <div class="field"><span class="label">Habitaciones</span><span class="value">{{ data.item.numberOfRooms }}</span></div>

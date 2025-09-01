@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of, map } from 'rxjs';
+import { Observable, map, switchMap } from 'rxjs';
 
 
 export interface Summary {
@@ -10,11 +10,6 @@ export interface Summary {
   updatedAt: string;          // ISO
 }
 
-export interface RequestsByStatus {
-  pending: number;
-  approved: number;
-  rejected: number;
-}
 
 export interface Transaction {
   transactionId: number;
@@ -32,42 +27,61 @@ export interface BuildingsByDistrict {
 @Injectable({ providedIn: 'root' })
 export class HomeService {
   // ⚠️ Ajusta estos endpoints a tu API real
-  private base = 'https://localhost:7092/api';
+  private base = 'https://devdemoapi3.azurewebsites.net/api';
   private endpoints = {
     summary: `${this.base}/Dashboard/summary`,
-    requestsByStatus: `${this.base}/Dashboard/requests-by-status`,
-    transactionsRecent: `${this.base}/Transactions/recent?take=5`,
+    requestsByStatus: `${this.base}/Ang/resumen-requests`,
+  transactionsRecent: `${this.base}/transactions?take=4`,
     buildingsByDistrict: `${this.base}/Ang/buildings-count-by-district`,
+    budgets: `${this.base}/managementbudgets`,
   };
 
   constructor(private http: HttpClient) {}
 
   getSummary(): Observable<Summary> {
-    // Ejemplo real:
-    // return this.http.get<Summary>(this.endpoints.summary);
-    // Fallback de ejemplo si aún no tienes endpoint:
-    return of({
-      totalBudget: 250000,
-      spent: 142300,
-      income: 168500,
-      updatedAt: new Date().toISOString()
-    });
+    // Usar budgets para el total y transacciones para gasto/ingreso acumulado
+    return this.http.get<any[]>(this.endpoints.budgets).pipe(
+      map((budgets) => {
+        let totalBudget = 0;
+        let updatedAt = '';
+        if (budgets && budgets.length > 0) {
+          const latest = budgets.reduce((a, b) => new Date(a.lastUpdatedDate) > new Date(b.lastUpdatedDate) ? a : b);
+          totalBudget = latest.currentAmount;
+          updatedAt = latest.lastUpdatedDate;
+        }
+        return { totalBudget, spent: 0, income: 0, updatedAt };
+      }),
+      // Ahora combinamos con transacciones para calcular gasto/ingreso
+      // Usamos switchMap para hacer la segunda petición
+      switchMap(summary =>
+        this.http.get<{ items: any[] }>(this.endpoints.transactionsRecent).pipe(
+          map(res => {
+            const items = res.items || [];
+            const spent = items.filter(t => t.transactionType === 'GASTO').reduce((sum, t) => sum + (t.amount || 0), 0);
+            const income = items.filter(t => t.transactionType === 'INGRESO').reduce((sum, t) => sum + (t.amount || 0), 0);
+            return { ...summary, spent, income };
+          })
+        )
+      )
+    );
   }
 
-  getRequestsByStatus(): Observable<RequestsByStatus> {
-    // return this.http.get<RequestsByStatus>(this.endpoints.requestsByStatus);
-    return of({ pending: 3, approved: 18, rejected: 2 });
-  }
 
+  //transaction recent
   getRecentTransactions(): Observable<Transaction[]> {
-    // return this.http.get<Transaction[]>(this.endpoints.transactionsRecent);
-    return of([
-      { transactionId: 101, transactionDate: '2025-08-22', amount: 1200, type: 'INGRESO', description: 'Alquiler 3B' },
-      { transactionId: 102, transactionDate: '2025-08-20', amount: -450, type: 'GASTO', description: 'Fontanería A-2' },
-      { transactionId: 103, transactionDate: '2025-08-18', amount: 1300, type: 'INGRESO', description: 'Alquiler 2A' },
-      { transactionId: 104, transactionDate: '2025-08-14', amount: -220, type: 'GASTO', description: 'Pintura portal' },
-      { transactionId: 105, transactionDate: '2025-08-10', amount: 900, type: 'INGRESO', description: 'Alquiler Estudio' },
-    ]);
+    return this.http.get<{ items: any[] }>(this.endpoints.transactionsRecent).pipe(
+      map(res => (res.items || [])
+        .filter(t => t.transactionType === 'INGRESO' || t.transactionType === 'GASTO')
+        .slice(0, 4)
+        .map(t => ({
+          transactionId: t.transactionId,
+          transactionDate: t.transactionDate,
+          amount: t.amount,
+          type: t.transactionType,
+          description: t.description
+        }))
+      )
+    );
   }
 
   getBuildingsByDistrict(): Observable<BuildingsByDistrict[]> {

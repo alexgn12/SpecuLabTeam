@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule, AsyncPipe, DatePipe, CurrencyPipe, NgClass } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HomeService, Summary, RequestsByStatus, Transaction, BuildingsByDistrict } from './home.service';
+import { HomeService, Summary, Transaction, BuildingsByDistrict } from './home.service';
 import { Subscription, combineLatest } from 'rxjs';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
@@ -19,7 +19,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   error: string | null = null;
 
   summary?: Summary;
-  reqStatus?: RequestsByStatus;
   transactions: Transaction[] = [];
   buildingsByDistrict: BuildingsByDistrict[] = [];
 
@@ -43,15 +42,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const s1 = this.home.getSummary();
-    const s2 = this.home.getRequestsByStatus();
     const s3 = this.home.getRecentTransactions();
     const s4 = this.home.getBuildingsByDistrict();
 
     this.sub.add(
-      combineLatest([s1, s2, s3, s4]).subscribe({
-        next: ([summary, reqStatus, txs, byDist]) => {
+      combineLatest([s1, s3, s4]).subscribe({
+        next: ([summary, txs, byDist]) => {
           this.summary = summary;
-          this.reqStatus = reqStatus;
           this.transactions = txs;
           this.buildingsByDistrict = byDist;
 

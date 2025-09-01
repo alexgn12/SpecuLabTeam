@@ -1,77 +1,72 @@
-<div class="home-wrap" *ngIf="!loading && !error; else stateTpl">
-  <!-- FILA 1: KPIs -->
-  <section class="grid-3">
-    <div class="card kpi">
-      <div class="kpi-head">Presupuesto total</div>
-      <div class="kpi-value">{{ summary?.totalBudget | currency:'EUR':'symbol':'1.0-0' }}</div>
-      <div class="kpi-sub">Actualizado: {{ summary?.updatedAt | date:'mediumDate' }}</div>
-    </div>
+<!-- Wrapper del estado -->
+<div *ngIf="!loading && !error; else stateTpl">
+  <!-- Bloque principal centrado y con ancho limitado -->
+  <div class="home-container">
+    <!-- Grid interno del dashboard -->
+    <div class="home-wrap">
+      
+      <!-- FILA 1: KPIs -->
+      <section class="grid-3">
+        <div class="card kpi">
+          <div class="kpi-head">Presupuesto total</div>
+          <div class="kpi-value">{{ summary?.totalBudget | currency:'EUR':'symbol':'1.0-0' }}</div>
+          <div class="kpi-sub">Actualizado: {{ summary?.updatedAt | date:'mediumDate' }}</div>
+        </div>
 
-    <div class="card kpi">
-      <div class="kpi-head">Gasto acumulado</div>
-      <div class="kpi-value warning">{{ summary?.spent | currency:'EUR':'symbol':'1.0-0' }}</div>
-      <div class="kpi-bar">
-        <div class="kpi-bar-fill" [style.width.%]="spentPct"></div>
-      </div>
-      <div class="kpi-sub">Usado: {{ spentPct }}%</div>
-    </div>
+        <div class="card kpi">
+          <div class="kpi-head">Gasto acumulado</div>
+          <div class="kpi-value warning">{{ summary?.spent | currency:'EUR':'symbol':'1.0-0' }}</div>
+          <div class="kpi-bar">
+            <div class="kpi-bar-fill" [style.width.%]="spentPct"></div>
+          </div>
+          <div class="kpi-sub">Usado: {{ spentPct }}%</div>
+        </div>
 
-    <div class="card kpi">
-      <div class="kpi-head">Ingresos acumulados</div>
-      <div class="kpi-value success">{{ summary?.income | currency:'EUR':'symbol':'1.0-0' }}</div>
-      <a class="kpi-link" [routerLink]="['/transactions']">Ver transacciones</a>
-    </div>
-  </section>
+        <div class="card kpi">
+          <div class="kpi-head">Ingresos acumulados</div>
+          <div class="kpi-value success">{{ summary?.income | currency:'EUR':'symbol':'1.0-0' }}</div>
+          <a class="kpi-link" [routerLink]="['/transactions']">Ver transacciones</a>
+        </div>
+      </section>
 
-  <!-- FILA 2: Solicitudes + Distritos -->
-<section class="grid-2">
-  <app-resumen-requests></app-resumen-requests>  <!-- 👈 aquí -->
-  <div class="card chart-card">
-    <div class="card-head">
-      <h3>Edificios por distrito</h3>
-      <a class="card-link" [routerLink]="['/patrimony']">Ir a Patrimonio</a>
-    </div>
-    <div class="chart-host">
-      <canvas baseChart [data]="barData" [options]="barOptions" [type]="'bar'"></canvas>
+      <!-- FILA 2: Solicitudes + Distritos -->
+      <section class="grid-2">
+        <app-resumen-requests></app-resumen-requests>
+
+        <div class="card chart-card">
+          <div class="card-head">
+            <h3>Operaciones Por Barrios</h3>
+            <a class="card-link" [routerLink]="['/patrimony']">Ir a Patrimonio</a>
+          </div>
+          <div class="chart-host">
+            <canvas baseChart [data]="barData" [options]="barOptions" [type]="'bar'"></canvas>
+          </div>
+        </div>
+      </section>
+
+      <!-- FILA 3: Transacciones recientes -->
+      <section class="grid-1">
+        <div class="card">
+          <div class="card-head">
+            <h3>Últimas transacciones</h3>
+            <a class="card-link" [routerLink]="['/transacciones']">Ver todas</a>
+          </div>
+          <ul class="tx-list">
+            <li *ngFor="let t of transactions" [ngClass]="{'tx-income': t.type === 'INGRESO', 'tx-expense': t.type === 'GASTO'}">
+              <div class="tx-left">
+                <div class="tx-desc">{{ t.description }}</div>
+                <div class="tx-date">{{ t.transactionDate | date:'mediumDate' }}</div>
+              </div>
+              <div class="tx-amount">
+                {{ t.amount | currency:'EUR':'symbol':'1.0-0' }}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </section>
+
     </div>
   </div>
-
-
-    <div class="card chart-card">
-      <div class="card-head">
-        <h3>Edificios por distrito</h3>
-        <a class="card-link" [routerLink]="['/patrimony']">Ir a Patrimonio</a>
-      </div>
-      <div class="chart-host">
-        <canvas baseChart
-                [data]="barData"
-                [options]="barOptions"
-                [type]="'bar'">
-        </canvas>
-      </div>
-    </div>
-  </section>
-
-  <!-- FILA 3: Transacciones recientes -->
-  <section class="grid-1">
-    <div class="card">
-      <div class="card-head">
-        <h3>Últimas transacciones</h3>
-        <a class="card-link" [routerLink]="['/transactions']">Ver todas</a>
-      </div>
-      <ul class="tx-list">
-        <li *ngFor="let t of transactions" [ngClass]="amountClass(t.amount)">
-          <div class="tx-left">
-            <div class="tx-desc">{{ t.description }}</div>
-            <div class="tx-date">{{ t.transactionDate | date:'mediumDate' }}</div>
-          </div>
-          <div class="tx-amount">
-            {{ t.amount | currency:'EUR':'symbol':'1.0-0' }}
-          </div>
-        </li>
-      </ul>
-    </div>
-  </section>
 </div>
 
 <ng-template #stateTpl>
