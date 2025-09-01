@@ -46,8 +46,21 @@ builder.Services.AddMediatR(cfg =>
 // Registra el repositorio genérico para inyección de dependencias
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-// Registro del servicio externo de edificios
-builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>();
+// Registro del servicio externo de edificios (ignora validación SSL solo en desarrollo)
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>()
+        .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        });
+}
+else
+{
+    builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>();
+}
+
+// Registro del servicio externo de apartamentos (igual, si lo necesitas)
 builder.Services.AddHttpClient<PrototipoApi.Services.IExternalApartmentService, PrototipoApi.Services.ExternalApartmentService>();
 
 // Registro del loguer
@@ -58,6 +71,12 @@ builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 // Construye la aplicación web
 var app = builder.Build();
+
+var handler = new HttpClientHandler
+{
+    ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+};
+var httpClient = new HttpClient(handler);
 
 // Inicializa la base de datos con datos semilla al iniciar la aplicación
 using (var scope = app.Services.CreateScope())
