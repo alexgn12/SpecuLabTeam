@@ -36,7 +36,7 @@ export interface PatrimonyResponse {
   providedIn: 'root'
 })
 export class PatrimonyService {
-  private apiUrl = 'https://localhost:7092/api/Ang/aprobados-e-ingresos';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/Ang/aprobados-e-ingresos';
 
   constructor(private http: HttpClient) {}
 

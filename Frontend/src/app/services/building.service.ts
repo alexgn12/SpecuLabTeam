@@ -15,7 +15,7 @@ export interface Building {
 
 @Injectable({ providedIn: 'root' })
 export class BuildingService {
-  private baseUrl = `https://localhost:7092/api/Building`;
+  private baseUrl = `https://devdemoapi3.azurewebsites.net/api/Building`;
 
   constructor(private http: HttpClient) {}
 

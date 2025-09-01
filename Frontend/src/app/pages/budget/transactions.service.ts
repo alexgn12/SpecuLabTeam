@@ -17,7 +17,7 @@ export interface Transaction {
 
 @Injectable({ providedIn: 'root' })
 export class TransactionsService {
-  private baseUrl = `https://localhost:7092/api/transactions`;
+  private baseUrl = `https://devdemoapi3.azurewebsites.net/api/transactions`;
 
   constructor(private http: HttpClient) {}
 

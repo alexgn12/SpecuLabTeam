@@ -1,28 +1,16 @@
-<div class="resumen-requests-container">
-  <h3>Resumen de Requests</h3>
-  <div *ngIf="loading" class="alert alert-info">Cargando...</div>
-  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
-  <ng-container *ngIf="!loading && !error && resumen.length > 0">
-    <div class="total-general-box mb-4">
-      <span class="total-label">Total general:</span>
-  <span class="total-value">{{ resumen[0]['totalGeneral'] }}</span>
+<div class="card">
+  <div class="card-head">
+    <h3>Solicitudes</h3>
+    <a class="card-link" routerLink="/requests">Ver todas</a>
+  </div>
+
+  <div *ngIf="loading" class="state">Cargando…</div>
+  <div *ngIf="!loading && error" class="state error">{{ error }}</div>
+
+  <div *ngIf="!loading && !error" class="req-grid">
+    <div class="req-badge" *ngFor="let it of items" [class]="badgeClass(it.status)">
+      <span class="label">{{ label(it.status) }}</span>
+      <span class="num">{{ it.count }}</span>
     </div>
-    <div class="table-responsive">
-      <table class="table table-hover table-bordered table-sm resumen-estado-table">
-        <thead class="table-light">
-          <tr>
-            <th>Estado</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let estado of resumen[0]['porEstado']">
-            <td>{{ estado.estado }}</td>
-            <td>{{ estado.total }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </ng-container>
-  <div *ngIf="!loading && !error && resumen.length === 0" class="text-muted">No hay datos.</div>
+  </div>
 </div>

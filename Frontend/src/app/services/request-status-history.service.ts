@@ -14,7 +14,7 @@ export interface RequestStatusHistoryApiResponse {
   providedIn: 'root'
 })
 export class RequestStatusHistoryService {
-  private apiUrl = 'https://localhost:7092/api/request-status-history';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/request-status-history';
 
   constructor(private http: HttpClient) { }
 
