@@ -9,7 +9,7 @@ namespace PrototipoApi.Models
         public decimal ApartmentPrice { get; set; }
         public int NumberOfRooms { get; set; }
         public int NumberOfBathrooms { get; set; }
-        public int BuildingId { get; set; }
+        public string BuildingCode { get; set; } = string.Empty;
         public bool HasLift { get; set; }
         public bool HasGarage { get; set; }
         public DateTime CreatedDate { get; set; }

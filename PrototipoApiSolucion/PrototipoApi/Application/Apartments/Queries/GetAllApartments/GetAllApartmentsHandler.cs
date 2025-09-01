@@ -49,7 +49,7 @@ namespace PrototipoApi.Application.Apartments.Queries.GetAllApartments
                     ApartmentPrice = a.ApartmentPrice,
                     NumberOfRooms = a.NumberOfRooms,
                     NumberOfBathrooms = a.NumberOfBathrooms,
-                    BuildingId = a.BuildingId,
+                    BuildingCode = a.Building.BuildingCode, // <-- Cambio aquí
                     HasLift = a.HasLift,
                     HasGarage = a.HasGarage,
                     CreatedDate = a.CreatedDate
