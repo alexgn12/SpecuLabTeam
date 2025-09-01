@@ -60,15 +60,8 @@ namespace PrototipoApi.Application.AngController.Query
                 );
             }
 
-            // 2. Obtener todos los apartamentos (sin filtrar por transacciones)
-            var allApartments = await _apartments.SelectListAsync<Entities.Apartment>(
-                null,
-                null,
-                a => a,
-                0,
-                int.MaxValue,
-                cancellationToken
-            );
+            // 2. Obtener todos los apartamentos (incluyendo la relación Building)
+            var allApartments = await _apartments.GetAllAsync(null, a => a.Building);
 
             // Map to DTOs
             var result = new ApprovedBuildingsAndIncomeApartmentsDto
@@ -94,7 +87,7 @@ namespace PrototipoApi.Application.AngController.Query
                     ApartmentPrice = a.ApartmentPrice,
                     NumberOfRooms = a.NumberOfRooms,
                     NumberOfBathrooms = a.NumberOfBathrooms,
-                    BuildingId = a.BuildingId,
+                    BuildingCode = a.Building?.BuildingCode ?? string.Empty,
                     HasLift = a.HasLift,
                     HasGarage = a.HasGarage,
                     CreatedDate = a.CreatedDate
