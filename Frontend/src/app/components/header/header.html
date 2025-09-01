@@ -10,33 +10,30 @@
     <button
       class="navbar-toggler header-toggler"
       type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarNav"
-      aria-controls="navbarNav"
-      aria-expanded="false"
+      (click)="toggleMenu()"
+      [attr.aria-expanded]="isMenuOpen"
       aria-label="Abrir navegación"
     >
       <span class="toggler-icon"></span>
     </button>
 
     <!-- Links -->
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="navbar-collapse" [class.show]="isMenuOpen" id="navbarNav">
       <ul class="navbar-nav ms-auto header-nav">
         <li class="nav-item">
-          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+          <a class="nav-link" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeMenu()">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/requests" routerLinkActive="active">Peticiones</a>
+          <a class="nav-link" routerLink="/requests" routerLinkActive="active" (click)="closeMenu()">Peticiones</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/budget" routerLinkActive="active">Presupuestos</a>
-        </li>
-
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/request-history" routerLinkActive="active">Historial</a>
+          <a class="nav-link" routerLink="/budget" routerLinkActive="active" (click)="closeMenu()">Presupuestos</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/patrimony" routerLinkActive="active">Patrimonio</a>
+          <a class="nav-link" routerLink="/request-history" routerLinkActive="active" (click)="closeMenu()">Historial</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/patrimony" routerLinkActive="active" (click)="closeMenu()">Patrimonio</a>
         </li>
       </ul>
     </div>
