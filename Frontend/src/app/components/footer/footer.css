@@ -1,14 +1,52 @@
-footer {
-  background-color: #495057;       /* gris Bootstrap más elegante */
-  color: #f8f9fa;                  /* texto claro */
-  padding: 12px 24px;              /* espacio interno */
-  font-size: 14px;                 /* texto algo más pequeño */
-  display: flex;
-  justify-content: space-between;  /* izquierda - derecha */
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.15); /* sombra arriba */
+:root {
+  --footer-h: 56px;              /* altura del footer */
+  --footer-bg: #f7f8fa;          /* fondo claro */
+  --footer-border: #e5e7eb;      /* gris clarito */
+  --footer-shadow: 0 -8px 24px rgba(20, 24, 40, 0.08);
 }
+
+:host {
+  display: block;
+}
+
+.app-footer {
+  background: var(--footer-bg);
+  border-top: 1px solid var(--footer-border);
+  height: var(--footer-h);
+  display: flex;
+  align-items: center;
+  z-index: 1030;                 /* sobre el contenido */
+  box-shadow: var(--footer-shadow);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  /* Soporte para iPhone con barra inferior */
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.footer-inner {
+  height: 100%;
+}
+
+/* Tipografía y colores */
+.app-footer p {
+  color: #0f172a;                /* slate-900 */
+  font-weight: 500;
+}
+
+/* Responsive: en móviles, apilar y centrar */
+@media (max-width: 576px) {
+  .footer-inner {
+    flex-direction: column;
+    justify-content: center !important;
+    gap: .25rem;
+    text-align: center;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --footer-bg: #0b1220;
+    --footer-border: #1f2937;
+  }
+  .app-footer p { color: #e5e7eb; }
+}
+
