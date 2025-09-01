@@ -8,8 +8,5 @@ namespace PrototipoApi.Entities
         public double CurrentAmount { get; set; }
         public DateTime LastUpdatedDate { get; set; }
 
-        [ForeignKey("TransactionId")]
-        public Transaction Transaction { get; set; } = null!;
-        public int TransactionId { get; set; }
     }
 }

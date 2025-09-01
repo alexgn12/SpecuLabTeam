@@ -27,7 +27,5 @@ namespace PrototipoApi.Entities
         [ForeignKey("ApartmentId")]
         public Apartment? Apartment { get; set; }
 
-        // Relación inversa: una transacción puede estar asociada a muchos presupuestos de gestión
-        public ICollection<ManagementBudget> ManagementBudgets { get; set; } = new List<ManagementBudget>();
     }
 }

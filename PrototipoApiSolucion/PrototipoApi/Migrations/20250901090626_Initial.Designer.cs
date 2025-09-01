@@ -12,8 +12,8 @@ using PrototipoApi.BaseDatos;
 namespace PrototipoApi.Migrations
 {
     [DbContext(typeof(ContextoBaseDatos))]
-    [Migration("20250829084254_inicial")]
-    partial class inicial
+    [Migration("20250901090626_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -128,12 +128,7 @@ namespace PrototipoApi.Migrations
                     b.Property<DateTime>("LastUpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TransactionId")
-                        .HasColumnType("int");
-
                     b.HasKey("ManagementBudgetId");
-
-                    b.HasIndex("TransactionId");
 
                     b.ToTable("ManagementBudgets");
                 });
@@ -301,17 +296,6 @@ namespace PrototipoApi.Migrations
                     b.Navigation("Building");
                 });
 
-            modelBuilder.Entity("PrototipoApi.Entities.ManagementBudget", b =>
-                {
-                    b.HasOne("PrototipoApi.Entities.Transaction", "Transaction")
-                        .WithMany("ManagementBudgets")
-                        .HasForeignKey("TransactionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Transaction");
-                });
-
             modelBuilder.Entity("PrototipoApi.Entities.Request", b =>
                 {
                     b.HasOne("PrototipoApi.Entities.Building", "Building")
@@ -393,11 +377,6 @@ namespace PrototipoApi.Migrations
             modelBuilder.Entity("PrototipoApi.Entities.Status", b =>
                 {
                     b.Navigation("Requests");
-                });
-
-            modelBuilder.Entity("PrototipoApi.Entities.Transaction", b =>
-                {
-                    b.Navigation("ManagementBudgets");
                 });
 
             modelBuilder.Entity("PrototipoApi.Entities.TransactionType", b =>

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PrototipoApi.Migrations
 {
     /// <inheritdoc />
-    public partial class inicial : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -29,6 +29,20 @@ namespace PrototipoApi.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Buildings", x => x.BuildingId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ManagementBudgets",
+                columns: table => new
+                {
+                    ManagementBudgetId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CurrentAmount = table.Column<double>(type: "float", nullable: false),
+                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ManagementBudgets", x => x.ManagementBudgetId);
                 });
 
             migrationBuilder.CreateTable(
@@ -187,36 +201,10 @@ namespace PrototipoApi.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ManagementBudgets",
-                columns: table => new
-                {
-                    ManagementBudgetId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CurrentAmount = table.Column<double>(type: "float", nullable: false),
-                    LastUpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TransactionId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ManagementBudgets", x => x.ManagementBudgetId);
-                    table.ForeignKey(
-                        name: "FK_ManagementBudgets_Transactions_TransactionId",
-                        column: x => x.TransactionId,
-                        principalTable: "Transactions",
-                        principalColumn: "TransactionId",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_Apartments_BuildingId",
                 table: "Apartments",
                 column: "BuildingId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ManagementBudgets_TransactionId",
-                table: "ManagementBudgets",
-                column: "TransactionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Requests_BuildingId",
