@@ -54,7 +54,7 @@ export class HomeService {
       // Ahora combinamos con transacciones para calcular gasto/ingreso
       // Usamos switchMap para hacer la segunda petición
       switchMap(summary =>
-        this.http.get<{ items: any[] }>(this.endpoints.transactionsRecent).pipe(
+        this.http.get<{ items: any[] }>(`${this.base}/transactions?size=1000`).pipe(
           map(res => {
             const items = res.items || [];
             const spent = items.filter(t => t.transactionType === 'GASTO').reduce((sum, t) => sum + (t.amount || 0), 0);

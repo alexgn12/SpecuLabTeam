@@ -1,3 +1,23 @@
+/* Iconos grandes y visuales para KPIs y secciones */
+.kpi-head .kpi-icon {
+  font-size: 1.3rem;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+.section-icon {
+  font-size: 1.1rem;
+  vertical-align: middle;
+  margin-right: 8px;
+}
+.kpi-head {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+.card-head h3 {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
 :host {
   --card-bg: #fff;
   --card-bd: #e9edf3;

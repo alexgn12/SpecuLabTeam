@@ -7,35 +7,40 @@
       
       <!-- FILA 1: KPIs -->
       <section class="grid-3">
-        <div class="card kpi">
-          <div class="kpi-head">Presupuesto total</div>
-          <div class="kpi-value">{{ summary?.totalBudget | currency:'EUR':'symbol':'1.0-0' }}</div>
+        <sl-info-card [label]="''" [value]="summary?.totalBudget | currency:'EUR':'symbol':'1.0-0'">
+          <div class="kpi-head"><i class="bi bi-wallet2 kpi-icon"></i> Presupuesto total</div>
           <div class="kpi-sub">Actualizado: {{ summary?.updatedAt | date:'mediumDate' }}</div>
-        </div>
+        </sl-info-card>
 
-        <div class="card kpi">
-          <div class="kpi-head">Gasto acumulado</div>
-          <div class="kpi-value warning">{{ summary?.spent | currency:'EUR':'symbol':'1.0-0' }}</div>
+        <sl-info-card [label]="''" [value]="summary?.spent | currency:'EUR':'symbol':'1.0-0'" class="warning">
+          <div class="kpi-head"><i class="bi bi-arrow-down-circle kpi-icon text-danger"></i> Gasto acumulado</div>
           <div class="kpi-bar">
             <div class="kpi-bar-fill" [style.width.%]="spentPct"></div>
           </div>
           <div class="kpi-sub">Usado: {{ spentPct }}%</div>
-        </div>
+        </sl-info-card>
 
-        <div class="card kpi">
-          <div class="kpi-head">Ingresos acumulados</div>
-          <div class="kpi-value success">{{ summary?.income | currency:'EUR':'symbol':'1.0-0' }}</div>
+        <sl-info-card [label]="''" [value]="summary?.income | currency:'EUR':'symbol':'1.0-0'" class="success">
+          <div class="kpi-head"><i class="bi bi-arrow-up-circle kpi-icon text-success"></i> Ingresos acumulados</div>
           <a class="kpi-link" [routerLink]="['/transactions']">Ver transacciones</a>
-        </div>
+        </sl-info-card>
       </section>
 
       <!-- FILA 2: Solicitudes + Distritos -->
       <section class="grid-2">
-        <app-resumen-requests></app-resumen-requests>
+        <div>
+          <div class="card card-section">
+            <div class="card-head">
+              <h3><i class="bi bi-list-task section-icon"></i> Solicitudes</h3>
+            </div>
+            <app-resumen-requests></app-resumen-requests>
+          </div>
+        </div>
+ 
 
         <div class="card chart-card">
           <div class="card-head">
-            <h3>Operaciones Por Barrios</h3>
+            <h3><i class="bi bi-geo-alt section-icon"></i> Operaciones Por Barrios</h3>
             <a class="card-link" [routerLink]="['/patrimony']">Ir a Patrimonio</a>
           </div>
           <div class="chart-host">
@@ -48,7 +53,7 @@
       <section class="grid-1">
         <div class="card">
           <div class="card-head">
-            <h3>Últimas transacciones</h3>
+            <h3><i class="bi bi-arrow-left-right section-icon"></i> Últimas transacciones</h3>
             <a class="card-link" [routerLink]="['/transacciones']">Ver todas</a>
           </div>
           <ul class="tx-list">

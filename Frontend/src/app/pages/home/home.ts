@@ -6,11 +6,12 @@ import { Subscription, combineLatest } from 'rxjs';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
 import { ResumenRequestsComponent } from 'src/app/components/resumen-requests/resumen-requests.component';
+import { InfoCard } from '../../components/info-card/info-card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, AsyncPipe, DatePipe, CurrencyPipe, NgChartsModule, NgClass, ResumenRequestsComponent],
+  imports: [CommonModule, RouterLink, AsyncPipe, DatePipe, CurrencyPipe, NgChartsModule, NgClass, ResumenRequestsComponent, InfoCard],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
