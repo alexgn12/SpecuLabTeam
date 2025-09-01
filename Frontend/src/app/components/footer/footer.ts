@@ -2,10 +2,10 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'sl-footer',
-  standalone: false,
+  standalone: true,
   templateUrl: './footer.html',
-  styleUrl: './footer.css'
+  styleUrls: ['./footer.css']
 })
 export class Footer {
-
+  year = new Date().getFullYear();
 }

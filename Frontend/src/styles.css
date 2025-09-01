@@ -47,5 +47,9 @@ body{
 .rq-pagination .pagination{
   gap: .25rem;                 /* separa ligeramente los items */
 }
+/* Deja espacio al final para el footer fijo */
+body {
+  padding-bottom: calc(var(--footer-h) + env(safe-area-inset-bottom, 0) + 16px);
+}
 
 

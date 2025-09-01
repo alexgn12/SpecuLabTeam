@@ -22,8 +22,8 @@ import { RequestHistoryComponent } from './components/request-history/request-hi
 @NgModule({
   declarations: [
     App,
-    Header,
-    Footer,
+    Header
+    
   // History,
   ],
   imports: [
@@ -39,6 +39,7 @@ import { RequestHistoryComponent } from './components/request-history/request-hi
     ResumenRequestsComponent,
     ZoneGrafo,
     RequestHistoryComponent,
+    Footer,
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

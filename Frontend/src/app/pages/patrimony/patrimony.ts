@@ -4,14 +4,14 @@ import { PatrimonyService, ApprovedBuilding, IncomeApartment } from './patrimony
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
-import { PatrimonyDetailModalComponent } from './patrimony-detail-modal.component';
+import { PatrimonyDetailModalComponent } from '../../components/patrimony-detail-modal/patrimony-detail-modal.component';
 
 @Component({
   selector: 'app-patrimony',
   templateUrl: './patrimony.html',
   styleUrls: ['./patrimony.css'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule, PatrimonyDetailModalComponent],
+  imports: [CommonModule, MatDialogModule, ],
   providers: [CurrencyPipe]
 })
 export class PatrimonyComponent implements OnInit {
