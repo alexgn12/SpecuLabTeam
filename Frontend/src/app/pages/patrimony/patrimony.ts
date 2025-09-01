@@ -23,7 +23,16 @@ export class PatrimonyComponent implements OnInit {
   // Selector de pestaña
   selectedTab: 'buildings' | 'apartments' = 'buildings';
 
-  // Paginación
+  // Mostrar todos los resultados sin paginación
+  get pagedBuildings(): ApprovedBuilding[] {
+    return this.approvedBuildings;
+  }
+  get pagedApartments(): IncomeApartment[] {
+    return this.incomeApartments;
+  }
+
+  // --- Paginación (comentada, para restaurar en el futuro) ---
+  /*
   buildingsPage = 1;
   apartmentsPage = 1;
   readonly pageSize = 6;
@@ -43,28 +52,6 @@ export class PatrimonyComponent implements OnInit {
     return Math.max(1, Math.ceil(this.incomeApartments.length / this.pageSize));
   }
 
-  constructor(private patrimonyService: PatrimonyService, private dialog: MatDialog) {}
-
-  ngOnInit(): void {
-    this.patrimonyService.getPatrimony().subscribe({
-      next: (data) => {
-        this.approvedBuildings = data.approvedBuildings || [];
-        this.incomeApartments = data.incomeApartments || [];
-        this.loading = false;
-        this.buildingsPage = 1;
-        this.apartmentsPage = 1;
-      },
-      error: () => {
-        this.error = 'Error al cargar los datos de patrimonio';
-        this.loading = false;
-      }
-    });
-  }
-
-  selectTab(tab: 'buildings' | 'apartments') {
-    this.selectedTab = tab;
-  }
-
   nextPage(tab: 'buildings' | 'apartments') {
     if (tab === 'buildings' && this.buildingsPage < this.buildingsTotalPages) {
       this.buildingsPage++;
@@ -80,6 +67,29 @@ export class PatrimonyComponent implements OnInit {
       this.apartmentsPage--;
     }
   }
+  */
+
+  constructor(private patrimonyService: PatrimonyService, private dialog: MatDialog) {}
+
+  ngOnInit(): void {
+    this.patrimonyService.getPatrimony().subscribe({
+      next: (data) => {
+        this.approvedBuildings = data.approvedBuildings || [];
+        this.incomeApartments = data.incomeApartments || [];
+        this.loading = false;
+      },
+      error: () => {
+        this.error = 'Error al cargar los datos de patrimonio';
+        this.loading = false;
+      }
+    });
+  }
+
+  selectTab(tab: 'buildings' | 'apartments') {
+    this.selectedTab = tab;
+  }
+
+  // Métodos de paginación eliminados: ahora se muestran todos los resultados
 
   viewBuildingDetails(building: ApprovedBuilding) {
     this.dialog.open(PatrimonyDetailModalComponent, {
