@@ -27,8 +27,8 @@ export interface ManagementBudget {
   providedIn: 'root'
 })
 export class BudgetService {
-  private apiUrlBudget = 'https://localhost:7092/api/managementbudgets';
-  private edificiosCompradosCountUrl = 'https://localhost:7092/api/Ang/edificios-comprados-count';
+  private apiUrlBudget = 'https://devdemoapi3.azurewebsites.net/api/managementbudgets';
+  private edificiosCompradosCountUrl = 'https://devdemoapi3.azurewebsites.net/api/Ang/edificios-comprados-count';
 
   constructor(private https: HttpClient) {}
 
@@ -41,7 +41,7 @@ export class BudgetService {
    */
   getMonthlyGastoIngreso(): Observable<MonthlyGastoIngreso[]> {
     return this.https.get<MonthlyGastoIngreso[]>(
-      'https://localhost:7092/api/Ang/gasto-mensual'
+  'https://devdemoapi3.azurewebsites.net/api/Ang/gasto-mensual'
     );
   }
 

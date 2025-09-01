@@ -20,7 +20,7 @@ export class CurrentAmountCard {
   }
 
   fetchAmount() {
-    this.http.get<any>('https://localhost:7092/api/Ang/current-amount').subscribe({
+  this.http.get<any>('https://devdemoapi3.azurewebsites.net/api/Ang/current-amount').subscribe({
       next: (data) => {
         this.amount = typeof data === 'number' ? data : (data?.currentAmount ?? null);
         this.loading = false;

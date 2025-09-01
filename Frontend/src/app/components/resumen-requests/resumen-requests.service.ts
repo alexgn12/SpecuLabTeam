@@ -10,7 +10,7 @@ export interface ResumenRequest {
 
 @Injectable({ providedIn: 'root' })
 export class ResumenRequestsService {
-  private apiUrl = 'https://localhost:7092/api/Ang/resumen-requests';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/Ang/resumen-requests';
 
   constructor(private http: HttpClient) {}
 

@@ -31,7 +31,7 @@ export interface IPaginatedRequests {
 
 @Injectable({ providedIn: 'root' })
 export class RequestsService {
-  private apiUrl = 'https://localhost:7092/api/requests';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/requests';
 
   constructor(private http: HttpClient) {}
 
@@ -43,7 +43,7 @@ export class RequestsService {
   }
 
   getBuildingById(buildingId: number): Observable<any> {
-    const url = `https://localhost:7092/api/Building/${buildingId}`;
+  const url = `https://devdemoapi3.azurewebsites.net/api/Building/${buildingId}`;
     return this.http.get<any>(url);
   }
 
@@ -53,7 +53,7 @@ export class RequestsService {
     let currentPage = 1;
 
     const fetchPage = (page: number): Observable<any[]> => {
-      const url = `https://localhost:7092/api/Building?page=${page}&size=${pageSize}`;
+  const url = `https://devdemoapi3.azurewebsites.net/api/Building?page=${page}&size=${pageSize}`;
       return this.http.get<any[]>(url);
     };
 
@@ -78,7 +78,7 @@ export class RequestsService {
   }
 
   getResumenRequests(): Observable<any> {
-    return this.http.get<any>('https://localhost:7092/api/Ang/resumen-requests');
+  return this.http.get<any>('https://devdemoapi3.azurewebsites.net/api/Ang/resumen-requests');
   }
 
   /**
