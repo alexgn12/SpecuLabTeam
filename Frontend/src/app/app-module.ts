@@ -8,7 +8,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { App } from './app';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
-import { Home } from './pages/home/home';
+import { HomeComponent } from './pages/home/home';
 import { Requests } from './pages/requests/requests';
 // import { History } from './pages/history/history';
 import { Budget } from './pages/budget/budget';
@@ -22,11 +22,11 @@ import { RequestHistoryComponent } from './components/request-history/request-hi
 @NgModule({
   declarations: [
     App,
-    Header
-    
+    Header,
   // History,
   ],
   imports: [
+    HomeComponent,
     BrowserModule,
     CommonModule,
     FormsModule,
