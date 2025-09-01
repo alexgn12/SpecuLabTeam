@@ -18,20 +18,35 @@ namespace PrototipoApi.Services
 
         public async Task<Apartment?> GetApartmentByCodeAsync(string apartmentCode)
         {
-            // Construir la URL con el código de apartamento
-            var url = $"https://devdemoapi4.azurewebsites.net/api/ELApartmentGet/{apartmentCode}";
-            var response = await _httpClient.GetAsync(url);
+            var response = await _httpClient.GetAsync(ApiUrl);
             if (!response.IsSuccessStatusCode)
                 return null;
-
-            // Deserializar el JSON directamente a la entidad Apartment (ignorando ApartmentId)
-            var apartment = await response.Content.ReadFromJsonAsync<Apartment>();
-            if (apartment == null)
-                return null;
-
-            // Ignorar ApartmentId recibido de la API externa
-            apartment.ApartmentId = 0;
-            return apartment;
+            var json = await response.Content.ReadAsStringAsync();
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            if (root.TryGetProperty("record", out var record))
+            {
+                foreach (var apartmentElem in record.EnumerateArray())
+                {
+                    if (apartmentElem.TryGetProperty("ApartmentCode", out var codeElem) && codeElem.GetString() == apartmentCode)
+                    {
+                        return new Apartment
+                        {
+                            ApartmentCode = apartmentElem.GetProperty("ApartmentCode").GetString() ?? string.Empty,
+                            ApartmentDoor = apartmentElem.GetProperty("ApartmentDoor").GetString() ?? string.Empty,
+                            ApartmentFloor = apartmentElem.GetProperty("ApartmentFloor").GetString() ?? string.Empty,
+                            ApartmentPrice = apartmentElem.GetProperty("ApartmentPrice").GetDecimal(),
+                            NumberOfRooms = apartmentElem.GetProperty("NumberOfRooms").GetInt32(),
+                            NumberOfBathrooms = apartmentElem.GetProperty("NumberOfBathrooms").GetInt32(),
+                            BuildingId = apartmentElem.GetProperty("BuildingId").GetInt32(),
+                            HasLift = apartmentElem.GetProperty("HasLift").GetBoolean(),
+                            HasGarage = apartmentElem.GetProperty("HasGarage").GetBoolean(),
+                            CreatedDate = apartmentElem.GetProperty("CreatedDate").GetDateTime()
+                        };
+                    }
+                }
+            }
+            return null;
         }
     }
 }
