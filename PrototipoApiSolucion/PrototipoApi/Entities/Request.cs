@@ -29,5 +29,4 @@ namespace PrototipoApi.Entities
         public ICollection<RequestStatusHistory> StatusHistory { get; set; } = new List<RequestStatusHistory>();
     }
 
-
 }
