@@ -1,29 +1,233 @@
-.request-history-container {
-  padding: 2rem;
+:host {
+  /* tokens */
+  --sl-bg: #ffffff;
+  --sl-surface: #fbfdff;
+  --sl-bd: #e6edf7;
+  --sl-text: #0f172a;
+  --sl-muted: #64748b;
+
+  --sl-blue: #2563eb;
+  --sl-thead-bg: #f1f6ff;
+  --sl-row-alt: #f8fafc;
+  --sl-row-hover: #eef4ff;
+
+  --chip-success: #0f766e;
+  --chip-success-bg: #e6fffa;
+
+  --chip-warning: #b45309;
+  --chip-warning-bg: #fff7ed;
+
+  --chip-danger: #b91c1c;
+  --chip-danger-bg: #fff1f2;
+
+  --chip-info: #2563eb;
+  --chip-info-bg: #eff6ff;
+
+  --chip-muted: #475569;
+  --chip-muted-bg: #f1f5f9;
 }
 
-.filters {
-  margin-bottom: 1rem;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
+/* tarjeta contenedora */
+.sl-table-card {
+  background: var(--sl-bg);
+  border: 1px solid var(--sl-bd);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(20,24,40,.07);
 }
 
-.history-table table {
+.sl-table-wrap {
   width: 100%;
-  border-collapse: collapse;
+  overflow-x: auto; /* scroll horizontal en móvil */
+  border-radius: 18px;
 }
 
-.history-table th, .history-table td {
-  border: 1px solid #ddd;
-  padding: 0.5rem;
+/* tabla base */
+.sl-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--sl-surface);
+  color: var(--sl-text);
+  font-size: 0.95rem;
+}
+
+/* cabecera */
+.sl-table thead th {
+  position: sticky; /* quítalo si no quieres sticky */
+  top: 0;
+  z-index: 1;
+  background: var(--sl-thead-bg);
+  color: var(--sl-blue);
+  font-weight: 700;
   text-align: left;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--sl-bd);
+  white-space: nowrap;
 }
 
-.history-table th {
-  background-color: #f5f5f5;
+/* celdas */
+.sl-table tbody td {
+  padding: 12px 16px;
+  border-top: 1px solid var(--sl-bd);
+  vertical-align: middle;
 }
 
-mat-paginator {
-  margin-top: 1rem;
+/* zebra + hover */
+.sl-table tbody tr:nth-child(even) td { background: var(--sl-row-alt); }
+.sl-table tbody tr:hover td { background: var(--sl-row-hover); }
+
+/* columnas utilitarias */
+.col-id { width: 160px; }
+.col-date { width: 200px; }
+.nowrap { white-space: nowrap; }
+.ellipsis {
+  max-width: 520px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* estado: chips con puntito */
+.chip {
+  --bg: var(--chip-muted-bg);
+  --fg: var(--chip-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  background: var(--bg);
+  color: var(--fg);
+  border: 1px solid color-mix(in srgb, var(--fg) 18%, transparent);
+}
+.chip::before {
+  content: "";
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--fg);
+  opacity: .9;
+}
+
+/* variantes por color */
+.chip--success { --bg: var(--chip-success-bg); --fg: var(--chip-success); }
+.chip--warning { --bg: var(--chip-warning-bg); --fg: var(--chip-warning); }
+.chip--danger  { --bg: var(--chip-danger-bg);  --fg: var(--chip-danger); }
+.chip--info    { --bg: var(--chip-info-bg);    --fg: var(--chip-info); }
+.chip--muted   { /* ya definido por defecto */ }
+
+/* vacía */
+.sl-table-empty {
+  padding: 24px;
+  color: var(--sl-muted);
+  text-align: center;
+}
+
+/* helpers */
+.fw-600 { font-weight: 600; }
+
+/* bordes redondeados visibles en primera/última fila */
+.sl-table thead th:first-child,
+.sl-table tbody td:first-child { padding-left: 18px; }
+.sl-table thead th:last-child,
+.sl-table tbody td:last-child { padding-right: 18px; }
+
+
+/* ====== Base (ya lo tienes) ====== */
+/* ...tu CSS de .sl-table-card, .sl-table, .chip, etc... */
+
+
+/* ====== Responsive: <= 768px convierte filas en “cards” ====== */
+@media (max-width: 768px) {
+  /* Oculta cabecera en móvil */
+  .sl-table thead {
+    display: none;
+  }
+
+  /* La tabla pasa a bloque */
+  .sl-table,
+  .sl-table tbody,
+  .sl-table tr,
+  .sl-table td {
+    display: block;
+    width: 100%;
+  }
+
+  /* Cada fila se ve como una tarjeta */
+  .sl-table tbody tr {
+    background: #fff;
+    border: 1px solid var(--sl-bd);
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(20,24,40,.06);
+    margin: 12px 0;
+    padding: 10px 12px;
+  }
+
+  /* Cada celda en dos columnas: etiqueta + valor */
+  .sl-table tbody td {
+    border: none;
+    padding: 8px 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: 42% 1fr;
+    align-items: center;
+    gap: 10px;
+  }
+
+  /* Etiqueta automática con data-label */
+  .sl-table tbody td::before {
+    content: attr(data-label);
+    color: var(--sl-blue);
+    font-weight: 700;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* Valores */
+  .sl-table tbody td > * {
+    justify-self: start;
+  }
+
+  /* El ID en la primera celda más marcado */
+  .sl-table tbody td.fw-600 {
+    font-weight: 700;
+  }
+
+  /* Chips ajustados para móvil */
+  .chip {
+    padding: 3px 10px;
+    font-size: 0.85rem;
+  }
+
+  /* Comentario: deja envolver y evita “…” en móvil */
+  .ellipsis {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  /* Espacios laterales del contenedor en móvil */
+  .sl-table-card {
+    border-radius: 16px;
+  }
+  .sl-table-wrap {
+    padding: 6px;
+  }
+}
+
+/* ====== Compacto extra: <= 480px ====== */
+@media (max-width: 480px) {
+  .sl-table tbody td {
+    grid-template-columns: 48% 1fr; /* un poco más de espacio para etiqueta */
+    padding: 6px 0;
+  }
+  .sl-table tbody tr {
+    padding: 8px 10px;
+  }
+  .chip {
+    font-size: 0.82rem;
+    padding: 2px 8px;
+  }
+  .nowrap { white-space: normal; } /* deja romper fecha si hace falta */
 }
