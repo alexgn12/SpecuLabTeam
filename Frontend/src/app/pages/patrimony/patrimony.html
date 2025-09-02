@@ -1,98 +1,81 @@
-<div class="requests-page">
-  <div class="container requests-container">
-    <header class="rq-header">
-      <h2 class="rq-title text-center">Panel de Bienes en propiedad</h2>
-      <p class="page-subtitle text-center">Edificios comprados y apartamentos alquilados</p>
-    </header>
-    <div class="segmented-control-wrapper">
-      <div class="segmented-control">
-        <button type="button" [class.active]="selectedTab === 'buildings'" (click)="selectTab('buildings')">Edificios comprados</button>
-        <button type="button" [class.active]="selectedTab === 'apartments'" (click)="selectTab('apartments')">Apartamentos alquilados</button>
-      </div>
-    </div>
-    <div *ngIf="loading" class="alert alert-info text-center">Cargando...</div>
-    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
-    <div class="patrimony-flex" *ngIf="!loading && !error">
-      <div class="patrimony-col" *ngIf="selectedTab === 'buildings'">
-        <h4 class="text-center">Edificios Comprados</h4>
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover table-sm">
-            <thead class="table-light">
-              <tr>
-                <th>Código</th>
-                <th>Nombre</th>
-                <th>Dirección</th>
-                <th>Distrito</th>
-                <th>Año</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let b of pagedBuildings">
-                <td>{{ b.buildingCode }}</td>
-                <td>{{ b.buildingName }}</td>
-                <td>{{ b.street }}</td>
-                <td>{{ b.district }}</td>
-                <td>{{ b.yearBuilt }}</td>
-                <td>
-                  <button class="btn-details" (click)="viewBuildingDetails(b)">Ver detalles</button>
-                </td>
-              </tr>
-              <tr *ngIf="pagedBuildings.length === 0">
-                <td colspan="5" class="text-center text-muted">No hay edificios comprados</td>
-              </tr>
-            </tbody>
-          </table>
+<div class="requests-container requests-page">
+<h4 class="section-title">Edificios Comprados</h4>
+
+<mat-accordion class="patrimony-accordion enterprise">
+  <mat-expansion-panel class="p-card" *ngFor="let b of pagedBuildings">
+    <!-- Header en cuadrícula, con botón que no dispara la expansión -->
+    <mat-expansion-panel-header class="p-header">
+      <div class="p-row">
+        <div class="c c-name">
+          <strong>{{ b.buildingName }}</strong>
+          <span class="muted">({{ b.buildingCode }})</span>
         </div>
-        <app-paginacion
-          *ngIf="buildingsTotalPages > 1"
-          [currentPage]="buildingsPage"
-          [totalPages]="buildingsTotalPages"
-          (pageChange)="buildingsPage = $event">
-        </app-paginacion>
-      </div>
-      <div class="patrimony-col" *ngIf="selectedTab === 'apartments'">
-        <h4 class="text-center">Apartamentos Alquilados</h4>
-        <div class="table-responsive">
-          <table class="table table-bordered table-hover table-sm">
-            <thead class="table-light">
-              <tr>
-                <th>Código</th>
-                <th>Pta</th>
-                <th>Piso</th>
-                <!--<th>Precio</th> -->
-                <th>Habit.</th>
-                <th>Baños</th>
-                <th>Edificio</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let a of pagedApartments">
-                <td>{{ a.apartmentCode }}</td>
-                <td>{{ a.apartmentDoor }}</td>
-                <td>{{ a.apartmentFloor }}</td>
-                <!--<td>{{ a.apartmentPrice | currency:'EUR':'symbol':'1.0-0' }}</td>-->
-                <td>{{ a.numberOfRooms }}</td>
-                <td>{{ a.numberOfBathrooms }}</td>
-                <td>{{ a.buildingCode }}</td>
-                <td>
-                  <button class="btn-details" (click)="viewApartmentDetails(a)">Ver detalles</button>
-                </td>
-              </tr>
-              <tr *ngIf="pagedApartments.length === 0">
-                <td colspan="6" class="text-center text-muted">No hay apartamentos alquilados</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="c c-address">
+          {{ b.street }}, {{ b.district }}
         </div>
-        <app-paginacion
-          *ngIf="apartmentsTotalPages > 1"
-          [currentPage]="apartmentsPage"
-          [totalPages]="apartmentsTotalPages"
-          (pageChange)="apartmentsPage = $event">
-        </app-paginacion>
+        <div class="c c-year">
+          <span class="label">Año</span> {{ b.yearBuilt }}
+        </div>
+        <div class="c c-actions">
+          <button class="btn-primary-sm"
+                  (click)="viewBuildingDetails(b); $event.stopPropagation()">
+            Detalles
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
+    </mat-expansion-panel-header>
+
+    <!-- Cuerpo -->
+    <h5 class="block-title">Apartamentos en este edificio</h5>
+
+    <ng-container *ngIf="getApartmentsByBuildingCode(b.buildingCode).length > 0; else noApts">
+      <div class="table-shell">
+  <table class="table table-compact">
+    <!-- Define anchos estables por columna -->
+    <colgroup>
+      <col class="w-code" />
+      <col class="w-door" />
+      <col class="w-floor" />
+      <col class="w-rooms" />
+      <col class="w-baths" />
+      <col class="w-actions" />
+    </colgroup>
+
+    <thead>
+      <tr>
+        <th class="ta-left">Código</th>
+        <th class="ta-center">Pta</th>
+        <th class="ta-right">Piso</th>
+        <th class="ta-right">Habit.</th>
+        <th class="ta-right">Baños</th>
+        <th class="ta-right">Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let a of getApartmentsByBuildingCode(b.buildingCode)">
+        <td class="ta-left mono">{{ a.apartmentCode }}</td>
+        <td class="ta-center">{{ a.apartmentDoor }}</td>
+        <td class="ta-right">{{ a.apartmentFloor }}</td>
+        <td class="ta-right">{{ a.numberOfRooms }}</td>
+        <td class="ta-right">{{ a.numberOfBathrooms }}</td>
+        <td class="ta-right">
+          <button class="btn btn-outline-primary btn-sm"
+                  (click)="viewApartmentDetails(a); $event.stopPropagation()">
+            Ver detalles
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+
+    </ng-container>
+
+    <ng-template #noApts>
+      <div class="empty muted">No hay apartamentos alquilados en este edificio.</div>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>
 </div>

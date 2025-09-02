@@ -4,6 +4,7 @@ import { PatrimonyService, ApprovedBuilding, IncomeApartment } from './patrimony
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatExpansionModule } from '@angular/material/expansion'; 
 import { PatrimonyDetailModalComponent } from '../../components/patrimony-detail-modal/patrimony-detail-modal.component';
 
 @Component({
@@ -11,10 +12,13 @@ import { PatrimonyDetailModalComponent } from '../../components/patrimony-detail
   templateUrl: './patrimony.html',
   styleUrls: ['./patrimony.css'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule, ],
+  imports: [CommonModule, MatDialogModule, MatExpansionModule,],
   providers: [CurrencyPipe]
 })
 export class PatrimonyComponent implements OnInit {
+  getApartmentsByBuildingCode(buildingCode: string): IncomeApartment[] {
+    return this.incomeApartments.filter(a => a.buildingCode === buildingCode);
+  }
   approvedBuildings: ApprovedBuilding[] = [];
   incomeApartments: IncomeApartment[] = [];
   loading = true;
