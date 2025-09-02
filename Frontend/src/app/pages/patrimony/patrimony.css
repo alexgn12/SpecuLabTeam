@@ -15,7 +15,6 @@
 /* ============= TOKENS ============= */
 :root,
 .requests-page {
-	--bg: #e2e8f0;
 	--card: #ffffff;
 	--border: #d0d7e3;
 	--shadow: 0 10px 30px rgba(20,24,40,.08);
@@ -37,6 +36,26 @@
 .block-title   { margin: .4rem 0 .4rem; font-size: .95rem; font-weight: 700; color: var(--text); }
 .muted { color: var(--muted); }
 .mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+.patrimony-header {
+  margin-bottom: clamp(12px, 2vw, 20px);
+  padding: 0 clamp(6px, 1vw, 10px);
+}
+.page-title {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
+}
+.page-subtitle {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+
+
 
 /* ============= ACORDEÓN ============= */
 .patrimony-accordion.enterprise { max-width: 1100px; margin: 0 auto; }
@@ -67,7 +86,7 @@
   align-items: center;
   width: 100%;
 }
-.c-name { font-size: 1rem; color: var(--text); font-weight: 700; }
+.c-name { font-size: 1rem; color: var(--text); font-weight: 400; }
 .c-name .muted { margin-left: .3rem; font-weight: 600; }
 .c-address { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .c-year { color: var(--text); font-weight: 600; text-align: right; }
@@ -167,7 +186,21 @@
   .c-address { display: none; } /* limpia en móvil */
 }
 @media (max-width: 575.98px) {
-  .table-compact { font-size: .9rem; }
-  .table-compact thead th, .table-compact tbody td { padding: 8px 10px; }
-  .th-actions, .td-actions { width: 120px; }
+  .p-header .p-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .c-address, .c-year, .c-actions {
+    width: 100%;
+    text-align: left;
+  }
+  .expand-arrow-container {
+    margin-top: 0.5rem;
+  }
+  :host ::ng-deep .p-card .mat-expansion-panel-header {
+    min-height: 90px;
+  }
 }

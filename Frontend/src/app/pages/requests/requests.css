@@ -14,10 +14,26 @@
 
 .requests-container{ max-width: 1280px; }
 
-.rq-header{ margin-bottom: .5rem; }
 .rq-title{
   color:var(--text); font-weight:700; letter-spacing:-.01em;
   margin:0; font-size: clamp(1.4rem,1.1rem + 1.6vw,2rem);
+}
+
+.rq-header {
+  margin-bottom: clamp(12px, 2vw, 20px);
+  padding: 0 clamp(6px, 1vw, 10px);
+}
+.page-title {
+  color: var(--text);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
+}
+.page-subtitle {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95rem;
 }
 
 /* ===== Tabs segmentados estilo iOS ===== */
