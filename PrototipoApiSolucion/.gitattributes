@@ -1,0 +1,19 @@
+# Configuración para archivos binarios y de texto
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.bmp binary
+*.ico binary
+*.zip binary
+*.exe binary
+*.dll binary
+*.svg text
+*.cs text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+*.xml text
+*.config text
