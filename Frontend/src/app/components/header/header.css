@@ -1,72 +1,3 @@
-/* Transición suave para el menú hamburguesa */
-/* Solo colapsar el menú en móvil */
-@media (max-width: 991.98px) {
-  .navbar-collapse {
-    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
-    max-height: 0;
-    opacity: 0;
-    overflow: hidden;
-  }
-  .navbar-collapse.show {
-    max-height: 500px;
-    opacity: 1;
-  }
-}
-/* --- Mobile improvements --- */
-@media (max-width: 991.98px) {
-  .app-header {
-    padding-block: 4px;
-  }
-  .header-container {
-    max-width: 100vw;
-    padding-inline: 0;
-  }
-  .navbar-collapse {
-    background: var(--hd-bg);
-    box-shadow: 0 4px 16px rgba(20,24,40,0.07);
-    border-radius: 0 0 18px 18px;
-    margin-top: 6px;
-    padding: 0.5rem 1rem 1rem 1rem;
-    min-width: 180px;
-  }
-  .header-nav {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.2rem;
-    width: 100%;
-  }
-  .header-nav .nav-link {
-    width: 100%;
-    text-align: left;
-    padding: 0.7rem 0.9rem;
-    border-radius: 10px;
-    margin-bottom: 2px;
-  }
-  .navbar-toggler {
-    margin-left: auto;
-    margin-right: 0;
-    z-index: 1100;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .app-header {
-    padding-block: 2px;
-  }
-  .navbar-collapse {
-    padding: 0.5rem 0.5rem 1rem 0.5rem;
-  }
-  .brand-text {
-    display: block;
-    text-align: center;
-    width: 100%;
-    margin: 0 auto;
-  }
-  .navbar-brand {
-    justify-content: center !important;
-    width: 100%;
-  }
-}
 /* ===== Paleta fría iOS solo para el header ===== */
 :host {
   --hd-bg: #ffffff;
@@ -126,7 +57,7 @@
   border-color: #cfe2ff;
 }
 
-/* Icono hamburguesa propio para mantener la gama */
+/* Icono hamburguesa (base) */
 .toggler-icon,
 .toggler-icon::before,
 .toggler-icon::after {
@@ -139,15 +70,8 @@
   content: "";
 }
 
-.toggler-icon::before {
-  position: absolute;
-  top: -6px;
-}
-
-.toggler-icon::after {
-  position: absolute;
-  top: 6px;
-}
+.toggler-icon::before { position: absolute; top: -6px; }
+.toggler-icon::after  { position: absolute; top:  6px; }
 
 /* Navegación */
 .header-nav .nav-link {
@@ -160,7 +84,7 @@
   position: relative;
 }
 
-/* Subrayado iOS-style (solo al pasar por encima o activo) */
+/* Subrayado iOS-style (solo hover/activo) */
 .header-nav .nav-link::after {
   content: "";
   position: absolute;
@@ -186,7 +110,7 @@
   opacity: 1;
 }
 
-/* Estado activo (Angular routerLinkActive) */
+/* Activo (Angular routerLinkActive) */
 .header-nav .nav-link.active {
   color: var(--hd-text);
   background: #eef5ff;
@@ -207,22 +131,114 @@
   color: var(--hd-text);
 }
 
-/* Responsive sutil */
+/* ====== Responsive (≤ 991.98px) ====== */
 @media (max-width: 991.98px) {
-  .header-nav .nav-link {
-    padding: 0.6rem 0.75rem;
+  /* Transición suave para el menú hamburguesa y colapso sólo en móvil */
+  .navbar-collapse {
+    transition: max-height 0.3s cubic-bezier(0.4,0,0.2,1), opacity 0.2s;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    background: var(--hd-bg);
+    box-shadow: 0 4px 16px rgba(20,24,40,0.07);
+    border-radius: 0 0 18px 18px;
+    margin-top: 6px;
+    padding: 0.5rem 1rem 1rem 1rem;
+    min-width: 180px;
   }
+  .navbar-collapse.show {
+    max-height: 500px;
+    opacity: 1;
+  }
+
+  .app-header { padding-block: 4px; }
+  .header-container { max-width: 100vw; padding-inline: 0; }
+
+  .header-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.2rem;
+    width: 100%;
+  }
+  .header-nav .nav-link { width: 100%; text-align: left; padding: 0.7rem 0.9rem; border-radius: 10px; margin-bottom: 2px; }
+
+  .navbar-toggler { margin-left: auto; margin-right: 0; z-index: 1100; }
+
+  /* === Alineación vertical y botón centrado (FIX) === */
+  .header-container { display: flex; align-items: center; }
+  .navbar-brand     { display: flex; align-items: center; gap: 8px; margin: 0; }
+
+  .header-toggler {
+    display: grid;
+    place-items: center;
+    height: 36px;
+    width: 36px;
+    padding: 0;
+    line-height: 0;
+  }
+
+  /* Icono hamburguesa centrado y consistente en móvil */
+  .toggler-icon {
+    position: relative;
+    width: 20px;
+    height: 2px;
+    background: var(--hd-text);
+    border-radius: 2px;
+  }
+  .toggler-icon::before,
+  .toggler-icon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--hd-text);
+    border-radius: 2px;
+  }
+  .toggler-icon::before { top: 50%; transform: translateY(-6px); }
+  .toggler-icon::after  { top: 50%; transform: translateY( 6px); }
+
+  /* Espaciado de los links en móvil */
+  .header-nav .nav-link { padding: 0.6rem 0.75rem; }
 }
 
+/* ====== Responsive (≤ 575.98px) ====== */
 @media (max-width: 575.98px) {
+  .app-header { padding-block: 2px; }
+  .navbar-collapse { padding: 0.5rem 0.5rem 1rem 0.5rem; }
+
+  .navbar-brand {
+    justify-content: center !important;
+    width: 100%;
+  }
   .brand-text {
     display: block;
     text-align: center;
     width: 100%;
     margin: 0 auto;
   }
+}
+@media (max-width: 991.98px) {
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* distribuye logo - centro - hamburguesa */
+  }
+
   .navbar-brand {
-    justify-content: center !important;
-    width: 100%;
+    flex: 1;                /* ocupa espacio proporcional */
+    justify-content: flex-start;
+  }
+
+  .brand-text {
+    flex: 1;
+    text-align: center;     /* centra el texto en el medio */
+    margin: 0;
+  }
+
+  .header-toggler {
+    display: flex;
+    justify-content: center;
   }
 }
+
