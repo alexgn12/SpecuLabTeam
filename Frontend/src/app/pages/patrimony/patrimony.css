@@ -1,3 +1,7 @@
+/* Oculta el icono de flecha expand/collapse de Angular Material en los paneles de patrimonio */
+:host ::ng-deep .patrimony-accordion .mat-expansion-indicator {
+  display: none !important;
+}
 /* Margen para el acordeón y las tablas de edificios */
 .mat-accordion {
   margin: 32px 24px;
