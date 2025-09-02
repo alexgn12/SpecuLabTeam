@@ -33,6 +33,13 @@
 /* Evita que el contenido quede tapado por el footer fijo */
 body{
   padding-bottom: var(--footer-h);
+   background: linear-gradient(
+    180deg,
+    #e2e8f0 0%,
+    #f6f9fd 100%
+  );
+  min-height: 100vh;
+  margin: 0;
 }
 
 /* Espacio específico para la paginación */

@@ -1,6 +1,5 @@
 /* ===== Tokens de tema (gama fría iOS) ===== */
-.budget-page {
-  --bg: #f1f5f9;             /* slate-100/200 */
+.budget-page {             /* slate-100/200 */
   --card: #ffffff;
   --border: #e8edf5;
   --shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
@@ -8,7 +7,7 @@
   --muted: #64748b;          /* slate-500/600 */
   --accent: #3b82f6;
 
-  background: linear-gradient(180deg, #f8fafc 0%, var(--bg) 100%);
+  background: linear-gradient(180deg,#e2e8f0 0%, var(--bg) 100%);
   min-height: 100%;
   padding: clamp(16px, 2.5vw, 28px) 0 2rem;
 }
