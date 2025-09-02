@@ -166,7 +166,21 @@
   .c-address { display: none; } /* limpia en móvil */
 }
 @media (max-width: 575.98px) {
-  .table-compact { font-size: .9rem; }
-  .table-compact thead th, .table-compact tbody td { padding: 8px 10px; }
-  .th-actions, .td-actions { width: 120px; }
+  .p-header .p-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .c-address, .c-year, .c-actions {
+    width: 100%;
+    text-align: left;
+  }
+  .expand-arrow-container {
+    margin-top: 0.5rem;
+  }
+  :host ::ng-deep .p-card .mat-expansion-panel-header {
+    min-height: 90px;
+  }
 }
