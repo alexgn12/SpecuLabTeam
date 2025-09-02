@@ -1,268 +1,173 @@
+/* Margen para el acordeón y las tablas de edificios */
+.mat-accordion {
+  margin: 32px 24px;
+}
+
+/* Margen para las tablas dentro de los paneles */
+.mat-expansion-panel table {
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+/* ============= TOKENS ============= */
+:root,
 .requests-page {
-	--bg: #e2e8f0;
-	--card: #ffffff;
-	--border: #d0d7e3;
-	--shadow: 0 10px 30px rgba(20,24,40,.08);
-	--text: #0f172a;
-	--muted: #475569;
-	--accent: #3b82f6;
-	background: linear-gradient(180deg, var(--bg) 0%, #f8fafc 100%);
-	min-height: 100%;
-	padding: clamp(16px,2.5vw,28px) 0 2rem;
-}
-.requests-container { max-width: 1280px; }
-
-/* ===== Segmented Control (iOS style) ===== */
-.segmented-control-wrapper {
-	display: flex;
-	justify-content: center;
-	margin-bottom: 1.5rem;
-}
-.segmented-control {
-	display: inline-flex;
-	background: #f1f5f9;
-	border-radius: 16px;
-	box-shadow: 0 2px 8px rgba(60,60,60,0.04);
-	padding: 4px;
-	gap: 0;
-}
-.segmented-control button {
-	border: none;
-	background: none;
-	color: var(--muted);
-	font-weight: 500;
-	font-size: 1rem;
-	padding: 0.5rem 1.5rem;
-	border-radius: 12px;
-	transition: background 0.2s, color 0.2s;
-	cursor: pointer;
-	outline: none;
-}
-.segmented-control button.active {
-	background: var(--accent);
-	color: #fff;
-	box-shadow: 0 2px 8px rgba(59,130,246,0.10);
-}
-.segmented-control button:not(.active):hover {
-	background: #e0e7ef;
+  --card: #ffffff;
+  --bg-grad-top: #f3f6fb;
+  --border: #e5e7eb;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #2563eb;
+  --shadow-soft: 0 1px 2px rgba(16,24,40,.06);
+  --radius: 12px;
 }
 
-/* ===== Header ===== */
-.rq-header { margin-bottom: .5rem; }
-.rq-title {
-	color: var(--text);
-	font-weight: 700;
-	letter-spacing: -0.01em;
-	margin: 0;
-	font-size: clamp(1.4rem,1.1rem + 1.6vw,2rem);
+/* Fondo y contenedor */
+.requests-page {
+  background: linear-gradient(180deg, var(--bg-grad-top) 0, #fff 140px);
+  padding: 12px 0 24px;
 }
-.page-subtitle {
-	color: var(--muted);
-	margin: 0 0 1.5rem 0;
-	font-size: 0.95rem;
+.requests-container {
+  max-width: 1500px;
+  margin: 48px auto;
+  padding: 0 32px;
 }
 
-/* ===== Flex tablas ===== */
-.patrimony-flex {
-	display: flex;
-	flex-direction: row;
-	gap: 2rem;
-	align-items: flex-start;
-	justify-content: center;
-	width: 100%;
-}
-.patrimony-col {
-	flex: 1 1 0;
-	max-width: 1100px;
-	min-width: 340px;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-}
-.table-responsive {
-	width: 100%;
-	max-width: 1100px;
-	margin: 0 auto;
-}
-/* ===== Botón azul de detalles ===== */
-.btn-details {
-	background: var(--accent);
-	color: #fff;
-	border: none;
-	border-radius: 8px;
-	padding: 0.35rem 1.1rem;
-	font-size: 0.98rem;
-	font-weight: 500;
-	box-shadow: 0 2px 8px rgba(59,130,246,0.10);
-	transition: background 0.18s, box-shadow 0.18s;
-	cursor: pointer;
-	outline: none;
-	margin: 0 0.1rem;
-}
-.btn-details:hover, .btn-details:focus {
-	background: #2563eb;
-	box-shadow: 0 4px 16px rgba(59,130,246,0.18);
+/* Titulares */
+.section-title { font-weight: 700; color: var(--text); margin: .25rem 0 .75rem; }
+.block-title   { margin: .4rem 0 .4rem; font-size: .95rem; font-weight: 700; color: var(--text); }
+.muted { color: var(--muted); }
+.mono  { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+/* ============= ACORDEÓN ============= */
+.patrimony-accordion.enterprise { max-width: 1100px; margin: 0 auto; }
+
+/* Panel tarjeta */
+:host ::ng-deep .p-card.mat-expansion-panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+  overflow: hidden;
+  margin-bottom: 14px;
 }
 
+/* Header compacto */
+:host ::ng-deep .p-card .mat-expansion-panel-header {
+  min-height: unset;
+  padding: 10px 16px;
+}
+:host ::ng-deep .p-card .mat-expansion-panel-header:hover { background: #f9fafb; }
+:host ::ng-deep .p-card .mat-expansion-panel-header .mat-content { width: 100%; }
 
-/* ===== Tablas (iOS style) ===== */
-table {
-	background: #fff;
-	border-radius: 16px;
-	box-shadow: 0 4px 16px rgba(20,24,40,.07);
-	border: 1px solid var(--border);
-	overflow: hidden;
-	margin-bottom: 0.5rem;
+/* Grid estable: Nombre | Dirección | Año | Acción */
+.p-header .p-row {
+  display: grid;
+  grid-template-columns: 2fr minmax(240px, 3fr) 110px 130px;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
 }
-th, td {
-	text-align: center;
-	vertical-align: middle;
-	padding: 0.65rem 0.5rem;
-	font-size: 1rem;
-}
-.table-light th {
-	background: #f6faff;
-	font-weight: 600;
-	color: var(--accent);
-	border-bottom: 1px solid #e5eaf2;
-}
-.text-muted { color: #64748b !important; }
+.c-name { font-size: 1rem; color: var(--text); font-weight: 700; }
+.c-name .muted { margin-left: .3rem; font-weight: 600; }
+.c-address { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.c-year { color: var(--text); font-weight: 600; text-align: right; }
+.c-year .label { color: var(--muted); font-weight: 500; margin-right: .35rem; }
+.c-actions { text-align: right; }
 
-tbody tr {
-	transition: background 0.15s;
-}
-tbody tr:hover {
-	background: #f3f7fd;
-}
+/* Cuerpo del panel */
+:host ::ng-deep .p-card .mat-expansion-panel-body { padding: 6px 0 12px; }
 
-/* ===== Paginación (iOS style) ===== */
-.pagination-wrapper {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 1rem;
-	margin: 1rem 0 0.5rem 0;
+/* ============= BOTONES ============= */
+.btn-primary-sm,
+.btn-secondary-sm {
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: .34rem .72rem;
+  font-size: .9rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
 }
-.pagination-wrapper button {
-	background: var(--card);
-	border: 1px solid var(--border);
-	color: var(--accent);
-	font-size: 1.2rem;
-	border-radius: 50%;
-	width: 2.2rem;
-	height: 2.2rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	box-shadow: 0 1px 4px rgba(59,130,246,0.07);
-	transition: background 0.2s, color 0.2s;
-	cursor: pointer;
-	outline: none;
-}
-.pagination-wrapper button:disabled {
-	background: #f1f5f9;
-	color: #b6c3d1;
-	cursor: not-allowed;
-	border-color: #e5eaf2;
-}
-.pagination-wrapper span {
-	color: var(--muted);
-	font-size: 1rem;
-	font-weight: 500;
+.btn-primary-sm { background: var(--accent); color: #fff; }
+.btn-primary-sm:hover { filter: brightness(0.96); }
+.btn-secondary-sm { background: #1f2937; color: #fff; }
+.btn-secondary-sm:hover { filter: brightness(1.06); }
+
+/* ===== Tabla compacta, sin “columna fantasma” ===== */
+.table-shell {
+  margin: 8px 16px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
 }
 
-/* ===== Alertas ===== */
-.alert-info {
-	background-color: #eef5ff;
-	border-color: #d9e7ff;
-	color: #1e3a8a;
+/* Reset de hacks responsivos que añaden etiquetas en móviles */
+.table-compact td::before,
+.table-compact th::before { content: none !important; }
+
+/* Estructura base */
+.table-compact {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .94rem;
+  table-layout: fixed; /* estable con colgroup */
 }
-.alert-danger {
-	background-color: #fdecec;
-	border-color: #f7d6d6;
-	color: #7f1d1d;
+.table-compact thead th {
+  background: #f3f6fb;
+  color: #111827;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+  padding: 9px 12px;
+  vertical-align: middle;
+}
+.table-compact tbody td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #eef2f7;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+.table-compact tbody tr:hover { background: #f9fbff; }
+
+/* Alineaciones utilitarias */
+.ta-left { text-align: left; }
+.ta-center { text-align: center; }
+.ta-right { text-align: right; }
+
+/* Anchuras controladas (coinciden con colgroup) */
+.w-code    { width: 20%; }
+.w-door    { width: 11%; }
+.w-floor   { width: 13%; }
+.w-rooms   { width: 14%; }
+.w-baths   { width: 14%; }
+.w-actions { width: 18%; }
+
+/* Botón alineado a la derecha sin crear nueva “columna” */
+.table-compact tbody td:last-child > .btn-secondary-sm {
+  display: inline-flex;
 }
 
-/* ===== Responsivo ===== */
-@media (max-width: 900px) {
-	.patrimony-flex {
-		flex-direction: column;
-		gap: 1.5rem;
-		align-items: center;
-	}
-	.patrimony-col {
-		max-width: 100%;
-		width: 100%;
-	}
-	.table-responsive {
-		max-width: 100%;
-		width: 100%;
-	}
-	.segmented-control button {
-		padding: 0.5rem 1rem;
-		font-size: 0.98rem;
-	}
+/* Ajustes finos en móvil */
+@media (max-width: 780px) {
+  .w-code { width: 28%; }
+  .w-actions { width: 22%; }
+  .table-compact { font-size: .9rem; }
+  .table-compact thead th, .table-compact tbody td { padding: 8px 10px; }
+}
+
+/* Estado vacío */
+.empty { padding: 10px 16px 14px; font-size: .95rem; color: var(--muted); }
+
+/* ============= RESPONSIVE ============= */
+@media (max-width: 1024px) {
+  .p-header .p-row { grid-template-columns: 2fr 2fr 100px 120px; }
+}
+@media (max-width: 780px) {
+  .p-header .p-row { grid-template-columns: 1.6fr 1fr 80px 110px; gap: 8px; }
+  .c-address { display: none; } /* limpia en móvil */
 }
 @media (max-width: 575.98px) {
-	.rq-title { font-size: clamp(1.2rem, 1rem + 3vw, 1.6rem); }
-	.segmented-control {
-		border-radius: 12px;
-		padding: 2px;
-	}
-	.segmented-control button {
-		font-size: 0.95rem;
-		padding: 0.45rem 0.7rem;
-		border-radius: 8px;
-	}
-	.pagination-wrapper span {
-		font-size: 0.95rem;
-	}
-	.requests-page {
-		padding: 8px 0 1rem;
-	}
-	.page-subtitle {
-		font-size: 0.9rem;
-		margin-bottom: 1rem;
-		text-align: center;
-	}
-	.patrimony-flex {
-		gap: 1rem;
-		padding: 0 2px;
-	}
-	.patrimony-col {
-		min-width: unset;
-		padding: 0;
-	}
-	.table-responsive {
-		overflow-x: auto;
-		-webkit-overflow-scrolling: touch;
-		margin: 0;
-		padding: 0;
-	}
-	table {
-		font-size: 0.95rem;
-		border-radius: 8px;
-		min-width: 340px;
-	}
-	th, td {
-		padding: 0.5rem 0.3rem;
-		font-size: 0.95rem;
-	}
-	.btn-details {
-		font-size: 0.95rem;
-		padding: 0.3rem 0.7rem;
-		border-radius: 6px;
-	}
-	.pagination-wrapper {
-		gap: 0.5rem;
-		margin: 0.5rem 0 0.3rem 0;
-	}
-	.pagination-wrapper button {
-		font-size: 1rem;
-		width: 1.8rem;
-		height: 1.8rem;
-		border-radius: 50%;
-	}
+  .table-compact { font-size: .9rem; }
+  .table-compact thead th, .table-compact tbody td { padding: 8px 10px; }
+  .th-actions, .td-actions { width: 120px; }
 }
-
-
