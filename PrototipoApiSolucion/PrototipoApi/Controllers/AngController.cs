@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PrototipoApi.BaseDatos;
 
-
 namespace PrototipoApi.Controllers
 {
+    // Controlador para endpoints relacionados con estadísticas y gestión de edificios, apartamentos y presupuesto
     [Route("api/[controller]")]
     [ApiController]
     public class AngController : ControllerBase
@@ -24,6 +24,8 @@ namespace PrototipoApi.Controllers
             _context = context;
         }
 
+        // Endpoint para obtener un resumen de requests agrupados por estado
+        // Devuelve el total general y el total por cada estado
         [HttpGet("resumen-requests")]
         public async Task<IActionResult> GetResumenRequests()
         {
@@ -38,6 +40,7 @@ namespace PrototipoApi.Controllers
             });
         }
 
+        // Endpoint para obtener el gasto mensual agrupado por tipo
         [HttpGet("gasto-mensual")]
         public async Task<IActionResult> GetGastoMensual()
         {
@@ -45,6 +48,7 @@ namespace PrototipoApi.Controllers
             return Ok(resultado);
         }
 
+        // Endpoint para obtener la cantidad de edificios por distrito
         [HttpGet("buildings-count-by-district")]
         public async Task<IActionResult> GetBuildingsCountByDistrict()
         {
@@ -52,6 +56,7 @@ namespace PrototipoApi.Controllers
             return Ok(result);
         }
 
+        // Endpoint para obtener la cantidad de edificios comprados
         [HttpGet("edificios-comprados-count")]
         public async Task<IActionResult> GetEdificiosCompradosCount()
         {
@@ -59,6 +64,7 @@ namespace PrototipoApi.Controllers
             return Ok(new { EdificiosComprados = count });
         }
 
+        // Endpoint para obtener edificios aprobados y apartamentos que generan ingresos
         [HttpGet("aprobados-e-ingresos")]
         public async Task<IActionResult> GetApprovedBuildingsAndIncomeApartments()
         {
@@ -66,6 +72,7 @@ namespace PrototipoApi.Controllers
             return Ok(result);
         }
 
+        // Endpoint para obtener el monto actual del presupuesto de gestión
         [HttpGet("current-amount")]
         public async Task<IActionResult> GetCurrentAmount()
         {

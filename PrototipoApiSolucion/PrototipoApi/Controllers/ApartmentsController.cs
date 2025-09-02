@@ -12,6 +12,7 @@ using PrototipoApi.Application.Apartments.Commands.CreateApartment;
 
 namespace PrototipoApi.Controllers
 {
+    // Controlador para la gestión de apartamentos: consulta, detalle y creación
     [Route("api/[controller]")]
     [ApiController]
     public class ApartmentsController : ControllerBase
@@ -25,6 +26,8 @@ namespace PrototipoApi.Controllers
             _loguer = loguer;
         }
 
+        // Endpoint para obtener una lista paginada de apartamentos
+        // Permite ordenar y filtrar por página, tamaño y campo de orden
         [HttpGet]
         public async Task<ActionResult<List<ApartmentDto>>> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? orderBy = "CreatedDate", [FromQuery] bool desc = true)
         {
@@ -33,6 +36,7 @@ namespace PrototipoApi.Controllers
             return Ok(result);
         }
 
+        // Endpoint para obtener el detalle de un apartamento por su id
         [HttpGet("{id}")]
         public async Task<ActionResult<ApartmentDto>> GetById(int id)
         {
@@ -46,6 +50,8 @@ namespace PrototipoApi.Controllers
             return Ok(result);
         }
 
+        // Endpoint para crear un nuevo apartamento
+        // Recibe los datos del apartamento en el cuerpo de la petición
         [HttpPost]
         public async Task<ActionResult<ApartmentDto>> Create([FromBody] ApartmentDto dto)
         {

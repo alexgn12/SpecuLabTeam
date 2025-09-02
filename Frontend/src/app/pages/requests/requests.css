@@ -156,6 +156,84 @@
   border-bottom-color: #eef2f7; /* más sutil */
 }
 
+/* ===== Responsive: móviles y tablets ===== */
+@media (max-width: 900px) {
+  .requests-container {
+    max-width: 100%;
+    padding: 0 8px;
+  }
+  .rq-segment {
+    max-width: 100%;
+    flex-wrap: wrap;
+    padding: 2px;
+  }
+  .rq-card {
+    max-width: 100%;
+    border-radius: 12px;
+    font-size: 1rem;
+  }
+  .rq-title {
+    font-size: clamp(1.1rem, 1rem + 2vw, 1.5rem);
+  }
+  .rq-list {
+    gap: 10px;
+    padding: 0;
+  }
+  .rq-item {
+    width: 100%;
+    margin: 0;
+  }
+  .rq-tabs {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .rq-toolbar {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .rq-select {
+    width: 100%;
+    font-size: 1rem;
+  }
+  .rq-pagination {
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .requests-page {
+    padding: 10px 0 1rem;
+  }
+  .rq-title {
+    font-size: 1.1rem;
+    text-align: center;
+  }
+  .rq-segment {
+    border-radius: 8px;
+    padding: 1px;
+    gap: 2px;
+  }
+  .rq-segment__btn {
+    padding: 6px 8px;
+    font-size: 0.95rem;
+  }
+  .rq-card {
+    border-radius: 8px;
+    font-size: 0.98rem;
+  }
+  .rq-list {
+    gap: 8px;
+  }
+  .ic-mini {
+    top: 10px;
+    left: 10px;
+    font-size: 1.1rem;
+  }
+  .requests-kpis sl-info-card .card-body {
+    padding-left: 32px !important;
+  }
+}
+
 
 
 
