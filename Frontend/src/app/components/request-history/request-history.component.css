@@ -35,23 +35,22 @@
 
 /* Cabecera del historial */
 .history-header {
-  text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: clamp(12px, 2vw, 20px);
+  padding: 0 clamp(6px, 1vw, 10px);
 }
-
-.history-header .page-title {
-  font-size: 1.6rem;     /* grande */
-  font-weight: 800;      /* bold fuerte */
-  color: var(--sl-text);
-  margin: 0;
+.page-title {
+  color: var(--text);
+  font-weight: 700;
   letter-spacing: -0.01em;
+  margin: 0 0 4px 0;
+  font-size: clamp(1.35rem, 1.1rem + 1.6vw, 2rem);
+}
+.page-subtitle {
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95rem;
 }
 
-.history-header .page-subtitle {
-  font-size: 0.95rem;
-  color: var(--sl-muted);
-  margin: 0.25rem 0 0 0;
-}
 
 
 /* tarjeta contenedora */
