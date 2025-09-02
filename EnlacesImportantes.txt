@@ -1,0 +1,8 @@
+Enlaces importantes en APP SpecuLab:
+
+APP WEB:
+https://speculab.netlify.app/
+
+API:
+https://devdemoapi3.azurewebsites.net
+
