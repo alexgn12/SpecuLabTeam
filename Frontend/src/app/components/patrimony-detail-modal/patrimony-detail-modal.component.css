@@ -1,11 +1,12 @@
 /* === SURFACE DEL DIALOGO (compacto) === */
 .sl-modal .mat-mdc-dialog-surface,
 :host ::ng-deep .mat-mdc-dialog-surface {
-  width: min(380px, 92vw) !important;     /* antes 520px */
-  border-radius: 14px !important;         /* antes 28/16 -> más discreto */
+  width: min(340px, 98vw) !important;     /* más pequeño para móvil */
+  max-width: 98vw !important;
+  border-radius: 12px !important;
   background: #fff !important;
   border: 1px solid #e8e9ee !important;
-  box-shadow: 0 12px 36px rgba(20,24,40,.12) !important; /* menos “pesado” */
+  box-shadow: 0 8px 28px rgba(20,24,40,.10) !important;
   padding: 0 !important;
   overflow: hidden !important;
 }
@@ -106,8 +107,34 @@
 
 /* === RESPONSIVE === */
 @media (max-width: 420px) {
-  .modal-header { padding: 10px 12px; }
-  .modal-actions { padding: 8px 10px 10px; }
-  .modal-body { padding: 10px 12px 6px !important; }
-  .field { grid-template-columns: 1fr; row-gap: 4px; }
+  .sl-modal .mat-mdc-dialog-surface,
+  :host ::ng-deep .mat-mdc-dialog-surface {
+    width: min(98vw, 320px) !important;
+    border-radius: 10px !important;
+  }
+  .modal-header { padding: 8px 8px; }
+  .modal-title { font-size: 1.08rem; }
+  .modal-actions { padding: 7px 7px 8px; }
+  .modal-body { padding: 8px 8px 4px !important; }
+  .field { grid-template-columns: 1fr; row-gap: 4px; padding: 6px 0; }
+  .label, .value { font-size: .88rem; }
+  .type-chip { font-size: .68rem; padding: 2px 6px; }
+  .btn-cool-close { font-size: .76rem; padding: .18rem .5rem; }
+}
+
+@media (max-width: 350px) {
+  .sl-modal .mat-mdc-dialog-surface,
+  :host ::ng-deep .mat-mdc-dialog-surface {
+    width: 99vw !important;
+    min-width: unset !important;
+    border-radius: 8px !important;
+  }
+  .modal-header, .modal-actions, .modal-body {
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+  }
+  .modal-title { font-size: .98rem; }
+  .label, .value { font-size: .82rem; }
+  .type-chip { font-size: .62rem; padding: 1px 4px; }
+  .btn-cool-close { font-size: .7rem; padding: .14rem .4rem; }
 }
