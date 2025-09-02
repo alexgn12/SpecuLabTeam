@@ -22,7 +22,7 @@
 
         <sl-info-card [label]="''" [value]="summary?.income | currency:'EUR':'symbol':'1.0-0'" class="success">
           <div class="kpi-head"><i class="bi bi-arrow-up-circle kpi-icon text-success"></i> Ingresos acumulados</div>
-          <a class="kpi-link" [routerLink]="['/transactions']">Ver transacciones</a>
+          <a class="kpi-link" [routerLink]="['/budget']">Ver transacciones</a>
         </sl-info-card>
       </section>
 
@@ -55,7 +55,7 @@
         <div class="card">
           <div class="card-head">
             <h3><i class="bi bi-arrow-left-right section-icon"></i> Últimas transacciones</h3>
-            <a class="card-link" [routerLink]="['/transacciones']">Ver todas</a>
+            <a class="card-link" [routerLink]="['/budget']">Ver todas</a>
           </div>
           <ul class="tx-list">
             <li *ngFor="let t of transactions" [ngClass]="{'tx-income': t.type === 'INGRESO', 'tx-expense': t.type === 'GASTO'}">
