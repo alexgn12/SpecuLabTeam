@@ -2,7 +2,7 @@
 <h4 class="section-title">Edificios Comprados</h4>
 
 <mat-accordion class="patrimony-accordion enterprise">
-  <mat-expansion-panel class="p-card" *ngFor="let b of pagedBuildings">
+  <mat-expansion-panel class="p-card d-flex flex-column" *ngFor="let b of pagedBuildings">
     <!-- Header en cuadrícula, con botón que no dispara la expansión -->
     <mat-expansion-panel-header class="p-header">
       <div class="p-row">
@@ -23,10 +23,16 @@
           </button>
         </div>
       </div>
+      <!-- Flecha abajo centrada, dentro del header -->
+      <div>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" width="24" height="24" aria-hidden="true" focusable="false" style="display:block;margin:0 auto;fill:#64748b;">
+          <path d="M480-345 240-585l56-56 184 184 184-184 56 56-240 240Z"></path>
+        </svg>
+      </div>
     </mat-expansion-panel-header>
 
     <!-- Cuerpo -->
-    <h5 class="block-title">Apartamentos en este edificio</h5>
+    <h5 class="block-title text-center">Apartamentos en este edificio</h5>
 
     <ng-container *ngIf="getApartmentsByBuildingCode(b.buildingCode).length > 0; else noApts">
       <div class="table-shell">
