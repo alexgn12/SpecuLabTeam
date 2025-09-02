@@ -15,7 +15,6 @@
 /* ============= TOKENS ============= */
 :root,
 .requests-page {
-	--bg: #e2e8f0;
 	--card: #ffffff;
 	--border: #d0d7e3;
 	--shadow: 0 10px 30px rgba(20,24,40,.08);
@@ -67,7 +66,7 @@
   align-items: center;
   width: 100%;
 }
-.c-name { font-size: 1rem; color: var(--text); font-weight: 700; }
+.c-name { font-size: 1rem; color: var(--text); font-weight: 400; }
 .c-name .muted { margin-left: .3rem; font-weight: 600; }
 .c-address { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .c-year { color: var(--text); font-weight: 600; text-align: right; }
