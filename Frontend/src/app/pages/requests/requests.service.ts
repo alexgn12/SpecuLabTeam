@@ -21,7 +21,6 @@ export interface IRequest {
     buildingCode: string;
   };
 }
-
 export interface IPaginatedRequests {
   items: IRequest[];
   total: number;
@@ -102,5 +101,14 @@ export class RequestsService {
       }
     ];
     return this.http.patch(url, body);
+  }
+
+  /**
+   * Crea una nueva solicitud de mantenimiento (POST)
+   * @param payload Objeto con buildingCode, description, apartmentCount, street, issueTypeId
+   */
+  createSolicitation(payload: any): Observable<any> {
+    const url = 'https://devdemoapi2.azurewebsites.net/api/solicitations';
+    return this.http.post(url, payload);
   }
 }
