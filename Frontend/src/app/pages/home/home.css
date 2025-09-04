@@ -131,3 +131,49 @@ app-resumen-requests .card { padding: 14px !important; }
 /* ===== States ===== */
 .state { padding: 24px; text-align: center; color: var(--muted); }
 .state.error { color: #b91c1c; }
+
+/* Siempre cuenta padding/borde dentro del ancho (evita desbordes) */
+*, *::before, *::after { box-sizing: border-box; }
+/* Corta desbordes horizontales de terceros (ej. librerías) */
+body { overflow-x: hidden; }
+
+/* Contenedor: no uses min(1280px,96vw) en móvil */
+.home-container { max-width: 1280px; width: 100%; }
+
+/* KPIs y tarjetas ocupan todo el ancho en móvil y centradas */
+@media (max-width: 991.98px) {
+  .home-container { padding-inline: 12px; }
+  .home-wrap { gap: 16px; }
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Ultra-compacto para móvil pequeño */
+@media (max-width: 575.98px) {
+  :root { font-size: 14px; }                 /* baja todos los rem */
+  .card { padding: 10px; border-radius: 14px; }
+  .card-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+  /* KPIs centradas y más pequeñas */
+  sl-info-card { display: block; width: 100%; }
+  .kpi, .kpi-head, .kpi-sub, .kpi-value { text-align: center; }
+  .kpi-head { font-size: 1rem; }
+  .kpi-value { font-size: 1.1rem; }
+  .kpi-bar { width: 100%; max-width: 420px; margin-inline: auto; }
+
+  /* Gráfico más bajo, canvas adaptativo */
+  .chart-host { height: 150px; }
+  .chart-host canvas { width: 100% !important; height: 100% !important; display: block; }
+
+  /* Transacciones: apila y reduce */
+  .tx-list li { flex-direction: column; align-items: flex-start; }
+  .tx-amount { margin-top: 6px; white-space: normal; }
+  .tx-desc { word-break: break-word; overflow-wrap: anywhere; }
+}
+
+/* Aún más compacto para pantallas < 360px */
+@media (max-width: 359.98px) {
+  :root { font-size: 13px; }
+  .card { padding: 8px; border-radius: 12px; }
+  .chart-host { height: 130px; }
+}
+

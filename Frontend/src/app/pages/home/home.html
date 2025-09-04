@@ -28,9 +28,10 @@
 
 <!-- ZONA SWAPY (3 ítems): dos columnas; el 3º a ancho completo -->
 <om-swapy
-  [templateColumns]="'1.05fr 1fr'"
-  [gridGap]="'16px'"
+  [templateColumns]="templateCols"
+  [gridGap]="gridGap"
   [styleClass]="'home-swapy'"
+  [disableSwap]="isMobile" 
   (onSwap)="handleSwap($event)"
 >
   <!-- Item 1: Solicitudes -->

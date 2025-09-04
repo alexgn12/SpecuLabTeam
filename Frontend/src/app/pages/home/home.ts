@@ -24,6 +24,18 @@ export class HomeComponent implements OnInit, OnDestroy {
   transactions: Transaction[] = [];
   buildingsByDistrict: BuildingsByDistrict[] = [];
 
+  isMobile = false;
+  templateCols = '1.05fr 1fr';   // desktop/tablet
+  gridGap = '16px';
+
+  private mm = window.matchMedia('(max-width: 991.98px)');
+  private onMM = () => {
+    this.isMobile = this.mm.matches;
+    this.templateCols = this.isMobile ? '1fr' : '1.05fr 1fr';
+    this.gridGap = this.isMobile ? '12px' : '16px';
+  };
+
+
   // Chart config (barras horizontales)
   barData: ChartConfiguration<'bar'>['data'] = { labels: [], datasets: [] };
   barOptions: ChartConfiguration<'bar'>['options'] = {
@@ -46,6 +58,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     const s1 = this.home.getSummary();
     const s3 = this.home.getRecentTransactions();
     const s4 = this.home.getBuildingsByDistrict();
+
+    this.onMM();                       // aplica columnas correctas desde el inicio
+    this.mm.addEventListener('change', this.onMM); // reacciona a cambios
 
     this.sub.add(
       combineLatest([s1, s3, s4]).subscribe({
@@ -80,6 +95,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.sub.unsubscribe();
+    this.mm.removeEventListener('change', this.onMM);
   }
 
   get spentPct(): number {
