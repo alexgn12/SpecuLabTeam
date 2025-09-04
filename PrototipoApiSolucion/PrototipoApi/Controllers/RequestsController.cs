@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.JsonPatch.Operations;
 using PrototipoApi.Application.Requests.Commands.CreateRequest;
 using PrototipoApi.Application.Requests.Commands.UpdateRequest;
+using PrototipoApi.Application.Requests.Commands.PatchRequest;
 using PrototipoApi.Application.Requests.Queries.GetRequestById;
-using PrototipoApi.Application.Requests.Commands.UpdateRequestStatus;
 using PrototipoApi.Application.Requests.Queries.GetRequestByBuildingCode;
 using PrototipoApi.BaseDatos;
 using PrototipoApi.Entities;
@@ -89,84 +89,27 @@ public class RequestsController : ControllerBase
         if (patchDoc == null)
             return BadRequest("Se requiere el documento de operaciones PATCH.");
 
-        var request = await _context.Requests.Include(r => r.Status).FirstOrDefaultAsync(r => r.RequestId == id);
-        if (request == null)
-            return NotFound($"Request con id {id} no encontrada");
-
-        var oldStatusId = request.StatusId;
+        // Extraer información relevante del patch
         string? comment = null;
-
-        // Extrae y elimina la operación /comment del patch
-        var commentOp = patchDoc.Operations.FirstOrDefault(op => op.path.ToLower() == "/comment" && op.OperationType == OperationType.Replace);
-        if (commentOp != null)
+        string? statusType = null;
+        DateTime? changeDate = null;
+        foreach (var op in patchDoc.Operations)
         {
-            comment = commentOp.value?.ToString();
-            patchDoc.Operations.Remove(commentOp); // Elimina la operación para evitar el error
+            if (op.path.ToLower() == "/comment" && op.OperationType == OperationType.Replace)
+                comment = op.value?.ToString();
+            if (op.path.ToLower() == "/statustype" && op.OperationType == OperationType.Replace)
+                statusType = op.value?.ToString();
+            if (op.path.ToLower() == "/changedate" && op.OperationType == OperationType.Replace && DateTime.TryParse(op.value?.ToString(), out var dt))
+                changeDate = dt;
         }
+        if (string.IsNullOrWhiteSpace(statusType))
+            return BadRequest("Se requiere el campo StatusType en el patch para cambiar el estado.");
 
-        // Detecta si hay un replace a /statusid con valor 3
-        var statusReplaceOp = patchDoc.Operations.FirstOrDefault(op => op.path.ToLower() == "/statusid" && op.OperationType == OperationType.Replace && op.value != null && int.TryParse(op.value.ToString(), out var v) && v == 3);
-        bool aprobar = statusReplaceOp != null;
-
-        patchDoc.ApplyTo(request, (error) =>
-        {
-            ModelState.AddModelError(error.AffectedObject?.ToString() ?? "patch", error.ErrorMessage);
-        });
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        var status = await _context.Statuses.FindAsync(request.StatusId);
-        if (status == null)
-            return NotFound($"Status con id '{request.StatusId}' no encontrado");
-
-        var history = new RequestStatusHistory
-        {
-            RequestId = request.RequestId,
-            OldStatusId = oldStatusId,
-            NewStatusId = request.StatusId,
-            ChangeDate = DateTime.UtcNow,
-            Comment = comment
-        };
-        _context.RequestStatusHistories.Add(history);
-
-        _context.Requests.Update(request);
-        await _context.SaveChangesAsync();
-
-        // Si se aprobó (statusid == 3), crear transacción de gasto
-        if (aprobar)
-        {
-            var gastoType = await _context.TransactionsTypes.FirstOrDefaultAsync(t => t.TransactionName == "GASTO");
-            if (gastoType == null)
-            {
-                gastoType = new TransactionType { TransactionName = "GASTO" };
-                _context.TransactionsTypes.Add(gastoType);
-                await _context.SaveChangesAsync();
-            }
-            var amount = request.BuildingAmount + request.MaintenanceAmount;
-            var transaction = new PrototipoApi.Entities.Transaction
-            {
-                RequestId = request.RequestId,
-                TransactionTypeId = gastoType.TransactionTypeId,
-                TransactionsType = gastoType,
-                TransactionDate = DateTime.UtcNow,
-                Amount = amount,
-                Description = $"Gasto generado automáticamente al aprobar la solicitud {request.RequestId}"
-            };
-            _context.Transactions.Add(transaction);
-            await _context.SaveChangesAsync();
-
-            // Actualizar el presupuesto global (restar el gasto)
-            var budget = await _context.ManagementBudgets.FirstOrDefaultAsync();
-            if (budget != null)
-            {
-                budget.CurrentAmount -= amount;
-                budget.LastUpdatedDate = transaction.TransactionDate;
-                _context.ManagementBudgets.Update(budget);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        // Devuelve siempre el ID del historial creado
-        return Ok(new { RequestStatusHistoryId = history.RequestStatusHistoryId });
+        var result = await _mediator.Send(new PatchRequestCommand(id, statusType, comment, changeDate));
+        if (result == null)
+            return NotFound($"Request con id {id} no encontrada o StatusType inválido");
+        if (result == false)
+            return BadRequest("El estado ya es el mismo, no se realizó ningún cambio.");
+        return Ok(new { RequestId = id, StatusType = statusType });
     }
 }

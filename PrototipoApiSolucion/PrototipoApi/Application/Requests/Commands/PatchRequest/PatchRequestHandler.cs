@@ -1,36 +1,39 @@
 using MediatR;
 using PrototipoApi.Entities;
 using PrototipoApi.Repositories.Interfaces;
-using System.Threading;
-using System.Threading.Tasks;
-using PrototipoApi.Models;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-
-namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
+namespace PrototipoApi.Application.Requests.Commands.PatchRequest
 {
-    public class UpdateRequestStatusHandler : IRequestHandler<UpdateRequestStatusCommand, bool?>
+    public class PatchRequestHandler : IRequestHandler<PatchRequestCommand, bool?>
     {
         private readonly IRepository<Request> _requests;
-        private readonly IRepository<PrototipoApi.Entities.Status> _statuses;
+        private readonly IRepository<Status> _statuses;
+        private readonly IRepository<RequestStatusHistory> _history;
         private readonly IRepository<PrototipoApi.Entities.Transaction> _transactions;
-        private readonly IRepository<TransactionType> _transactionTypes;
+        private readonly IRepository<PrototipoApi.Entities.TransactionType> _transactionTypes;
         private readonly IRepository<PrototipoApi.Entities.ManagementBudget> _budgetRepository;
-        public UpdateRequestStatusHandler(
+
+        public PatchRequestHandler(
             IRepository<Request> requests,
-            IRepository<PrototipoApi.Entities.Status> statuses,
+            IRepository<Status> statuses,
+            IRepository<RequestStatusHistory> history,
             IRepository<PrototipoApi.Entities.Transaction> transactions,
-            IRepository<TransactionType> transactionTypes,
+            IRepository<PrototipoApi.Entities.TransactionType> transactionTypes,
             IRepository<PrototipoApi.Entities.ManagementBudget> budgetRepository)
         {
             _requests = requests;
             _statuses = statuses;
+            _history = history;
             _transactions = transactions;
             _transactionTypes = transactionTypes;
             _budgetRepository = budgetRepository;
         }
-        public async Task<bool?> Handle(UpdateRequestStatusCommand request, CancellationToken cancellationToken)
+
+        public async Task<bool?> Handle(PatchRequestCommand request, CancellationToken cancellationToken)
         {
             var entity = await _requests.GetByIdAsync(request.RequestId);
             if (entity == null)
@@ -50,7 +53,7 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
                     OldStatusId = oldStatusId,
                     NewStatusId = status.StatusId,
                     ChangeDate = request.ChangeDate ?? DateTime.UtcNow,
-                    Comment = string.IsNullOrWhiteSpace(request.Comment) ? "Cambio de estado vía API por StatusType" : request.Comment
+                    Comment = string.IsNullOrWhiteSpace(request.Comment) ? "Cambio de estado vía PATCH" : request.Comment
                 });
             });
             await _requests.SaveChangesAsync();
@@ -58,7 +61,6 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
             // Si el nuevo estado es "Aprobado", crear transacción de gasto
             if (status.StatusType == "Aprobado")
             {
-                // Buscar el TransactionTypeId para "GASTO"
                 var gastoType = await _transactionTypes.GetOneAsync(t => t.TransactionName == "GASTO");
                 if (gastoType != null)
                 {
@@ -67,7 +69,7 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
                     {
                         RequestId = entity.RequestId,
                         TransactionTypeId = gastoType.TransactionTypeId,
-                        TransactionsType = gastoType, // Asignar la navegación también
+                        TransactionsType = gastoType,
                         TransactionDate = DateTime.UtcNow,
                         Amount = amount,
                         Description = $"Gasto generado automáticamente al aprobar la solicitud {entity.RequestId}"
@@ -75,7 +77,6 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
                     await _transactions.AddAsync(transaction);
                     await _transactions.SaveChangesAsync();
 
-                    // Actualizar el presupuesto global (restar el gasto)
                     var budget = (await _budgetRepository.GetAllAsync()).FirstOrDefault();
                     if (budget != null)
                     {
@@ -90,4 +91,3 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequestStatus
         }
     }
 }
-
