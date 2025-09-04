@@ -178,3 +178,20 @@ body { overflow-x: hidden; }
   .chart-host { height: 130px; }
 }
 
+/* MODO MÓVIL: scroll suave encima de las tarjetas */
+.is-mobile .om-swapy-item,
+.is-mobile [data-swapy-item] {
+  touch-action: pan-y !important;   /* permite scroll vertical sobre la tarjeta */
+  cursor: default;                  /* sin “agarre” visual */
+  pointer-events: auto;             /* asegura interacción normal */
+}
+
+/* El canvas del gráfico no bloquea el scroll */
+.is-mobile .chart-host,
+.is-mobile .chart-host canvas {
+  touch-action: pan-y !important;
+}
+
+/* Por si quedara alguna regla antigua en tu proyecto:
+   NO uses esto en móvil (bloquea scroll): */
+/* [data-swapy-item]{ touch-action: none; }  <-- eliminar si existe */
