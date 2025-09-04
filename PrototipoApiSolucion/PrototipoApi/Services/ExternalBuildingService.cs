@@ -3,34 +3,34 @@ using System.Net.Http.Json;
 using System.Threading.Tasks;
 using PrototipoApi.Entities;
 using System.Text.Json;
+using AutoMapper;
 
 namespace PrototipoApi.Services
 {
     public class ExternalBuildingService : IExternalBuildingService
     {
         private readonly HttpClient _httpClient;
-        private const string ApiUrl = "https://api.jsonbin.io/v3/b/68a7092543b1c97be92445d8";
+        private readonly IMapper _mapper;
 
-        public ExternalBuildingService(HttpClient httpClient)
+        public ExternalBuildingService(HttpClient httpClient, IMapper mapper)
         {
             _httpClient = httpClient;
+            _mapper = mapper;
         }
 
         public async Task<Building?> GetBuildingByCodeAsync(string buildingCode)
         {
-            // Construir la URL con el código de edificio según la nueva especificación
-            var url = $"https://172.30.137.209:7124/api/Building/bycode/{buildingCode}";
+            var url = $"https://devdemoapi1.azurewebsites.net/api/Building/bycode/{buildingCode}";
             var response = await _httpClient.GetAsync(url);
             if (!response.IsSuccessStatusCode)
                 return null;
 
-            // Deserializar el JSON directamente a la entidad Building (ignorando BuildingId)
-            var building = await response.Content.ReadFromJsonAsync<Building>();
-            if (building == null)
+            var externalDto = await response.Content.ReadFromJsonAsync<ExternalBuildingDto>();
+            if (externalDto == null)
                 return null;
 
-            // Ignorar BuildingId recibido de la API externa
-            building.BuildingId = 0;
+            var building = _mapper.Map<Building>(externalDto);
+            building.BuildingCode = buildingCode;
             return building;
         }
     }
