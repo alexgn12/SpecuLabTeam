@@ -1,50 +1,54 @@
-/* Iconos grandes y visuales para KPIs y secciones */
-.kpi-head .kpi-icon {
-  font-size: 1.3rem;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-.section-icon {
-  font-size: 1.1rem;
-  vertical-align: middle;
-  margin-right: 8px;
-}
-.kpi-head {
-  color: var(--muted);
-  font-weight: 700;
-  font-size: 1.15rem;
-}
-.card-head h3 {
-  font-size: 1.25rem;
-  font-weight: 800;
-}
+/* ===== Tokens / Paleta ===== */
 :host {
   --card-bg: #fff;
   --card-bd: #e9edf3;
   --card-shadow: 0 10px 28px rgba(20,24,40,.07);
   --text: #0f172a;
   --muted: #64748b;
+  --gap: 16px;
 }
 
-/* ===== Contenedor global: MÁS ANCHO + margen superior ===== */
+/* ===== Iconos / títulos ===== */
+.kpi-head .kpi-icon { font-size: 1.3rem; vertical-align: middle; margin-right: 8px; }
+.section-icon { font-size: 1.1rem; vertical-align: middle; margin-right: 8px; }
+
+.kpi-head { color: var(--muted); font-weight: 700; font-size: 1.15rem; }
+
+/* (Unificada) */
+.card-head h3 {
+  margin: 0;
+  font-weight: 800;
+  color: var(--text);
+  font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+}
+
+/* ===== Contenedor global ===== */
 .home-container {
-  width: min(1280px, 96vw);   /* más ancho */
+  width: min(1280px, 96vw);
   margin-inline: auto;
-  padding-top: 14px;          /* margen superior */
-  padding-bottom: 64px;       /* aire con footer fijo */
+  padding-top: 14px;
+  padding-bottom: 64px;
 }
 
-/* ===== Grid interno y separación entre filas ===== */
+/* ===== Grid interno ===== */
 .home-wrap { display: grid; gap: 18px; }
 .home-wrap > section { margin-top: 8px; }
 
 /* ===== Grids ===== */
-.grid-3 { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 16px; }
-.grid-2 { display: grid; grid-template-columns: 1.05fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: var(--gap); }
+.grid-2 { display: grid; grid-template-columns: 1.05fr 1fr; gap: var(--gap); }
 .grid-1 { display: grid; grid-template-columns: 1fr; }
 
-@media (max-width: 1200px) {
+/* 992–1199px: grid-3 -> 2 columnas; grid-2 se mantiene en 2 */
+@media (max-width: 1199.98px) {
+  .grid-3 { grid-template-columns: 1fr 1fr; }
+}
+
+/* ≤991px: todo a 1 columna y centrado visual */
+@media (max-width: 991.98px) {
   .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .home-container { width: 100%; padding-inline: 12px; }
+  .home-wrap { gap: 16px; }
 }
 
 /* ===== Card base ===== */
@@ -53,19 +57,20 @@
   border: 1px solid var(--card-bd);
   border-radius: 16px;
   box-shadow: var(--card-shadow);
-  padding: 14px;
+  padding: clamp(12px, 1.2vw, 14px);
 }
 .card-head {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
   margin-bottom: 8px;
 }
-.card-head h3 { margin: 0; font-size: 1rem; font-weight: 800; color: var(--text); }
 .card-link { font-size: .86rem; color: #2563eb; text-decoration: none; }
 .card-link:hover { text-decoration: underline; }
 
 /* ===== KPI ===== */
 .kpi { display: grid; gap: 8px; }
-.kpi-head { color: var(--muted); font-weight: 700; font-size: .86rem; }
 .kpi-value { font-size: 1.32rem; font-weight: 800; color: var(--text); }
 .kpi-value.success { color: #065f46; }
 .kpi-value.warning { color: #7c2d12; }
@@ -73,29 +78,30 @@
 .kpi-link { font-size: .86rem; color: #2563eb; text-decoration: none; }
 .kpi-link:hover { text-decoration: underline; }
 
-.kpi-bar {
-  height: 7px; border-radius: 999px; background: #e5e7eb; overflow: hidden;
-}
-.kpi-bar-fill {
-  height: 100%; width: 0;
-  background: linear-gradient(90deg, #60a5fa, #2563eb);
-  transition: width .4s ease;
+.kpi-bar { height: 7px; border-radius: 999px; background: #e5e7eb; overflow: hidden; }
+.kpi-bar-fill { height: 100%; width: 0; background: linear-gradient(90deg, #60a5fa, #2563eb); transition: width .4s ease; }
+
+/* KPIs: mejora en móvil (centradas) */
+@media (max-width: 575.98px) {
+  /* El componente KPI ocupa todo el ancho */
+  sl-info-card { display: block; width: 100%; }
+  /* Centra textos/elementos internos de la KPI */
+  .kpi, .kpi-head, .kpi-sub, .kpi-value { text-align: center; }
+  .kpi-head .kpi-icon { margin-right: 6px; }
+  .kpi-bar { width: min(420px, 100%); margin-inline: auto; }
 }
 
 /* ===== Resumen Requests (huésped) ===== */
 app-resumen-requests .card { padding: 14px !important; }
 
-/* ===== Chart un poco más alto ===== */
+/* ===== Chart ===== */
 .chart-card { padding-bottom: 6px; }
 .chart-host { height: 210px; }
+@media (max-width: 991.98px) { .chart-host { height: 190px; } }
+@media (max-width: 575.98px) { .chart-host { height: 170px; } }
 
-/* ===== Transacciones: lista vertical ===== */
-.tx-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: block;               /* columna única */
-}
+/* ===== Transacciones ===== */
+.tx-list { list-style: none; padding: 0; margin: 0; display: block; }
 .tx-list li {
   display: flex;
   align-items: center;
@@ -116,12 +122,76 @@ app-resumen-requests .card { padding: 14px !important; }
 .tx-income .tx-amount { color: #065f46; }
 .tx-expense .tx-amount { color: #b91c1c; }
 
-/* Móvil: muestra el importe dentro a la izquierda y oculta el de la derecha */
-@media (max-width: 520px) {
-  .tx-amount { display: none; }
-  .tx-amount-mobile { display: block; font-weight: 800; }
+/* En móvil NO ocultamos el importe; lo reubicamos y centramos el conjunto visual */
+@media (max-width: 575.98px) {
+  .tx-list li { flex-direction: column; align-items: flex-start; }
+  .tx-amount { margin-top: 6px; white-space: normal; }
 }
 
 /* ===== States ===== */
 .state { padding: 24px; text-align: center; color: var(--muted); }
 .state.error { color: #b91c1c; }
+
+/* Siempre cuenta padding/borde dentro del ancho (evita desbordes) */
+*, *::before, *::after { box-sizing: border-box; }
+/* Corta desbordes horizontales de terceros (ej. librerías) */
+body { overflow-x: hidden; }
+
+/* Contenedor: no uses min(1280px,96vw) en móvil */
+.home-container { max-width: 1280px; width: 100%; }
+
+/* KPIs y tarjetas ocupan todo el ancho en móvil y centradas */
+@media (max-width: 991.98px) {
+  .card { touch-action: pan-y; }
+  .home-container { padding-inline: 12px; }
+  .home-wrap { gap: 16px; }
+  .grid-3, .grid-2 { grid-template-columns: 1fr; }
+}
+
+/* Ultra-compacto para móvil pequeño */
+@media (max-width: 575.98px) {
+  :root { font-size: 14px; }                 /* baja todos los rem */
+  .card { padding: 10px; border-radius: 14px; }
+  .card-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+
+  /* KPIs centradas y más pequeñas */
+  sl-info-card { display: block; width: 100%; }
+  .kpi, .kpi-head, .kpi-sub, .kpi-value { text-align: center; }
+  .kpi-head { font-size: 1rem; }
+  .kpi-value { font-size: 1.1rem; }
+  .kpi-bar { width: 100%; max-width: 420px; margin-inline: auto; }
+
+  /* Gráfico más bajo, canvas adaptativo */
+  .chart-host { height: 150px; }
+  .chart-host canvas { width: 100% !important; height: 100% !important; display: block; }
+
+  /* Transacciones: apila y reduce */
+  .tx-list li { flex-direction: column; align-items: flex-start; }
+  .tx-amount { margin-top: 6px; white-space: normal; }
+  .tx-desc { word-break: break-word; overflow-wrap: anywhere; }
+}
+
+/* Aún más compacto para pantallas < 360px */
+@media (max-width: 359.98px) {
+  :root { font-size: 13px; }
+  .card { padding: 8px; border-radius: 12px; }
+  .chart-host { height: 130px; }
+}
+
+/* MODO MÓVIL: scroll suave encima de las tarjetas */
+.is-mobile .om-swapy-item,
+.is-mobile [data-swapy-item] {
+  touch-action: pan-y !important;   /* permite scroll vertical sobre la tarjeta */
+  cursor: default;                  /* sin “agarre” visual */
+  pointer-events: auto;             /* asegura interacción normal */
+}
+
+/* El canvas del gráfico no bloquea el scroll */
+.is-mobile .chart-host,
+.is-mobile .chart-host canvas {
+  touch-action: pan-y !important;
+}
+
+/* Por si quedara alguna regla antigua en tu proyecto:
+   NO uses esto en móvil (bloquea scroll): */
+/* [data-swapy-item]{ touch-action: none; }  <-- eliminar si existe */
