@@ -142,6 +142,7 @@ body { overflow-x: hidden; }
 
 /* KPIs y tarjetas ocupan todo el ancho en móvil y centradas */
 @media (max-width: 991.98px) {
+  .card { touch-action: pan-y; }
   .home-container { padding-inline: 12px; }
   .home-wrap { gap: 16px; }
   .grid-3, .grid-2 { grid-template-columns: 1fr; }
