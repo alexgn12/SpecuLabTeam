@@ -1,4 +1,4 @@
-namespace PrototipoApi.Services
+namespace PrototipoApi.Models
 {
     public class ExternalBuildingDto
     {

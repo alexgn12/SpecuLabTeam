@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using PrototipoApi.Entities;
 using System.Text.Json;
 using AutoMapper;
+using PrototipoApi.Models;
 
 namespace PrototipoApi.Services
 {
