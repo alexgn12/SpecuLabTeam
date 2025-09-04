@@ -7,11 +7,12 @@ import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
 import { ResumenRequestsComponent } from 'src/app/components/resumen-requests/resumen-requests.component';
 import { InfoCard } from '../../components/info-card/info-card';
+import { NgxSwapyComponent } from '@omnedia/ngx-swapy';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink, AsyncPipe, DatePipe, CurrencyPipe, NgChartsModule, NgClass, ResumenRequestsComponent, InfoCard],
+  imports: [CommonModule, RouterLink, AsyncPipe, DatePipe, CurrencyPipe, NgChartsModule, NgClass, ResumenRequestsComponent, InfoCard, NgxSwapyComponent],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })

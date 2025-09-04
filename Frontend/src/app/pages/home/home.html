@@ -26,50 +26,58 @@
         </sl-info-card>
       </section>
 
-      <!-- FILA 2: Solicitudes + Distritos -->
-      <section class="grid-2">
-        <div>
-          <div class="card card-section">
-            <div class="card-head">
-              <h3><i class="bi bi-list-task section-icon"></i> Solicitudes</h3>
-                  <a class="card-link" [routerLink]="['/requests']">Ver todas</a>
-            </div>
-            <app-resumen-requests></app-resumen-requests>
-          </div>
-        </div>
- 
+<!-- ZONA SWAPY (3 ítems): dos columnas; el 3º a ancho completo -->
+<om-swapy
+  [templateColumns]="'1.05fr 1fr'"
+  [gridGap]="'16px'"
+  [styleClass]="'home-swapy'"
+  (onSwap)="handleSwap($event)"
+>
+  <!-- Item 1: Solicitudes -->
+  <ng-template>
+    <div class="card card-section">
+      <div class="card-head">
+        <h3><i class="bi bi-list-task section-icon"></i> Solicitudes</h3>
+        <a class="card-link" [routerLink]="['/requests']">Ver todas</a>
+      </div>
+      <app-resumen-requests></app-resumen-requests>
+    </div>
+  </ng-template>
 
-        <div class="card chart-card">
-          <div class="card-head">
-            <h3><i class="bi bi-geo-alt section-icon"></i> Operaciones Por Barrios</h3>
-            <a class="card-link" [routerLink]="['/patrimony']">Ir a Patrimonio</a>
-          </div>
-          <div class="chart-host">
-            <canvas baseChart [data]="barData" [options]="barOptions" [type]="'bar'"></canvas>
-          </div>
-        </div>
-      </section>
+  <!-- Item 2: Operaciones por Barrios (gráfico) -->
+  <ng-template>
+    <div class="card chart-card">
+      <div class="card-head">
+        <h3><i class="bi bi-geo-alt section-icon"></i> Operaciones Por Barrios</h3>
+        <a class="card-link" [routerLink]="['/patrimony']">Ir a Patrimonio</a>
+      </div>
+      <div class="chart-host">
+        <canvas baseChart [data]="barData" [options]="barOptions" [type]="'bar'"></canvas>
+      </div>
+    </div>
+  </ng-template>
 
-      <!-- FILA 3: Transacciones recientes -->
-      <section class="grid-1">
-        <div class="card">
-          <div class="card-head">
-            <h3><i class="bi bi-arrow-left-right section-icon"></i> Últimas transacciones</h3>
-            <a class="card-link" [routerLink]="['/budget']">Ver todas</a>
+  <!-- Item 3: Últimas transacciones (span 2 columnas) -->
+  <ng-template>
+    <div class="card">
+      <div class="card-head">
+        <h3><i class="bi bi-arrow-left-right section-icon"></i> Últimas transacciones</h3>
+        <a class="card-link" [routerLink]="['/budget']">Ver todas</a>
+      </div>
+      <ul class="tx-list">
+        <li *ngFor="let t of transactions" [ngClass]="{'tx-income': t.type === 'INGRESO', 'tx-expense': t.type === 'GASTO'}">
+          <div class="tx-left">
+            <div class="tx-desc">{{ t.description }}</div>
+            <div class="tx-date">{{ t.transactionDate | date:'mediumDate' }}</div>
           </div>
-          <ul class="tx-list">
-            <li *ngFor="let t of transactions" [ngClass]="{'tx-income': t.type === 'INGRESO', 'tx-expense': t.type === 'GASTO'}">
-              <div class="tx-left">
-                <div class="tx-desc">{{ t.description }}</div>
-                <div class="tx-date">{{ t.transactionDate | date:'mediumDate' }}</div>
-              </div>
-              <div class="tx-amount">
-                {{ t.amount | currency:'EUR':'symbol':'1.0-0' }}
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <div class="tx-amount">
+            {{ t.amount | currency:'EUR':'symbol':'1.0-0' }}
+          </div>
+        </li>
+      </ul>
+    </div>
+  </ng-template>
+</om-swapy>
 
     </div>
   </div>
