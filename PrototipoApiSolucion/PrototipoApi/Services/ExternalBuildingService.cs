@@ -18,31 +18,20 @@ namespace PrototipoApi.Services
 
         public async Task<Building?> GetBuildingByCodeAsync(string buildingCode)
         {
-            var response = await _httpClient.GetAsync(ApiUrl);
-            response.EnsureSuccessStatusCode();
-            var json = await response.Content.ReadAsStringAsync();
-            using var doc = JsonDocument.Parse(json);
-            var root = doc.RootElement;
-            if (root.TryGetProperty("record", out var record))
-            {
-                foreach (var buildingElem in record.EnumerateArray())
-                {
-                    if (buildingElem.TryGetProperty("BuildingCode", out var codeElem) && codeElem.GetString() == buildingCode)
-                    {
-                        return new Building
-                        {
-                            BuildingCode = buildingElem.GetProperty("BuildingCode").GetString() ?? string.Empty,
-                            BuildingName = buildingElem.GetProperty("BuildingName").GetString() ?? string.Empty,
-                            Street = buildingElem.GetProperty("Street").GetString() ?? string.Empty,
-                            District = buildingElem.GetProperty("District").GetString() ?? string.Empty,
-                            CreatedDate = buildingElem.GetProperty("CreatedDate").GetDateTime(),
-                            FloorCount = buildingElem.GetProperty("FloorCount").GetInt32(),
-                            YearBuilt = buildingElem.GetProperty("YearBuilt").GetInt32()
-                        };
-                    }
-                }
-            }
-            return null;
+            // Construir la URL con el código de edificio según la nueva especificación
+            var url = $"https://172.30.137.209:7124/api/Building/bycode/{buildingCode}";
+            var response = await _httpClient.GetAsync(url);
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            // Deserializar el JSON directamente a la entidad Building (ignorando BuildingId)
+            var building = await response.Content.ReadFromJsonAsync<Building>();
+            if (building == null)
+                return null;
+
+            // Ignorar BuildingId recibido de la API externa
+            building.BuildingId = 0;
+            return building;
         }
     }
 }

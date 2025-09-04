@@ -20,6 +20,9 @@ export class Formulario {
   errorMsg = '';
 
   requestId?: number;
+  apartmentCount?: number;
+  street?: string;
+  issueTypeId?: number;
 
   constructor(
     private fb: FormBuilder,
@@ -29,7 +32,10 @@ export class Formulario {
   ) {
     this.form = this.fb.group({
       buildingCode: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      apartmentCount: [{ value: '', disabled: true }, Validators.required],
+      street: [{ value: '', disabled: true }, Validators.required],
+      issueTypeId: [{ value: '', disabled: true }, Validators.required]
     });
 
     this.route.paramMap.subscribe(params => {
@@ -42,6 +48,23 @@ export class Formulario {
         this.requestId = +reqId;
       }
     });
+    this.route.queryParamMap.subscribe(query => {
+      const apartmentCount = query.get('apartmentCount');
+      if (apartmentCount) {
+        this.apartmentCount = +apartmentCount;
+        this.form.patchValue({ apartmentCount: this.apartmentCount });
+      }
+      const street = query.get('street');
+      if (street) {
+        this.street = street;
+        this.form.patchValue({ street: this.street });
+      }
+      const issueTypeId = query.get('issueTypeId');
+      if (issueTypeId) {
+        this.issueTypeId = +issueTypeId;
+        this.form.patchValue({ issueTypeId: this.issueTypeId });
+      }
+    });
   }
 
   enviarPeticion() {
@@ -49,35 +72,49 @@ export class Formulario {
     this.successMsg = '';
     this.errorMsg = '';
     if (this.form.valid) {
-      // Aquí iría la llamada real al backend
-      this.successMsg = '¡Petición enviada correctamente a la empresa de mantenimiento!';
-      // Cambiar estado a Pendiente (statusId = 2) si hay requestId
-      if (this.requestId) {
-        const buildingCode = this.form.get('buildingCode')?.value || '';
-        const comment = `el edificio ${buildingCode} esta pendiente de presupuesto`;
-        this.requestsService.updateRequestStatusPatch(this.requestId, 2, comment).subscribe({
-          next: () => {
-            // Estado actualizado, continuar con el flujo normal
+      // Construir el JSON para el endpoint
+      const payload = {
+        buildingCode: this.form.get('buildingCode')?.value,
+        description: this.form.get('description')?.value,
+        apartmentCount: this.apartmentCount,
+        Address: this.street,
+        issueTypeId: this.issueTypeId || 1, // Por defecto 1 si no viene
+        MaintenanceCost: 1
+      };
+      // Llamada real al backend
+      this.requestsService.createSolicitation(payload).subscribe({
+        next: () => {
+          this.successMsg = '¡Petición enviada correctamente a la empresa de mantenimiento!';
+          // Cambiar estado a Pendiente (statusId = 2) si hay requestId
+          if (this.requestId) {
+            const buildingCode = this.form.get('buildingCode')?.value || '';
+            const comment = `el edificio ${buildingCode} esta pendiente de presupuesto`;
+            this.requestsService.updateRequestStatusPatch(this.requestId, 2, comment).subscribe({
+              next: () => {
+                alert(this.successMsg);
+                setTimeout(() => {
+                  this.router.navigate(['/requests']);
+                }, 1000);
+                this.form.reset();
+                this.enviado = false;
+              },
+              error: () => {
+                this.errorMsg = 'Error al actualizar el estado de la solicitud.';
+              }
+            });
+          } else {
             alert(this.successMsg);
             setTimeout(() => {
               this.router.navigate(['/requests']);
             }, 1000);
             this.form.reset();
             this.enviado = false;
-          },
-          error: () => {
-            this.errorMsg = 'Error al actualizar el estado de la solicitud.';
           }
-        });
-      } else {
-        // Si no hay requestId, solo mostrar el mensaje y redirigir
-        alert(this.successMsg);
-        setTimeout(() => {
-          this.router.navigate(['/requests']);
-        }, 1000);
-        this.form.reset();
-        this.enviado = false;
-      }
+        },
+        error: () => {
+          this.errorMsg = 'Error al enviar la petición al backend.';
+        }
+      });
     } else {
       this.errorMsg = 'Por favor, rellena todos los campos correctamente.';
     }
