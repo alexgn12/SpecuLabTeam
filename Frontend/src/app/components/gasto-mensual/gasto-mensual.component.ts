@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BudgetService } from '../../pages/budget/budget.service';
 import { ChartConfiguration } from 'chart.js';
-import { NgChartsModule } from 'ng2-charts';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 
 // Opcional: define la interfaz de la respuesta para evitar usar any
 interface MonthlyGastoIngreso {
@@ -13,6 +13,8 @@ interface MonthlyGastoIngreso {
   totalGasto?: number;
 }
 
+type ViewMode = 'gasto' | 'ingreso';
+
 @Component({
   selector: 'gasto-mensual',
   templateUrl: './gasto-mensual.component.html',
@@ -21,8 +23,13 @@ interface MonthlyGastoIngreso {
   imports: [CommonModule, NgChartsModule]
 })
 export class GastoMensualComponent implements OnInit {
+  @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
   loading = true;
   error: string | null = null;
+
+  // Estado del selector (por defecto: gastos)
+  view: ViewMode = 'gasto';
 
   monthlyExpensesLabels: string[] = [
     'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
@@ -31,31 +38,10 @@ export class GastoMensualComponent implements OnInit {
   monthlyExpensesData: number[] = Array(12).fill(0);
   monthlyIncomeData: number[] = Array(12).fill(0);
 
-  // Configuración de datos del gráfico
+  // Configuración de datos del gráfico (1 sola serie visible)
   barChartData: ChartConfiguration<'bar'>['data'] = {
     labels: this.monthlyExpensesLabels,
-    datasets: [
-      {
-        data: this.monthlyExpensesData,
-        label: 'Gastos',
-        backgroundColor: '#dc2626',
-        hoverBackgroundColor: '#ef4444',
-        borderColor: '#ffffff',
-        borderWidth: 1,
-        borderRadius: 8,
-        borderSkipped: false as any
-      },
-      {
-        data: this.monthlyIncomeData,
-        label: 'Ingresos',
-        backgroundColor: '#16a34a',
-        hoverBackgroundColor: '#22c55e',
-        borderColor: '#ffffff',
-        borderWidth: 1,
-        borderRadius: 8,
-        borderSkipped: false as any
-      }
-    ]
+    datasets: []
   };
 
   // Configuración de opciones del gráfico
@@ -65,17 +51,7 @@ export class GastoMensualComponent implements OnInit {
     layout: { padding: 8 },
     plugins: {
       legend: {
-        display: true,
-        position: 'bottom',
-        labels: {
-          usePointStyle: true,
-          pointStyle: 'circle',
-          boxWidth: 8,
-          boxHeight: 8,
-          padding: 12,
-          font: { size: 12, weight: '500' },
-          color: '#475569'
-        }
+        display: false,                 // oculto porque solo hay 1 serie visible
       },
       tooltip: {
         enabled: true,
@@ -84,8 +60,8 @@ export class GastoMensualComponent implements OnInit {
         callbacks: {
           label: (ctx) => {
             const val = ctx.parsed.y ?? 0;
-            const nf = new Intl.NumberFormat('es-ES', { 
-              style: 'currency', currency: 'EUR', maximumFractionDigits: 0 
+            const nf = new Intl.NumberFormat('es-ES', {
+              style: 'currency', currency: 'EUR', maximumFractionDigits: 0
             });
             return `${ctx.dataset.label}: ${nf.format(val)}`;
           }
@@ -114,9 +90,9 @@ export class GastoMensualComponent implements OnInit {
           color: '#64748b',
           font: { size: 12 },
           padding: 6,
-          callback: (v) => 
-            new Intl.NumberFormat('es-ES', { 
-              style: 'currency', currency: 'EUR', maximumFractionDigits: 0 
+          callback: (v) =>
+            new Intl.NumberFormat('es-ES', {
+              style: 'currency', currency: 'EUR', maximumFractionDigits: 0
             }).format(Number(v))
         }
       }
@@ -166,6 +142,13 @@ export class GastoMensualComponent implements OnInit {
     this.updateChartForYear();
   }
 
+  onSelect(mode: ViewMode) {
+    if (this.view === mode) return;
+    this.view = mode;
+    this.buildSingleDataset();      // reconstruye la serie visible
+    this.chart?.update();
+  }
+
   updateChartForYear() {
     if (!this.selectedYear) return;
 
@@ -183,6 +166,7 @@ export class GastoMensualComponent implements OnInit {
 
     ingresos.forEach(i => {
       if (i.mes >= 1 && i.mes <= 12) {
+        // Nota: si tu API usa totalIngreso, cámbialo aquí.
         monthlyIncome[i.mes - 1] = i.amount ?? i.totalGasto ?? 0;
       }
     });
@@ -190,24 +174,26 @@ export class GastoMensualComponent implements OnInit {
     this.monthlyExpensesData = monthlyExpenses;
     this.monthlyIncomeData = monthlyIncome;
 
+    // Construye la vista con el modo actual (gasto/ingreso)
+    this.buildSingleDataset();
+  }
+
+  private buildSingleDataset() {
+    const isGasto = this.view === 'gasto';
+    const data = isGasto ? this.monthlyExpensesData : this.monthlyIncomeData;
+
+    const label = isGasto ? 'Gastos' : 'Ingresos';
+    const backgroundColor = isGasto ? '#dc2626' : '#16a34a';
+    const hoverBackgroundColor = isGasto ? '#ef4444' : '#22c55e';
+
     this.barChartData = {
       labels: this.monthlyExpensesLabels,
       datasets: [
         {
-          data: this.monthlyExpensesData,
-          label: 'Gastos',
-          backgroundColor: '#dc2626',
-          hoverBackgroundColor: '#ef4444',
-          borderColor: '#ffffff',
-          borderWidth: 1,
-          borderRadius: 8,
-          borderSkipped: false as any
-        },
-        {
-          data: this.monthlyIncomeData,
-          label: 'Ingresos',
-          backgroundColor: '#16a34a',
-          hoverBackgroundColor: '#22c55e',
+          data,
+          label,
+          backgroundColor,
+          hoverBackgroundColor,
           borderColor: '#ffffff',
           borderWidth: 1,
           borderRadius: 8,

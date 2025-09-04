@@ -76,3 +76,6 @@
   .gm-card { border-radius: 16px; }
   .gm-toolbar { border-radius: 12px; }
 }
+
+/* Toggle Gastos/Ingresos */
+.gm-toggle .btn { min-width: 96px; }

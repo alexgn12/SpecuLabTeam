@@ -11,20 +11,39 @@
 
   <!-- Contenido -->
   <div *ngIf="!loading && !error">
-    <!-- Toolbar de filtros -->
-    <div class="gm-toolbar mb-3 d-flex align-items-center">
-      <label for="yearSelect" class="gm-label me-2">Año:</label>
-      <select id="yearSelect" class="form-select gm-select w-auto"
-              [value]="selectedYear"
-              (change)="onYearChange($event)">
-        <option *ngFor="let year of years" [value]="year">{{ year }}</option>
-      </select>
+    <!-- Toolbar: Año + Toggle Gastos/Ingresos -->
+    <div class="gm-toolbar mb-3 d-flex align-items-center justify-content-between gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <label for="yearSelect" class="gm-label">Año:</label>
+        <select id="yearSelect" class="form-select gm-select w-auto"
+                [value]="selectedYear"
+                (change)="onYearChange($event)">
+          <option *ngFor="let year of years" [value]="year">{{ year }}</option>
+        </select>
+      </div>
+
+      <div class="btn-group btn-group-sm gm-toggle" role="group" aria-label="Seleccionar serie">
+        <button type="button"
+                class="btn"
+                [class.btn-primary]="view === 'gasto'"
+                [class.btn-outline-primary]="view !== 'gasto'"
+                (click)="onSelect('gasto')">
+          Gastos
+        </button>
+        <button type="button"
+                class="btn"
+                [class.btn-primary]="view === 'ingreso'"
+                [class.btn-outline-primary]="view !== 'ingreso'"
+                (click)="onSelect('ingreso')">
+          Ingresos
+        </button>
+      </div>
     </div>
 
     <!-- Card con el gráfico -->
     <div class="gm-card shadow-sm">
       <div class="gm-card__header fw-semibold">
-        Gasto mensual
+        {{ view === 'gasto' ? 'Gasto mensual' : 'Ingreso mensual' }}
       </div>
       <div class="gm-card__body">
         <div class="gm-chart">
