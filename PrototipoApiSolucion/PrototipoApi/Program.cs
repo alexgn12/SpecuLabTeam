@@ -1,3 +1,4 @@
+using GammaAI.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using PrototipoApi.Application.Behaviors;
@@ -9,6 +10,9 @@ using FluentValidation;
 
 // Crea el constructor de la aplicación web
 var builder = WebApplication.CreateBuilder(args);
+
+// Agrega la carga de secretos de usuario para OpenAIService
+builder.Configuration.AddUserSecrets<GammaAI.Services.OpenAIService>();
 
 // Agrega servicios a la aplicación
 

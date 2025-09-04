@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>6da7d287-b291-4c2f-8c7d-df785eb70b53</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -37,6 +38,10 @@
 
   <ItemGroup>
     <Folder Include="Application\Requests\Queries\GetRequestById\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GammaAI.Services\GammaAI.Services.csproj" />
   </ItemGroup>
 
 </Project>
