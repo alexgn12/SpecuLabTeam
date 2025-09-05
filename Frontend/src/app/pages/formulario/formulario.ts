@@ -22,7 +22,7 @@ export class Formulario {
   requestId?: number;
   apartmentCount?: number;
   street?: string;
-  issueTypeId?: number;
+  issueTypeId: number = 7;
 
   constructor(
     private fb: FormBuilder,
@@ -35,7 +35,7 @@ export class Formulario {
       description: ['', Validators.required],
       apartmentCount: [{ value: '', disabled: true }, Validators.required],
       street: [{ value: '', disabled: true }, Validators.required],
-      issueTypeId: [{ value: '', disabled: true }, Validators.required]
+  issueTypeId: [{ value: 7, disabled: true }, Validators.required]
     });
 
     this.route.paramMap.subscribe(params => {
@@ -59,11 +59,8 @@ export class Formulario {
         this.street = street;
         this.form.patchValue({ street: this.street });
       }
-      const issueTypeId = query.get('issueTypeId');
-      if (issueTypeId) {
-        this.issueTypeId = +issueTypeId;
-        this.form.patchValue({ issueTypeId: this.issueTypeId });
-      }
+      // issueTypeId fijo en 7
+      this.form.patchValue({ issueTypeId: 7 });
     });
   }
 
@@ -78,7 +75,7 @@ export class Formulario {
         description: this.form.get('description')?.value,
         apartmentCount: this.apartmentCount,
         Address: this.street,
-        issueTypeId: this.issueTypeId || 7, // Por defecto 7 si no viene
+        issueTypeId: 7,
         MaintenanceCost: 1
       };
       // Llamada real al backend

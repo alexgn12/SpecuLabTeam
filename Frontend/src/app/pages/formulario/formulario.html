@@ -39,13 +39,11 @@
         />
       </div>
       <div class="mb-3">
-        <label for="issueTypeId" class="form-label">Tipo de incidencia (ID)</label>
+        <label class="form-label">Tipo de incidencia</label>
         <input
-          id="issueTypeId"
-          formControlName="issueTypeId"
-          type="number"
+          type="text"
           class="form-control text-center"
-          [placeholder]="form.get('issueTypeId')?.value || ''"
+          placeholder="mantenimiento anual"
           readonly
         />
       </div>

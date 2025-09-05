@@ -66,7 +66,7 @@
 
         <ng-container *ngIf="request.statusType === 'Recibido'">
        <a [routerLink]="['/formulario', building?.buildingCode, request.requestId]"
-         [queryParams]="{ apartmentCount: building?.apartmentCount, street: building?.street, issueTypeId: request.issueTypeId }"
+         [queryParams]="{ apartmentCount: building?.apartmentCount, street: building?.street, issueTypeId: 7 }"
          class="btn btn-outline-warning">Solicitar Presupuesto</a>
           <button class="btn btn-outline-danger" (click)="rechazarRequest()">Rechazar</button>
         </ng-container>
