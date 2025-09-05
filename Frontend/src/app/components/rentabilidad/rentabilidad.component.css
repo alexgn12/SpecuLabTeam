@@ -1,2 +1,7 @@
 h2 { color: #2e7d32; }
 p { font-size: 1.1em; }
+.rentabilidad-questions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

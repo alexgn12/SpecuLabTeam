@@ -26,7 +26,6 @@ export interface BuildingsByDistrict {
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
-  // ⚠️ Ajusta estos endpoints a tu API real
   private base = 'https://devdemoapi3.azurewebsites.net/api';
   private endpoints = {
     summary: `${this.base}/Dashboard/summary`,

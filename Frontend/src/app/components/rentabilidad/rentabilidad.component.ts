@@ -1,13 +1,16 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { RentabilidadService, AnalyzeJsonResponse } from '../../services/rentabilidad.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-rentabilidad',
   templateUrl: './rentabilidad.component.html',
-  styleUrls: ['./rentabilidad.component.css']
+  styleUrls: ['./rentabilidad.component.css'],
+  standalone: true,
+  imports: [CommonModule]
 })
-export class RentabilidadComponent implements OnInit {
+export class RentabilidadComponent {
   @Input() summary?: any;
   @Input() transactions: any[] = [];
   answer?: string;
@@ -16,41 +19,41 @@ export class RentabilidadComponent implements OnInit {
 
  // QUITAR COMENTARIOS CUANDO SE USE Y BORRAR EL NG ON INIT
 
-   // questions = [
-   //   {
-   //     userPrompt: 'Quiero ver el análisis de rentabilidad',
-   //     label: '¿Cuál es el análisis de rentabilidad?'
-   //   },
-  //   {
-  //     userPrompt: '¿Cómo puedo mejorar la rentabilidad?',
-  //     label: '¿Cómo puedo mejorar la rentabilidad?'
-  //   }
-  // ];
+   questions = [
+     {
+       userPrompt: 'Realiza un análisis de rentabilidad basado en los datos reales de las transacciones de mi aplicación, mostrando tendencias y resultados clave.',
+       label: '¿Cuál es el análisis de rentabilidad?'
+     },
+    {
+      userPrompt: 'Analiza la rentabilidad de las transacciones monetarias realizadas en mi aplicación. ¿Qué tendencias, oportunidades de mejora y riesgos identificas? Dame recomendaciones prácticas para optimizar la rentabilidad.',
+      label: '¿Cómo puedo mejorar la rentabilidad?'
+    }
+  ];
 
   constructor(private rentabilidadService: RentabilidadService) {}
 
 
 
-  ngOnInit(): void {
-    const dataToAnalyze = {
-    //   summary: this.summary,
-    //   transactions: this.transactions,
-      userPrompt: 'Quiero ver el análisis de rentabilidad',
-      systemPrompt: 'Devuelve el análisis de rentabilidad en español.'
-    };
+  // ngOnInit(): void {
+  //   const dataToAnalyze = {
+  //   //   summary: this.summary,
+  //   //   transactions: this.transactions,
+  //     userPrompt: 'Quiero ver el análisis de rentabilidad',
+  //     systemPrompt: 'Devuelve el análisis de rentabilidad en español.'
+  //   };
 
     // SUSTITUIR EL NG ON INIT POR ESTA FUNCION DE ABAJO Y LLAMARLA DESDE EL HTML
 
-    //  askQuestion(question: string) {
-    // this.loading = true;
-    // this.error = undefined;
-    // this.answer = undefined;
-    // const dataToAnalyze = {
-    //   summary: this.summary,
-    //   transactions: this.transactions,
-    //   userPrompt: question,
-    //   systemPrompt: 'Devuelve el análisis de rentabilidad en español.'
-    // };
+     askQuestion(question: string) {
+    this.loading = true;
+    this.error = undefined;
+    this.answer = undefined;
+    const dataToAnalyze = {
+      summary: this.summary,
+      transactions: this.transactions,
+      userPrompt: question,
+      systemPrompt: 'Devuelve el análisis de rentabilidad en español.'
+    };
 
 
     this.rentabilidadService.analyzeJson(dataToAnalyze).subscribe({

@@ -1,19 +1,4 @@
-<div *ngIf="loading">Cargando análisis de rentabilidad...</div>
-<div *ngIf="error">{{ error }}</div>
-<div *ngIf="answer">
-  <h2>Análisis de Rentabilidad</h2>
-  <pre>{{ answer }}</pre>
-</div> 
-
--
-{{ answer }}
-
-
-<!--
-NUEVO CÓDIGO ABAJO PARA SUSTITUIR LO DE ARRIBA
--->
-
-<!-- <div class="rentabilidad-questions">
+<div class="rentabilidad-questions">
   <button
     *ngFor="let q of questions"
     (click)="askQuestion(q.userPrompt)"
@@ -29,4 +14,4 @@ NUEVO CÓDIGO ABAJO PARA SUSTITUIR LO DE ARRIBA
 <div *ngIf="answer">
   <h2>Análisis de Rentabilidad</h2>
   <pre>{{ answer }}</pre>
-</div> -->
+</div>
