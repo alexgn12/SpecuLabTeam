@@ -38,7 +38,7 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
             var entity = await _requests.GetByIdAsync(request.RequestId);
             if (entity == null)
                 return null;
-            var status = await _statuses.GetOneAsync(s => s.StatusType == request.StatusType);
+            var status = await _statuses.GetByIdAsync(request.StatusId);
             if (status == null)
                 return null;
             if (entity.StatusId == status.StatusId)
@@ -69,7 +69,6 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
                     {
                         RequestId = entity.RequestId,
                         TransactionTypeId = gastoType.TransactionTypeId,
-                        TransactionsType = gastoType,
                         TransactionDate = DateTime.UtcNow,
                         Amount = amount,
                         Description = $"Gasto generado automáticamente al aprobar la solicitud {entity.RequestId}"

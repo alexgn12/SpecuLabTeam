@@ -91,25 +91,25 @@ public class RequestsController : ControllerBase
 
         // Extraer información relevante del patch
         string? comment = null;
-        string? statusType = null;
+        int? statusId = null;
         DateTime? changeDate = null;
         foreach (var op in patchDoc.Operations)
         {
             if (op.path.ToLower() == "/comment" && op.OperationType == OperationType.Replace)
                 comment = op.value?.ToString();
-            if (op.path.ToLower() == "/statustype" && op.OperationType == OperationType.Replace)
-                statusType = op.value?.ToString();
+            if (op.path.ToLower() == "/statusid" && op.OperationType == OperationType.Replace && int.TryParse(op.value?.ToString(), out var sid))
+                statusId = sid;
             if (op.path.ToLower() == "/changedate" && op.OperationType == OperationType.Replace && DateTime.TryParse(op.value?.ToString(), out var dt))
                 changeDate = dt;
         }
-        if (string.IsNullOrWhiteSpace(statusType))
-            return BadRequest("Se requiere el campo StatusType en el patch para cambiar el estado.");
+        if (!statusId.HasValue)
+            return BadRequest("Se requiere el campo StatusId en el patch para cambiar el estado.");
 
-        var result = await _mediator.Send(new PatchRequestCommand(id, statusType, comment, changeDate));
+        var result = await _mediator.Send(new PatchRequestCommand(id, statusId.Value, comment, changeDate));
         if (result == null)
-            return NotFound($"Request con id {id} no encontrada o StatusType inválido");
+            return NotFound($"Request con id {id} no encontrada o StatusId inválido");
         if (result == false)
             return BadRequest("El estado ya es el mismo, no se realizó ningún cambio.");
-        return Ok(new { RequestId = id, StatusType = statusType });
+        return Ok(new { RequestId = id, StatusId = statusId });
     }
 }
