@@ -18,12 +18,12 @@ import { TransactionsPageComponent } from "./components/transactions-page/transa
 import { ResumenRequestsComponent } from './components/resumen-requests/resumen-requests.component';
 import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
 import { RequestHistoryComponent } from './components/request-history/request-history.component';
-
 @NgModule({
   declarations: [
     App,
     Header,
   // History,
+  // RentabilidadComponent se importa como standalone en imports
   ],
   imports: [
     HomeComponent,

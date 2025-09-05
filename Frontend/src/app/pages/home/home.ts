@@ -9,6 +9,7 @@ import { ResumenRequestsComponent } from 'src/app/components/resumen-requests/re
 import { InfoCard } from '../../components/info-card/info-card';
 import { HomeService, Summary, Transaction, BuildingsByDistrict } from './home.service';
 import { Subscription, combineLatest } from 'rxjs';
+import { RentabilidadComponent } from '../../components/rentabilidad';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +21,7 @@ import { Subscription, combineLatest } from 'rxjs';
     NgChartsModule,
     ResumenRequestsComponent,
     InfoCard
+    ,RentabilidadComponent
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']

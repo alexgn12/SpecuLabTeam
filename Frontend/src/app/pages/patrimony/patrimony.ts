@@ -6,13 +6,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatExpansionModule } from '@angular/material/expansion'; 
 import { PatrimonyDetailModalComponent } from '../../components/patrimony-detail-modal/patrimony-detail-modal.component';
+import { RentabilidadComponent } from "src/app/components/rentabilidad";
 
 @Component({
   selector: 'app-patrimony',
   templateUrl: './patrimony.html',
   styleUrls: ['./patrimony.css'],
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatExpansionModule,],
+  imports: [CommonModule, MatDialogModule, MatExpansionModule, RentabilidadComponent],
   providers: [CurrencyPipe]
 })
 export class PatrimonyComponent implements OnInit {

@@ -74,6 +74,9 @@ builder.Services.AddSingleton<PrototipoApi.Logging.ILoguer, PrototipoApi.Logging
 // Registro de AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
+// Registro del servicio OpenAIService en el contenedor DI para IOpenAIService
+builder.Services.AddScoped<GammaAI.Core.Interfaces.IOpenAIService, GammaAI.Services.OpenAIService>();
+
 // Construye la aplicación web
 var app = builder.Build();
 

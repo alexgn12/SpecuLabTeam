@@ -1,0 +1,9 @@
+<div *ngIf="loading">Cargando análisis de rentabilidad...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="answer">
+  <h2>Análisis de Rentabilidad</h2>
+  <pre>{{ answer }}</pre>
+</div> 
+
+-
+{{ answer }}

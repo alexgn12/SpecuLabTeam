@@ -137,5 +137,20 @@ Por favor, presenta estos resultados de manera amigable y comprensible para el u
             _chatHistory.Clear();
             await Task.CompletedTask;
         }
+
+        public async Task<string> SendCustomChatAsync(List<OpenAI.Chat.ChatMessage> messages)
+        {
+            var response = await _chatClient.CompleteChatAsync(messages);
+            var answer = response.Value.Content[0].Text.Trim();
+
+            await AddMessageToChatAsync(new GammaAI.Core.Models.ChatMessage
+            {
+                Role = "assistant",
+                Content = answer,
+                Timestamp = DateTime.Now
+            });
+
+            return answer;
+        }
     }
 }
