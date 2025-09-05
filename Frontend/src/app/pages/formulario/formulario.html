@@ -45,6 +45,7 @@
           formControlName="issueTypeId"
           type="number"
           class="form-control text-center"
+          [placeholder]="form.get('issueTypeId')?.value || ''"
           readonly
         />
       </div>

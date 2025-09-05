@@ -78,7 +78,7 @@ export class Formulario {
         description: this.form.get('description')?.value,
         apartmentCount: this.apartmentCount,
         Address: this.street,
-        issueTypeId: this.issueTypeId || 1, // Por defecto 1 si no viene
+        issueTypeId: this.issueTypeId || 7, // Por defecto 7 si no viene
         MaintenanceCost: 1
       };
       // Llamada real al backend
