@@ -7,6 +7,7 @@ using PrototipoApi.Repositories;
 using PrototipoApi.Repositories.Interfaces;
 using System.Reflection;
 using FluentValidation;
+using PrototipoApi.Controllers.GammaAI;
 
 // Crea el constructor de la aplicación web
 var builder = WebApplication.CreateBuilder(args);
@@ -81,6 +82,9 @@ var handler = new HttpClientHandler
     ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
 };
 var httpClient = new HttpClient(handler);
+
+// Mapea los endpoints de rentabilidad
+app.MapRentabilidadEndpoints();
 
 // Inicializa la base de datos con datos semilla al iniciar la aplicación
 using (var scope = app.Services.CreateScope())
