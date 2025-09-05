@@ -7,11 +7,11 @@
   >
     {{ q.label }}
   </button>
-</div>
-
-<div *ngIf="loading">Cargando análisis de rentabilidad...</div>
-<div *ngIf="error">{{ error }}</div>
-<div *ngIf="answer">
-  <h2>Análisis de Rentabilidad</h2>
-  <pre>{{ answer }}</pre>
+  <button
+    (click)="downloadPdf()"
+    [disabled]="!answer"
+    class="btn btn-secondary btn-sm"
+  >
+    Descargar PDF
+  </button>
 </div>

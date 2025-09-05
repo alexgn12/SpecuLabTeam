@@ -2,6 +2,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RentabilidadService, AnalyzeJsonResponse } from '../../services/rentabilidad.service';
 import { CommonModule } from '@angular/common';
+import { jsPDF } from 'jspdf';
 
 @Component({
   selector: 'app-rentabilidad',
@@ -29,6 +30,14 @@ export class RentabilidadComponent {
       label: '¿Cómo puedo mejorar la rentabilidad?'
     }
   ];
+
+  downloadPdf() {
+    const doc = new jsPDF();
+    let content = 'Análisis de Rentabilidad\n\n';
+    content += this.answer ? this.answer : 'No hay análisis disponible.';
+    doc.text(content, 10, 10);
+    doc.save('analisis-rentabilidad.pdf');
+  }
 
   constructor(private rentabilidadService: RentabilidadService) {}
 
