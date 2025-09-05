@@ -79,10 +79,8 @@
         </ul>
       </div>
     </ng-template>
-  </om-swapy>
-</section>
-
   <!-- Sección Rentabilidad (desktop/tablet) -->
+   <ng-template>
   <section>
     <div class="card">
       <div class="card-head">
@@ -91,6 +89,12 @@
   <app-rentabilidad [summary]="summary" [transactions]="transactions"></app-rentabilidad>
     </div>
   </section>
+  </ng-template>
+
+  </om-swapy>
+</section>
+
+
 
 <!-- MÓVIL: layout estático a 1 columna (SIN Swapy) -->
 <ng-template #mobileStack>
@@ -141,6 +145,15 @@
         </div>
         <app-rentabilidad></app-rentabilidad>
       </div>
+
+<!-- SUSTITUIR CODIGO DE ARRIBA POR ESTE DE ABAJO, NUEVA FUNCIONALIDAD DOBLE BOTON -->
+ 
+      <!-- <div class="card">
+  <div class="card-head">
+    <h3><i class="bi bi-bar-chart section-icon"></i> Rentabilidad</h3>
+  </div>
+  <app-rentabilidad [summary]="summary" [transactions]="transactions"></app-rentabilidad>
+</div> -->
   </section>
 </ng-template>
 
