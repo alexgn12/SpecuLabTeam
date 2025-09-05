@@ -24,6 +24,9 @@ namespace PrototipoApi.Mappings
                 .ForMember(dest => dest.YearBuilt, opt => opt.MapFrom(src => src.yearBuilt))
                 .ForMember(dest => dest.ApartmentCount, opt => opt.MapFrom(src => src.apartmentCount))
                 .ForMember(dest => dest.BuildingCode, opt => opt.Ignore()); // Se asigna manualmente
+
+            // Mapeo entre Building y BuildingDto
+            CreateMap<Building, BuildingDto>().ReverseMap();
         }
     }
 }
