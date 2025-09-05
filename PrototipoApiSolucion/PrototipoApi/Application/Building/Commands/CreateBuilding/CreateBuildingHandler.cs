@@ -1,3 +1,4 @@
+using AutoMapper;
 using MediatR;
 using PrototipoApi.Entities;
 using PrototipoApi.Models;
@@ -8,41 +9,19 @@ using System.Threading.Tasks;
 public class CreateBuildingHandler : IRequestHandler<CreateBuildingCommand, BuildingDto>
 {
     private readonly IRepository<Building> _repository;
+    private readonly IMapper _mapper;
 
-    public CreateBuildingHandler(IRepository<Building> repository)
+    public CreateBuildingHandler(IRepository<Building> repository, IMapper mapper)
     {
         _repository = repository;
+        _mapper = mapper;
     }
 
     public async Task<BuildingDto> Handle(CreateBuildingCommand request, CancellationToken cancellationToken)
     {
-        var dto = request.Dto;
-        var entity = new Building
-        {
-            BuildingCode = dto.BuildingCode,
-            BuildingName = dto.BuildingName,
-            Street = dto.Street,
-            District = dto.District,
-            CreatedDate = dto.CreatedDate,
-            FloorCount = dto.FloorCount,
-            YearBuilt = dto.YearBuilt,
-            ApartmentCount = dto.ApartmentCount // Añadido
-        };
-
+        var entity = _mapper.Map<Building>(request.Dto);
         await _repository.AddAsync(entity);
         await _repository.SaveChangesAsync();
-
-        return new BuildingDto
-        {
-            BuildingId = entity.BuildingId,
-            BuildingCode = entity.BuildingCode,
-            BuildingName = entity.BuildingName,
-            Street = entity.Street,
-            District = entity.District,
-            CreatedDate = entity.CreatedDate,
-            FloorCount = entity.FloorCount,
-            YearBuilt = entity.YearBuilt,
-            ApartmentCount = entity.ApartmentCount // Añadido
-        };
+        return _mapper.Map<BuildingDto>(entity);
     }
 }
