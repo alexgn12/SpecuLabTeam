@@ -14,7 +14,7 @@ export class RentabilidadComponent {
   @Input() summary?: any;
   @Input() transactions: any[] = [];
   answer?: string;
-  loading = true;
+  loading = false;
   error?: string;
 
  // QUITAR COMENTARIOS CUANDO SE USE Y BORRAR EL NG ON INIT
