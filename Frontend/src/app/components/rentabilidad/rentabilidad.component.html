@@ -1,0 +1,21 @@
+<!-- Canvas para el gráfico de rentabilidad -->
+<canvas id="rentabilidadChart" width="400" height="150" style="display: none;"></canvas>
+
+
+
+<div class="rentabilidad-questions">
+  <div class="mb-2">
+    <button
+      *ngFor="let q of questions"
+      (click)="askQuestion(q.userPrompt)"
+      [disabled]="loading"
+      class="btn btn-primary btn-sm me-2 mb-1"
+    >
+      {{ q.label }}
+    </button>
+  <!-- Botón de descarga PDF eliminado -->
+  </div>
+  <div *ngIf="loading" class="alert alert-info py-1">Cargando análisis...</div>
+  <div *ngIf="error" class="alert alert-danger py-1">{{ error }}</div>
+  <div *ngIf="answer" class="alert alert-success py-2" style="white-space: pre-line;">{{ answer }}</div>
+</div>

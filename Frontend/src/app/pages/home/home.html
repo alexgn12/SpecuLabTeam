@@ -79,8 +79,22 @@
         </ul>
       </div>
     </ng-template>
+  <!-- Sección Rentabilidad (desktop/tablet) -->
+   <ng-template>
+  <section>
+    <div class="card">
+      <div class="card-head">
+        <h3><i class="bi bi-bar-chart section-icon"></i> Rentabilidad IA</h3>
+      </div>
+  <app-rentabilidad [summary]="summary" [transactions]="transactions"></app-rentabilidad>
+    </div>
+  </section>
+  </ng-template>
+
   </om-swapy>
 </section>
+
+
 
 <!-- MÓVIL: layout estático a 1 columna (SIN Swapy) -->
 <ng-template #mobileStack>
@@ -123,7 +137,14 @@
         </li>
       </ul>
     </div>
-
+    <!-- Sección Rentabilidad (móvil) -->
+ 
+      <div class="card">
+  <div class="card-head">
+    <h3><i class="bi bi-bar-chart section-icon"></i> Rentabilidad IA</h3>
+  </div>
+  <app-rentabilidad [summary]="summary" [transactions]="transactions"></app-rentabilidad>
+</div>
   </section>
 
 

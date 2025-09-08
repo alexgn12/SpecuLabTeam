@@ -14,6 +14,7 @@ import { Subscription, combineLatest } from 'rxjs';
 import { SignalRService } from 'src/app/services/signalr.service';
 import { ToastService } from 'src/app/components/toast/toast.service';
 import { ToastComponent } from 'src/app/components/toast/toast.component';
+import { RentabilidadComponent } from '../../components/rentabilidad';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,8 @@ import { ToastComponent } from 'src/app/components/toast/toast.component';
     NgxSwapyComponent,      // 👈 Swapy solo se usa en desktop (no se montará en móvil)
     NgChartsModule,
     ResumenRequestsComponent,
+    InfoCard
+    ,RentabilidadComponent
   InfoCard,
   ToastComponent
   ],

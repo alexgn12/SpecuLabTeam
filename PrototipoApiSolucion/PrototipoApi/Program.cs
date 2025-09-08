@@ -89,6 +89,9 @@ builder.Services.AddSignalR();
 // Registramos nuestro publicador de eventos en tiempo real
 builder.Services.AddSingleton<PrototipoApi.Infrastructure.RealTime.IRealTimeNotifier, PrototipoApi.Infrastructure.RealTime.RealTimeNotifier>();
 
+// Registro del servicio OpenAIService en el contenedor DI para IOpenAIService
+builder.Services.AddScoped<GammaAI.Core.Interfaces.IOpenAIService, GammaAI.Services.OpenAIService>();
+
 // Construye la aplicación web
 var app = builder.Build();
 

@@ -26,7 +26,6 @@ export interface BuildingsByDistrict {
 
 @Injectable({ providedIn: 'root' })
 export class HomeService {
-  // ⚠️ Ajusta estos endpoints a tu API real
   private base = 'https://devdemoapi3.azurewebsites.net/api';
   private endpoints = {
     summary: `${this.base}/Dashboard/summary`,
@@ -34,6 +33,7 @@ export class HomeService {
   transactionsRecent: `${this.base}/transactions?take=4`,
     buildingsByDistrict: `${this.base}/Ang/buildings-count-by-district`,
     budgets: `${this.base}/managementbudgets`,
+  rentabilidad: `${this.base}/rentabilidad`,
   };
 
   constructor(private http: HttpClient) {}
@@ -88,4 +88,5 @@ export class HomeService {
     return this.http.get<BuildingsByDistrict[]>(this.endpoints.buildingsByDistrict)
       .pipe(map(list => list.slice(0, 6))); // recorta a 6 para el widget
   }
+
 }
