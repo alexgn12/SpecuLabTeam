@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+
+  
   selector: 'app-analyze-building-request',
   templateUrl: './analyze-building-request.component.html',
   styleUrls: ['./analyze-building-request.component.css'],
