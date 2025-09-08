@@ -35,6 +35,25 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/patrimony" routerLinkActive="active" (click)="closeMenu()">Patrimonio</a>
         </li>
+        <!-- Notificaciones -->
+        <li class="nav-item notification-bell" [class.has-unread]="notifications.length > 0">
+          <div class="bell-wrapper" (click)="toggleNotifications()">
+            <span class="bell-icon">
+              <svg width="22" height="22" fill="none" viewBox="0 0 24 24"><path stroke="#64748b" stroke-width="2" d="M12 5a5 5 0 0 0-5 5v2.5c0 .38-.15.74-.42 1.01l-.83.83A1.41 1.41 0 0 0 7 17h10a1.41 1.41 0 0 0 1.25-2.16l-.83-.83A1.41 1.41 0 0 1 17 12.5V10a5 5 0 0 0-5-5Z"/><path stroke="#64748b" stroke-width="2" d="M9 19a3 3 0 0 0 6 0"/></svg>
+            </span>
+            <span class="notification-dot" *ngIf="notifications.length > 0"></span>
+          </div>
+          <div class="notification-list" *ngIf="showNotifications">
+            <div class="notification-title">Notificaciones</div>
+            <ul>
+              <li *ngFor="let n of notifications; let i = index">
+                <span class="notif-desc">{{ n.description || n.type }}</span>
+                <span class="notif-date">{{ n.utcCreated || n.requestDate | date:'short' }}</span>
+              </li>
+              <li *ngIf="notifications.length === 0" class="notif-empty">Sin notificaciones recientes</li>
+            </ul>
+          </div>
+        </li>
       </ul>
     </div>
   </div>
