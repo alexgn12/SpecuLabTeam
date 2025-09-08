@@ -6,6 +6,7 @@ using PrototipoApi.Services;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Linq;
+using PrototipoApi.Infrastructure.RealTime;
 
 public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand, TransactionDto>
 {
@@ -13,17 +14,20 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
     private readonly IRepository<Apartment> _apartmentRepository;
     private readonly IExternalApartmentService _externalApartmentService;
     private readonly IRepository<ManagementBudget> _budgetRepository;
+    private readonly IRealTimeNotifier _realTimeNotifier;
 
     public CreateTransactionHandler(
         IRepository<Transaction> repository,
         IRepository<Apartment> apartmentRepository,
         IExternalApartmentService externalApartmentService,
-        IRepository<ManagementBudget> budgetRepository)
+        IRepository<ManagementBudget> budgetRepository,
+        IRealTimeNotifier realTimeNotifier)
     {
         _repository = repository;
         _apartmentRepository = apartmentRepository;
         _externalApartmentService = externalApartmentService;
         _budgetRepository = budgetRepository;
+        _realTimeNotifier = realTimeNotifier;
     }
 
     public async Task<TransactionDto> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -64,6 +68,16 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
         // Recargar la transacción con el tipo real desde la base de datos (por si fue creada como GASTO en otro flujo)
         var savedTransaction = await _repository.GetOneAsync(t => t.TransactionId == transaction.TransactionId, t => t.TransactionsType);
         var transactionTypeName = savedTransaction?.TransactionsType?.TransactionName ?? "INGRESO";
+
+        // Notificación SignalR
+        var liveDto = new TransactionLiveDto(
+            transaction.TransactionId,
+            transactionTypeName,
+            (decimal)transaction.Amount,
+            transaction.Description,
+            transaction.TransactionDate
+        );
+        await _realTimeNotifier.NotifyTransactionCreated(liveDto, cancellationToken);
 
         // Actualizar el presupuesto global
         var budget = (await _budgetRepository.GetAllAsync()).FirstOrDefault();

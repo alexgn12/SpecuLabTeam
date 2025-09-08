@@ -8,6 +8,7 @@ using PrototipoApi.Repositories.Interfaces;
 using System.Reflection;
 using FluentValidation;
 using PrototipoApi.Controllers.GammaAI;
+using PrototipoApi.Infrastructure.RealTime;
 
 // Crea el constructor de la aplicación web
 var builder = WebApplication.CreateBuilder(args);
@@ -32,14 +33,24 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Configura CORS para permitir cualquier origen
-builder.Services.AddCors(options =>
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowAll", policy =>
+//    {
+//        policy.AllowAnyOrigin()
+//              .AllowAnyHeader()
+//              .AllowAnyMethod();
+//    });
+//});
+
+// CORS para Angular dev (ajusta el origen según tu puerto/host)
+builder.Services.AddCors(opt =>
 {
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    opt.AddPolicy("ng", p => p
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
 });
 
 // Registra MediatR para la inyección de dependencias y manejo de solicitudes (CQRS, Mediator Pattern)
@@ -73,6 +84,10 @@ builder.Services.AddSingleton<PrototipoApi.Logging.ILoguer, PrototipoApi.Logging
 
 // Registro de AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddSignalR();
+
+// Registramos nuestro publicador de eventos en tiempo real
+builder.Services.AddSingleton<PrototipoApi.Infrastructure.RealTime.IRealTimeNotifier, PrototipoApi.Infrastructure.RealTime.RealTimeNotifier>();
 
 // Construye la aplicación web
 var app = builder.Build();
@@ -123,7 +138,8 @@ app.Use(async (ctx, next) =>
 });
 
 // Habilita CORS antes de los controladores
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
+app.UseCors("ng");
 
 // Redirige automáticamente las solicitudes HTTP a HTTPS
 app.UseHttpsRedirection();
@@ -133,6 +149,9 @@ app.UseAuthorization();
 
 // Mapea los controladores a las rutas correspondientes
 app.MapControllers();
+
+// Hub en /hubs/live
+app.MapHub<LiveHub>("/hubs/live");
 
 // Ejecuta la aplicación
 app.Run();

@@ -123,14 +123,23 @@
         </li>
       </ul>
     </div>
+
   </section>
+
+
 </ng-template>
+
 
     </div>
   </div>
+
+  <!-- Toast de notificación SIEMPRE visible en el DOM -->
+  <app-toast [message]="toastMessage$ | async" [show]="toastShow$ | async" [dto]="lastToastDto" (close)="toast.hide()"></app-toast>
 </div>
 
 <ng-template #stateTpl>
   <div class="state" *ngIf="loading">Cargando dashboard…</div>
   <div class="state error" *ngIf="!loading && error">{{ error }}</div>
 </ng-template>
+
+<!-- Toast de notificación -->

@@ -11,6 +11,7 @@ using Request = PrototipoApi.Entities.Request;
 using PrototipoApi.Application.Requests.Commands.CreateRequest;
 using PrototipoApi.Services;
 using PrototipoApi.Logging;
+using PrototipoApi.Infrastructure.RealTime;
 
 public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand, RequestDto>
 {
@@ -20,6 +21,7 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
     private readonly IExternalBuildingService _externalBuildingService;
     private readonly IRepository<RequestStatusHistory> _requestStatusHistory;
     private readonly ILoguer _loguer;
+    private readonly IRealTimeNotifier _realTimeNotifier;
 
     public CreateRequestCommandHandler(
         IRepository<Request> requests,
@@ -27,7 +29,8 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         IRepository<Status> statuses,
         IExternalBuildingService externalBuildingService,
         IRepository<RequestStatusHistory> requestStatusHistory,
-        ILoguer loguer)
+        ILoguer loguer,
+        IRealTimeNotifier realTimeNotifier)
     {
         _requests = requests;
         _buildings = buildings;
@@ -35,6 +38,7 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
         _externalBuildingService = externalBuildingService;
         _requestStatusHistory = requestStatusHistory;
         _loguer = loguer;
+        _realTimeNotifier = realTimeNotifier;
     }
 
     public async Task<RequestDto> Handle(CreateRequestCommand request, CancellationToken cancellationToken)
@@ -107,6 +111,20 @@ public class CreateRequestCommandHandler : IRequestHandler<CreateRequestCommand,
             },
             cancellationToken
         );
+
+        // Notificación SignalR para creación de Request
+        var liveDto = new RequestLiveDto(
+            entity.RequestId,
+            entity.Description,
+            (decimal)entity.BuildingAmount,
+            (decimal)entity.MaintenanceAmount,
+            entity.StatusId,
+            status.StatusType,
+            entity.BuildingId,
+            building.BuildingCode,
+            entity.RequestDate
+        );
+        await _realTimeNotifier.NotifyRequestCreated(liveDto, cancellationToken);
 
         return created!;
     }
