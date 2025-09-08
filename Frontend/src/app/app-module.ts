@@ -18,6 +18,7 @@ import { TransactionsPageComponent } from "./components/transactions-page/transa
 import { ResumenRequestsComponent } from './components/resumen-requests/resumen-requests.component';
 import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
 import { RequestHistoryComponent } from './components/request-history/request-history.component';
+import { AnalyzeBuildingRequestComponent } from './components/analyze-building-request/analyze-building-request.component';
 @NgModule({
   declarations: [
     App,
@@ -39,7 +40,8 @@ import { RequestHistoryComponent } from './components/request-history/request-hi
     ResumenRequestsComponent,
     ZoneGrafo,
     RequestHistoryComponent,
-    Footer,
+  Footer,
+  AnalyzeBuildingRequestComponent,
   ],
   providers: [
     provideBrowserGlobalErrorListeners()

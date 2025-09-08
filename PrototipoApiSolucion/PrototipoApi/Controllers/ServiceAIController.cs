@@ -59,5 +59,62 @@ namespace PrototipoApi.Controllers
 
             return Ok(new { answer = response });
         }
+
+        [HttpPost("analyze-building-request")]
+        public async Task<IActionResult> AnalyzeBuildingRequest([FromBody] AnalyzeBuildingRequest incoming)
+        {
+            // Obtener la solicitud y entidades relacionadas
+            var request = await _context.Requests
+                .Include(r => r.Building)
+                .Include(r => r.Building.Apartments)
+                .FirstOrDefaultAsync(r => r.RequestId == incoming.RequestId);
+            if (request == null) return NotFound("Solicitud no encontrada");
+
+            var budget = await _context.ManagementBudgets
+                .OrderByDescending(b => b.LastUpdatedDate)
+                .FirstOrDefaultAsync();
+            if (budget == null) return NotFound("No hay presupuesto disponible");
+
+            // Calcular estimaciones relevantes
+            var apartments = request.Building.Apartments;
+            double annualRentalIncome = apartments.Sum(a => (double)a.ApartmentPrice) * 12; // asumimos precios mensuales
+            double totalRequestAmount = request.BuildingAmount + request.MaintenanceAmount;
+            double netAnnualIncome = annualRentalIncome - request.MaintenanceAmount;
+            double paybackPeriod = netAnnualIncome > 0 ? totalRequestAmount / netAnnualIncome : 0;
+
+            string prompt = $@"
+Eres un agente inmobiliario financiero experto.
+Analiza la siguiente propuesta y toma una decisión con métricas numéricas:
+
+- Edificio: {request.Building.BuildingName}, Distrito: {request.Building.District}
+- Solicitud: {request.BuildingAmount} compra + {request.MaintenanceAmount} mantenimiento
+- Presupuesto actual: {budget.CurrentAmount}
+- Apartamentos: {apartments.Count}, Ingreso alquiler anual estimado: {annualRentalIncome}
+- Payback estimado: {paybackPeriod:N2} años
+
+Toma una decisión (COMPRAR o NO COMPRAR), justifica, indica supuestos, riesgos y oportunidades. Devuelve SOLO el siguiente JSON:
+{{
+  ""requestId"": {request.RequestId},
+  ""decision"": ""COMPRAR|NO COMPRAR"",
+  ""reason"": ""explicación técnica"",
+  ""currentBudget"": {budget.CurrentAmount},
+  ""totalRequestAmount"": {totalRequestAmount},
+  ""estimatedAnnualRentalIncome"": {annualRentalIncome},
+  ""paybackPeriodYears"": {paybackPeriod:N2},
+  ""assumptions"": ""Describe los supuestos usados"",
+  ""insights"": ""Ideas adicionales y posibles riesgos/oportunidades""
+}}
+";
+
+            var messages = new List<ChatMessage>
+    {
+        new SystemChatMessage("Eres un asesor financiero inmobiliario. Analiza y responde estrictamente con el JSON dado."),
+        new UserChatMessage(prompt)
+    };
+            var response = await ((OpenAIService)_openAIService).SendCustomChatAsync(messages);
+
+            return Ok(new { answer = response });
+        }
+
     }
 }

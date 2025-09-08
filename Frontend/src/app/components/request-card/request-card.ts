@@ -6,13 +6,14 @@ import { IRequest } from '../../pages/requests/requests.service';
 import { DetalleRequest } from '../detalle-request/detalle-request';
 import { RequestsService } from '../../pages/requests/requests.service';
 import { Router } from '@angular/router';
+import { AnalyzeBuildingRequestComponent } from '../analyze-building-request/analyze-building-request.component';
 
 @Component({
   selector: 'sl-request-card',
   templateUrl: './request-card.html',
   styleUrls: ['./request-card.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, Boton, DetalleRequest]
+  imports: [CommonModule, RouterModule, Boton, DetalleRequest, AnalyzeBuildingRequestComponent]
 })
 export class RequestCard {
   // Recibo el objeto completo para mayor comodidad
@@ -32,6 +33,8 @@ export class RequestCard {
   @Output() statusChanged = new EventEmitter<void>();
 
   showDetails = false;
+  showIARecommendation = false;
+  iaRequestId: number | null = null;
 
   constructor(private requestsService: RequestsService, private router: Router) {}
 
@@ -103,5 +106,14 @@ export class RequestCard {
         error: err => alert('Error al rechazar la petición')
       });
     }
+  }
+
+  openIARecommendation() {
+    this.iaRequestId = this.request.requestId;
+    this.showIARecommendation = true;
+  }
+  closeIARecommendation() {
+    this.showIARecommendation = false;
+    this.iaRequestId = null;
   }
 }

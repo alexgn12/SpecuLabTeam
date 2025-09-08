@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <Folder Include="Application\Requests\Queries\GetRequestById\" />
+    <Folder Include="Dtos\" />
   </ItemGroup>
 
   <ItemGroup>

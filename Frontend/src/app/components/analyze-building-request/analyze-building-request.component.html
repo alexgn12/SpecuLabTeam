@@ -1,0 +1,14 @@
+<div class="analyze-building-request">
+  <h2>Analizar solicitud de edificio</h2>
+  <form *ngIf="requestId == null" (ngSubmit)="submit()">
+    <label for="requestId">Request ID:</label>
+    <input id="requestId" type="number" [(ngModel)]="requestId" name="requestId" required>
+    <button type="submit" [disabled]="loading">Analizar</button>
+  </form>
+  <div *ngIf="loading">Analizando...</div>
+  <div *ngIf="error" class="error">{{ error }}</div>
+  <div *ngIf="result">
+    <h3>Resultado:</h3>
+    <pre>{{ result | json }}</pre>
+  </div>
+</div>
