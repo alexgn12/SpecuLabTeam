@@ -26,8 +26,7 @@ import { RentabilidadComponent } from '../../components/rentabilidad';
     NgChartsModule,
     ResumenRequestsComponent,
     InfoCard
-    ,RentabilidadComponent
-  InfoCard,
+    ,RentabilidadComponent,
   ToastComponent
   ],
   templateUrl: './home.html',
