@@ -7,22 +7,24 @@ using PrototipoApi.Repositories;
 using PrototipoApi.Repositories.Interfaces;
 using System.Reflection;
 using FluentValidation;
+using PrototipoApi.Controllers.GammaAI;
+using PrototipoApi.Infrastructure.RealTime;
 
-// Crea el constructor de la aplicación web
+// Crea el constructor de la aplicaciï¿½n web
 var builder = WebApplication.CreateBuilder(args);
 
 // Agrega la carga de secretos de usuario para OpenAIService
 builder.Configuration.AddUserSecrets<GammaAI.Services.OpenAIService>();
 
-// Agrega servicios a la aplicación
+// Agrega servicios a la aplicaciï¿½n
 
-builder.Services.AddControllers().AddNewtonsoftJson(); // Habilita el patrón Modelo-Vista-Controlador (MVC) para exponer controladores de API
+builder.Services.AddControllers().AddNewtonsoftJson(); // Habilita el patrï¿½n Modelo-Vista-Controlador (MVC) para exponer controladores de API
 
 // Configura Swagger/OpenAPI para documentar y probar la API
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Configura la conexión a la base de datos usando Entity Framework Core y SQL Server
+// Configura la conexiï¿½n a la base de datos usando Entity Framework Core y SQL Server
 builder.Services.AddDbContext<ContextoBaseDatos>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -31,26 +33,36 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Configura CORS para permitir cualquier origen
-builder.Services.AddCors(options =>
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowAll", policy =>
+//    {
+//        policy.AllowAnyOrigin()
+//              .AllowAnyHeader()
+//              .AllowAnyMethod();
+//    });
+//});
+
+// CORS para Angular dev (ajusta el origen segï¿½n tu puerto/host)
+builder.Services.AddCors(opt =>
 {
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
+    opt.AddPolicy("ng", p => p
+        .WithOrigins("http://localhost:4200")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials());
 });
 
-// Registra MediatR para la inyección de dependencias y manejo de solicitudes (CQRS, Mediator Pattern)
+// Registra MediatR para la inyecciï¿½n de dependencias y manejo de solicitudes (CQRS, Mediator Pattern)
 builder.Services.AddMediatR(cfg =>
 {
     cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
 });
 
-// Registra el repositorio genérico para inyección de dependencias
+// Registra el repositorio genï¿½rico para inyecciï¿½n de dependencias
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-// Registro del servicio externo de edificios (ignora validación SSL solo en desarrollo)
+// Registro del servicio externo de edificios (ignora validaciï¿½n SSL solo en desarrollo)
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>()
@@ -72,11 +84,15 @@ builder.Services.AddSingleton<PrototipoApi.Logging.ILoguer, PrototipoApi.Logging
 
 // Registro de AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddSignalR();
+
+// Registramos nuestro publicador de eventos en tiempo real
+builder.Services.AddSingleton<PrototipoApi.Infrastructure.RealTime.IRealTimeNotifier, PrototipoApi.Infrastructure.RealTime.RealTimeNotifier>();
 
 // Registro del servicio OpenAIService en el contenedor DI para IOpenAIService
 builder.Services.AddScoped<GammaAI.Core.Interfaces.IOpenAIService, GammaAI.Services.OpenAIService>();
 
-// Construye la aplicación web
+// Construye la aplicaciï¿½n web
 var app = builder.Build();
 
 var handler = new HttpClientHandler
@@ -86,7 +102,7 @@ var handler = new HttpClientHandler
 var httpClient = new HttpClient(handler);
 
 
-// Inicializa la base de datos con datos semilla al iniciar la aplicación
+// Inicializa la base de datos con datos semilla al iniciar la aplicaciï¿½n
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
@@ -97,7 +113,7 @@ using (var scope = app.Services.CreateScope())
         context.Database.Migrate();
     }
 
-    await DbInitializer.SeedAsync(context); // Método asíncrono para poblar la base de datos si es necesario
+    await DbInitializer.SeedAsync(context); // Mï¿½todo asï¿½ncrono para poblar la base de datos si es necesario
 }
 
 // Configura el pipeline de solicitudes HTTP
@@ -123,16 +139,20 @@ app.Use(async (ctx, next) =>
 });
 
 // Habilita CORS antes de los controladores
-app.UseCors("AllowAll");
+//app.UseCors("AllowAll");
+app.UseCors("ng");
 
-// Redirige automáticamente las solicitudes HTTP a HTTPS
+// Redirige automï¿½ticamente las solicitudes HTTP a HTTPS
 app.UseHttpsRedirection();
 
-// Habilita la autorización (pero no la autenticación)
+// Habilita la autorizaciï¿½n (pero no la autenticaciï¿½n)
 app.UseAuthorization();
 
 // Mapea los controladores a las rutas correspondientes
 app.MapControllers();
 
-// Ejecuta la aplicación
+// Hub en /hubs/live
+app.MapHub<LiveHub>("/hubs/live");
+
+// Ejecuta la aplicaciï¿½n
 app.Run();

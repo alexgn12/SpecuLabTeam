@@ -1,0 +1,11 @@
+<div class="toast" *ngIf="show" (click)="onClose()" style="cursor:pointer;">
+  <span style="position:absolute;top:8px;right:16px;font-size:1.2em;cursor:pointer;">&times;</span>
+  <ng-container *ngIf="dto; else simpleMsg">
+    <div><b>DTO recibido:</b></div>
+    <pre style="font-size:0.9em;white-space:pre-wrap;word-break:break-all;max-width:350px;max-height:200px;overflow:auto;background:#222;padding:8px;border-radius:4px;">{{ dto | json }}</pre>
+  </ng-container>
+  <ng-template #simpleMsg>
+    {{ message }}
+  </ng-template>
+  <div style="font-size:0.8em;color:#aaa;margin-top:4px;">Haz clic para cerrar</div>
+</div>

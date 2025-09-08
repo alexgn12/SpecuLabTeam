@@ -1,4 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+  import { Component, OnDestroy, OnInit } from '@angular/core';
+  // ...existing code...
+  // ...existing code...
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NgxSwapyComponent } from '@omnedia/ngx-swapy';
@@ -9,6 +11,9 @@ import { ResumenRequestsComponent } from 'src/app/components/resumen-requests/re
 import { InfoCard } from '../../components/info-card/info-card';
 import { HomeService, Summary, Transaction, BuildingsByDistrict } from './home.service';
 import { Subscription, combineLatest } from 'rxjs';
+import { SignalRService } from 'src/app/services/signalr.service';
+import { ToastService } from 'src/app/components/toast/toast.service';
+import { ToastComponent } from 'src/app/components/toast/toast.component';
 import { RentabilidadComponent } from '../../components/rentabilidad';
 
 @Component({
@@ -21,7 +26,8 @@ import { RentabilidadComponent } from '../../components/rentabilidad';
     NgChartsModule,
     ResumenRequestsComponent,
     InfoCard
-    ,RentabilidadComponent
+    ,RentabilidadComponent,
+  ToastComponent
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
@@ -33,6 +39,11 @@ export class HomeComponent implements OnInit, OnDestroy {
   summary?: Summary;
   transactions: Transaction[] = [];
   buildingsByDistrict: BuildingsByDistrict[] = [];
+
+  // Observables para el toast
+  toastMessage$ = this.toast.message$;
+  toastShow$ = this.toast.show$;
+  lastToastDto: any = null;
 
   // ======== Layout flags (desktop vs móvil) ========
   isMobile = false;
@@ -82,12 +93,19 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   private sub = new Subscription();
 
-  constructor(private home: HomeService) {}
+  constructor(
+    private home: HomeService,
+    private signalR: SignalRService,
+    private toast: ToastService
+  ) {}
 
   ngOnInit(): void {
     // Detectar móvil/desktop y preparar opciones desde el primer render
     this.onMM();
     this.mm.addEventListener('change', this.onMM);
+
+  // Toast de prueba al iniciar
+  this.toast.show('Toast de prueba: la integración funciona');
 
     const s1 = this.home.getSummary();
     const s3 = this.home.getRecentTransactions();
@@ -121,6 +139,36 @@ export class HomeComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+    // Suscribirse a eventos SignalR y mostrar notificaciones con logs
+    this.sub.add(this.signalR.transactionCreated$.subscribe(dto => {
+      if (dto) {
+        console.log('SignalR: transactionCreated$', dto);
+        this.lastToastDto = dto;
+        this.toast.show('Nueva transacción: ' + dto.description);
+      }
+    }));
+    this.sub.add(this.signalR.transactionUpdated$.subscribe(dto => {
+      if (dto) {
+        console.log('SignalR: transactionUpdated$', dto);
+        this.lastToastDto = dto;
+        this.toast.show('Transacción actualizada: ' + dto.description);
+      }
+    }));
+    this.sub.add(this.signalR.requestCreated$.subscribe(dto => {
+      if (dto) {
+        console.log('SignalR: requestCreated$', dto);
+        this.lastToastDto = dto;
+        this.toast.show('Nueva solicitud: ' + dto.description);
+      }
+    }));
+    this.sub.add(this.signalR.requestUpdated$.subscribe(dto => {
+      if (dto) {
+        console.log('SignalR: requestUpdated$', dto);
+        this.lastToastDto = dto;
+        this.toast.show('Solicitud actualizada: ' + dto.description);
+      }
+    }));
   }
 
   ngOnDestroy(): void {

@@ -7,6 +7,7 @@ using MediatR;
 using PrototipoApi.BaseDatos;
 using PrototipoApi.Entities;
 using PrototipoApi.Repositories.Interfaces;
+using PrototipoApi.Infrastructure.RealTime;
 
 namespace PrototipoApi.Application.Requests.Commands.UpdateRequest
 {
@@ -14,11 +15,13 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequest
     {
         private readonly IRepository<Request> _repository;
         private readonly IRepository<RequestStatusHistory> _requestStatusHistory;
+        private readonly IRealTimeNotifier _realTimeNotifier;
 
-        public UpdateRequestHandler(IRepository<Request> repository, IRepository<RequestStatusHistory> requestStatusHistory)
+        public UpdateRequestHandler(IRepository<Request> repository, IRepository<RequestStatusHistory> requestStatusHistory, IRealTimeNotifier realTimeNotifier)
         {
             _repository = repository;
             _requestStatusHistory = requestStatusHistory;
+            _realTimeNotifier = realTimeNotifier;
         }
 
         public async Task<bool> Handle(UpdateRequestCommand request, CancellationToken cancellationToken)
@@ -33,6 +36,21 @@ namespace PrototipoApi.Application.Requests.Commands.UpdateRequest
 
             await _repository.UpdateAsync(entity);
             await _repository.SaveChangesAsync();
+
+            // Notificación SignalR para actualización de Request
+            var liveDto = new RequestLiveDto(
+                entity.RequestId,
+                entity.Description,
+                (decimal)entity.BuildingAmount,
+                (decimal)entity.MaintenanceAmount,
+                entity.StatusId,
+                entity.Status?.StatusType ?? string.Empty,
+                entity.BuildingId,
+                entity.Building?.BuildingCode ?? string.Empty,
+                entity.RequestDate
+            );
+            await _realTimeNotifier.NotifyRequestUpdated(liveDto, cancellationToken);
+
             return true;
         }
     }
