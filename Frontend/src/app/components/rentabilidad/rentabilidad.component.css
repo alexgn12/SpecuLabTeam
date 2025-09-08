@@ -5,3 +5,18 @@ p { font-size: 1.1em; }
   flex-direction: column;
   gap: 10px;
 }
+/* Responsive styles */
+@media (max-width: 600px) {
+  h2 {
+    font-size: 1.3em;
+    text-align: center;
+  }
+  p {
+    font-size: 1em;
+    text-align: center;
+  }
+  .rentabilidad-questions {
+    gap: 6px;
+    padding: 0 8px;
+  }
+}
