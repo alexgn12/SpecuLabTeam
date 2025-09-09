@@ -15,6 +15,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class AnalyzeBuildingRequestComponent implements OnChanges {
   @Input() requestId: number | null = null;
+  @Input() buildingCode: string | null = null;
+  @Input() buildingName: string | null = null;
   result: any;
   loading = false;
   error: string | null = null;
