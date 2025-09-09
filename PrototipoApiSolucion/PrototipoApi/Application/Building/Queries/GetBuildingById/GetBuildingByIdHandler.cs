@@ -27,6 +27,7 @@ namespace PrototipoApi.Application.Building.Queries.GetBuildingById
                     District = b.District,
                     CreatedDate = b.CreatedDate,
                     FloorCount = b.FloorCount,
+                    ApartmentCount = b.ApartmentCount,
                     YearBuilt = b.YearBuilt
                 },
                 cancellationToken
