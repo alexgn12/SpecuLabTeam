@@ -1,3 +1,7 @@
+.rentabilidad-questions, h2, p {
+  font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+}
+
 h2 { color: #2e7d32; }
 p { font-size: 1.1em; }
 .rentabilidad-questions {

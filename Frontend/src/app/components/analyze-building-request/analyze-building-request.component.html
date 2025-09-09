@@ -1,20 +1,26 @@
 <div class="analyze-building-request">
-  <h2>Analizar solicitud de edificio</h2>
-  <form *ngIf="requestId == null" (ngSubmit)="submit()">
+  <form *ngIf="requestId == null" (ngSubmit)="submit()" class="ia-form">
+    <div class="ia-header"><i class="bi bi-robot"></i> Analizar solicitud de edificio</div>
     <label for="requestId">Request ID:</label>
     <input id="requestId" type="number" [(ngModel)]="requestId" name="requestId" required>
-    <button type="submit" [disabled]="loading">Analizar</button>
+    <button type="submit" class="btn btn-primary" [disabled]="loading">Analizar</button>
   </form>
   <div *ngIf="loading">Analizando...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
   <div *ngIf="result">
-    <h3>Resultado IA:</h3>
+    <div class="ia-header"><i class="bi bi-robot"></i> Resultado IA</div>
     <div *ngIf="result.decision">
-      <strong>Decisión:</strong> {{ result.decision }}<br>
-      <strong>Motivo:</strong> {{ result.reason }}<br>
-      <div *ngIf="result.insights">
-        <strong>Insights:</strong> {{ result.insights }}
+      <div style="margin-bottom: 0.7rem;">
+        <span class="ia-label">Decisión:</span> {{ result.decision }}
       </div>
+      <hr style="margin: 0.5rem 0;">
+      <div style="margin-bottom: 0.7rem;">
+        <span class="ia-label">Motivo:</span> {{ result.reason }}
+      </div>
+      <hr *ngIf="result.insights" style="margin: 0.5rem 0;">
+    </div>
+    <div *ngIf="result.insights" style="margin-bottom: 0.7rem;">
+      <span class="ia-label">Insights:</span> {{ result.insights }}
     </div>
     <div *ngIf="!result.decision">
       {{ result }}

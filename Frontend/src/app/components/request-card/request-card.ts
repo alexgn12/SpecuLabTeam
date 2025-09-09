@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { Boton } from '../boton/boton';
 import { IRequest } from '../../pages/requests/requests.service';
 import { DetalleRequest } from '../detalle-request/detalle-request';
 import { RequestsService } from '../../pages/requests/requests.service';
@@ -13,7 +12,7 @@ import { AnalyzeBuildingRequestComponent } from '../analyze-building-request/ana
   templateUrl: './request-card.html',
   styleUrls: ['./request-card.css'],
   standalone: true,
-  imports: [CommonModule, RouterModule, Boton, DetalleRequest, AnalyzeBuildingRequestComponent]
+  imports: [CommonModule, RouterModule, DetalleRequest, AnalyzeBuildingRequestComponent]
 })
 export class RequestCard {
   // Recibo el objeto completo para mayor comodidad

@@ -1,10 +1,34 @@
 .analyze-building-request {
-  max-width: 400px;
+  max-width: 480px;
   margin: 2rem auto;
-  padding: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background: #fafafa;
+  padding: 0;
+  background: none;
+}
+.ia-header {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1769aa;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.ia-header .bi {
+  font-size: 1.3rem;
+  color: #1769aa;
+}
+.ia-label {
+  font-weight: 500;
+  color: #1769aa;
+}
+.ia-message, .ia-insights {
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 0.5rem;
+  font-size: 1.05rem;
+  color: #222;
+  border-radius: 18px;
 }
 label {
   display: block;
@@ -14,11 +38,15 @@ input {
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.5rem;
+  border-radius: 18px;
+  border: 1px solid #ccc;
 }
 button {
   padding: 0.5rem 1rem;
+  border-radius: 18px;
 }
 .error {
-  color: red;
+  color: #dc3545;
   margin-top: 1rem;
+  border-radius: 18px;
 }

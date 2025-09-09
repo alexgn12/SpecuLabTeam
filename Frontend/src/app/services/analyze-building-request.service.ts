@@ -8,7 +8,7 @@ export interface AnalyzeBuildingRequest {
 
 @Injectable({ providedIn: 'root' })
 export class AnalyzeBuildingRequestService {
-  private apiUrl = 'https://localhost:7092/api/ServiceAI/analyze-building-request';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/ServiceAI/analyze-building-request';
 
   constructor(private http: HttpClient) {}
 

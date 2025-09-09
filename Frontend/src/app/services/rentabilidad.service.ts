@@ -10,7 +10,7 @@ export interface AnalyzeJsonResponse {
 @Injectable({ providedIn: 'root' })
 
 export class RentabilidadService {
-  private apiUrl = 'https://localhost:7092/api/ServiceAI/analyze-json'; // Cambia esto por la URL real de tu API
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/ServiceAI/analyze-json';
 
   constructor(private http: HttpClient) {}
 
