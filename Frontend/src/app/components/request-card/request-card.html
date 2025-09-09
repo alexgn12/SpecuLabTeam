@@ -50,7 +50,7 @@
       <!-- Acciones alineadas a la derecha -->
       <div class="rc-actions">
         <ng-container *ngIf="request.statusType === 'Pendiente'">
-          <button class="btn btn-outline-primary me-2" (click)="openIARecommendation()">
+          <button class="btn btn-outline-primary me-2" (click)="openIARecommendation(building)">
             Recomendación IA
           </button>
           <span [title]="(!request.maintenanceAmount || request.maintenanceAmount === 0) ? 'Pendiente de recibir presupuesto' : null">
@@ -86,6 +86,10 @@
   <div class="ia-modal-backdrop" (click)="closeIARecommendation()"></div>
   <div class="ia-modal">
     <button class="btn btn-sm btn-secondary float-end" (click)="closeIARecommendation()">Cerrar</button>
-    <app-analyze-building-request [requestId]="iaRequestId"></app-analyze-building-request>
+    <app-analyze-building-request 
+      [requestId]="iaRequestId" 
+      [buildingCode]="iaBuildingCode" 
+      [buildingName]="iaBuildingName">
+    </app-analyze-building-request>
   </div>
 </ng-container>
