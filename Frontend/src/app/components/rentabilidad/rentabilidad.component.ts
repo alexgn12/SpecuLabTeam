@@ -98,13 +98,10 @@ export class RentabilidadComponent implements OnInit {
     });
   }
 
-  // Método de descarga PDF eliminado
-
   constructor(private rentabilidadService: RentabilidadService) {}
 
 
 
   ngOnInit(): void {
-    // Inicialmente no hace nada, el análisis se solicita desde el HTML con los botones
   }
 }
