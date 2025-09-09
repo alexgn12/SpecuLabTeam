@@ -79,10 +79,24 @@
 /* Grid estable: Nombre | Dirección | Año | Acción */
 .p-header .p-row {
   display: grid;
-  grid-template-columns: 2fr minmax(240px, 3fr) 110px 130px;
+  grid-template-columns: 2fr minmax(240px, 3fr) 110px 110px 130px;
   gap: 12px;
   align-items: center;
   width: 100%;
+}
+.c-ocupacion {
+  color: var(--text);
+  font-weight: 600;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.c-ocupacion .label {
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 2px;
+  font-size: 0.95em;
 }
 .c-name { font-size: 1rem; color: var(--text); font-weight: 400; }
 .c-name .muted { margin-left: .3rem; font-weight: 600; }
@@ -177,10 +191,10 @@
 
 /* ============= RESPONSIVE ============= */
 @media (max-width: 1024px) {
-  .p-header .p-row { grid-template-columns: 2fr 2fr 100px 120px; }
+  .p-header .p-row { grid-template-columns: 2fr 2fr 90px 90px 120px; }
 }
 @media (max-width: 780px) {
-  .p-header .p-row { grid-template-columns: 1.6fr 1fr 80px 110px; gap: 8px; }
+  .p-header .p-row { grid-template-columns: 1.6fr 1fr 60px 60px 110px; gap: 8px; }
   .c-address { display: none; } /* limpia en móvil */
 }
 @media (max-width: 575.98px) {
@@ -191,9 +205,10 @@
     align-items: flex-start;
     width: 100%;
   }
-  .c-address, .c-year, .c-actions {
+  .c-address, .c-year, .c-ocupacion, .c-actions {
     width: 100%;
     text-align: left;
+    align-items: flex-start;
   }
   .expand-arrow-container {
     margin-top: 0.5rem;
