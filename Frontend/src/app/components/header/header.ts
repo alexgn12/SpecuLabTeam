@@ -13,17 +13,23 @@ export class Header implements OnDestroy {
     this.notifications.splice(index, 1);
   }
   isMenuOpen = false;
-  notifications: Array<TransactionLiveDto | RequestLiveDto> = [];
+  notifications: Array<(TransactionLiveDto | RequestLiveDto) & { notifType?: string }> = [];
   showNotifications = false;
   private subscriptions: any[] = [];
 
   constructor(private signalR: SignalRService, private router: Router) {
     // Suscribirse a eventos de SignalR
     this.subscriptions.push(
-      this.signalR.transactionCreated$.subscribe(n => this.addNotification(n)),
-      this.signalR.transactionUpdated$.subscribe(n => this.addNotification(n)),
-      this.signalR.requestCreated$.subscribe(n => this.addNotification(n)),
-      this.signalR.requestUpdated$.subscribe(n => this.addNotification(n))
+      this.signalR.transactionCreated$.subscribe(n => this.addNotification(n, 'Transacción creada')),
+      this.signalR.transactionUpdated$.subscribe(n => this.addNotification(n, 'Transacción actualizada')),
+      this.signalR.requestCreated$.subscribe(n => this.addNotification(n, 'Solicitud creada')),
+      this.signalR.requestUpdated$.subscribe(n => {
+        if (!n) return;
+        // Si es actualización de mantenimiento
+        const isMantenimiento = n.maintenanceAmount && n.maintenanceAmount > 0;
+        const notifType = isMantenimiento ? 'Mantenimiento recibido' : 'Solicitud actualizada';
+        this.addNotification(n, notifType);
+      })
     );
   }
 
@@ -46,9 +52,10 @@ export class Header implements OnDestroy {
     this.showNotifications = false;
   }
 
-  addNotification(n: TransactionLiveDto | RequestLiveDto | null) {
+  addNotification(n: TransactionLiveDto | RequestLiveDto | null, notifType?: string) {
     if (!n) return;
-    this.notifications.unshift(n);
+    const notif = { ...n, notifType };
+    this.notifications.unshift(notif);
     if (this.notifications.length > 5) {
       this.notifications = this.notifications.slice(0, 5);
     }
