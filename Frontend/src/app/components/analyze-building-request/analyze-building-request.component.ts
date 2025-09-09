@@ -15,6 +15,9 @@ import { FormsModule } from '@angular/forms';
 })
 export class AnalyzeBuildingRequestComponent implements OnChanges {
   @Input() requestId: number | null = null;
+  @Input() buildingCode: string | null = null;
+  @Input() buildingName: string | null = null;
+  @Input() building: any = null; // BuildingDto con ApartmentCount
   result: any;
   loading = false;
   error: string | null = null;
@@ -31,7 +34,15 @@ export class AnalyzeBuildingRequestComponent implements OnChanges {
     if (this.requestId == null) return;
     this.loading = true;
     this.error = null;
-    this.service.analyzeRequest({ requestId: this.requestId }).subscribe({
+    // Enviar también datos del edificio
+    const payload: any = { requestId: this.requestId };
+    if (this.building) {
+      payload.apartmentCount = this.building.ApartmentCount;
+      payload.buildingCode = this.building.buildingCode;
+      payload.buildingName = this.building.buildingName;
+      // Agrega aquí otros campos relevantes si existen
+    }
+    this.service.analyzeRequest(payload).subscribe({
       next: res => {
         if (res && typeof res.answer === 'string') {
           try {

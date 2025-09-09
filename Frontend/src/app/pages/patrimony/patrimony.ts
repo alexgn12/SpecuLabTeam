@@ -78,7 +78,13 @@ export class PatrimonyComponent implements OnInit {
   ngOnInit(): void {
     this.patrimonyService.getPatrimony().subscribe({
       next: (data) => {
-        this.approvedBuildings = data.approvedBuildings || [];
+        this.approvedBuildings = (data.approvedBuildings || []).map(building => {
+          // apartmentCount puede no estar en la interfaz, pero sí en el JSON
+          const total = (building as any).apartmentCount ?? 0;
+          const alquilados = (data.incomeApartments || []).filter(a => a.buildingCode === building.buildingCode).length;
+          const ocupacion = total > 0 ? Math.round((alquilados / total) * 100) : 0;
+          return { ...building, apartmentCount: total, ocupacion };
+        });
         this.incomeApartments = data.incomeApartments || [];
         this.loading = false;
       },

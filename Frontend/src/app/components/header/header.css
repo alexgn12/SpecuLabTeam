@@ -1,3 +1,62 @@
+/* Botón eliminar notificación */
+.notification-list li {
+  position: relative;
+  padding-right: 2.5em;
+}
+.notif-remove-btn {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: #fff;
+  border: none;
+  color: #b91c1c;
+  font-size: 2.5em;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+  z-index: 2;
+  opacity: 0.7;
+}
+.notif-remove-btn:hover {
+  background: #fee2e2;
+  color: #dc2626;
+  box-shadow: 0 2px 8px rgba(239,68,68,0.10);
+  opacity: 1;
+}
+/* Flex responsive para campana y hamburguesa */
+.header-flex-responsive {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Campana solo visible en mobile (fuera del menú) */
+.notification-bell-responsive {
+  display: flex;
+  align-items: center;
+}
+@media (min-width: 992px) {
+  .notification-bell-responsive {
+    display: none !important;
+  }
+}
+
+/* Campana solo visible en desktop (dentro del menú) */
+.notification-bell-desktop {
+  display: none !important;
+}
+@media (min-width: 992px) {
+  .notification-bell-desktop {
+    display: flex !important;
+    align-items: center;
+  }
+}
 /* ===== Paleta fría iOS solo para el header ===== */
 :host {
   --hd-bg: #ffffff;
@@ -50,6 +109,7 @@
   display: flex;
   align-items: center;
   position: relative;
+  cursor: pointer;
 }
 .bell-icon {
   display: flex;
@@ -76,7 +136,6 @@
 }
 .notification-list {
   position: absolute;
-  right: 0;
   top: 40px;
   min-width: 260px;
   background: #fff;
@@ -232,6 +291,9 @@
     padding: 0.5rem 1rem 1rem 1rem;
     min-width: 180px;
   }
+  .notification-list {
+    right: 0;
+  }
   .navbar-collapse.show {
     max-height: 500px;
     opacity: 1;
@@ -325,6 +387,13 @@
   .header-toggler {
     display: flex;
     justify-content: center;
+  }
+  .notif-remove-btn {
+    top: 4px;
+    right: 4px;
+    font-size: 1.5em;
+    width: 20px;
+    height: 20px;
   }
 }
 

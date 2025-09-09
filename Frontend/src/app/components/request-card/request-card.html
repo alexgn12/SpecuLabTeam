@@ -22,7 +22,11 @@
         <span class="text-primary">{{ building?.buildingName || "N/A" }}</span>
       </h5>
       <p class="card-text mb-0">
-        <strong>Dirección:</strong> {{ building?.street || "N/A" }}
+        <strong>Dirección:</strong> {{ building?.street || "N/A" }}<br>
+        <strong>Distrito:</strong> {{ building?.district || "N/A" }}<br>
+        <strong>Altura (pisos):</strong> {{ building?.floorCount ?? 'N/A' }}<br>
+        <strong>Año:</strong> {{ building?.yearBuilt ?? 'N/A' }}<br>
+        <strong>Número de apartamentos:</strong> {{ building?.apartmentCount ?? 'N/A' }}
       </p>
 
       <button class="btn btn-outline-info btn-sm mt-3"
@@ -50,7 +54,7 @@
       <!-- Acciones alineadas a la derecha -->
       <div class="rc-actions">
         <ng-container *ngIf="request.statusType === 'Pendiente'">
-          <button class="btn btn-outline-primary me-2" (click)="openIARecommendation()">
+          <button class="btn btn-outline-primary me-2" (click)="openIARecommendation(building)">
             Recomendación IA
           </button>
           <span [title]="(!request.maintenanceAmount || request.maintenanceAmount === 0) ? 'Pendiente de recibir presupuesto' : null">
@@ -78,6 +82,10 @@
 
     <!-- detalle (debajo del grid, ocupa todo el ancho) -->
     <div class="rc-detail" *ngIf="showDetails">
+      <div class="mb-2">
+        <strong>Número de apartamentos:</strong>
+        {{ building?.apartmentCount ?? 'N/A' }}
+      </div>
       <sl-detalle-request [request]="request" [building]="building"></sl-detalle-request>
     </div>
   </div>
@@ -86,6 +94,10 @@
   <div class="ia-modal-backdrop" (click)="closeIARecommendation()"></div>
   <div class="ia-modal">
     <button class="btn btn-sm btn-secondary float-end" (click)="closeIARecommendation()">Cerrar</button>
-    <app-analyze-building-request [requestId]="iaRequestId"></app-analyze-building-request>
+    <app-analyze-building-request 
+      [requestId]="iaRequestId" 
+      [buildingCode]="iaBuildingCode" 
+      [buildingName]="iaBuildingName">
+    </app-analyze-building-request>
   </div>
 </ng-container>
