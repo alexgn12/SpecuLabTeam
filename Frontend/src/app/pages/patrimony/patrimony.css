@@ -1,3 +1,15 @@
+/* Centrado vertical de la flecha SVG en el header */
+.expand-arrow-container {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: 20px;
+}
+.expand-arrow-svg {
+  display: block;
+  margin: 0 auto;
+  fill: #64748b;
+}
 /* Oculta el icono de flecha expand/collapse de Angular Material en los paneles de patrimonio */
 :host ::ng-deep .patrimony-accordion .mat-expansion-indicator {
   display: none !important;
@@ -79,10 +91,24 @@
 /* Grid estable: Nombre | Dirección | Año | Acción */
 .p-header .p-row {
   display: grid;
-  grid-template-columns: 2fr minmax(240px, 3fr) 110px 110px 130px;
-  gap: 12px;
+  grid-template-columns: 2fr minmax(240px, 3fr) 110px 1fr 130px 40px;
+  gap: 56px;
   align-items: center;
   width: 100%;
+}
+
+.c-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.expand-arrow-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 }
 .c-ocupacion {
   color: var(--text);

@@ -1,11 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PrototipoApi.Models;
-using PrototipoApi.Logging;
-using System.Collections.Generic;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 using PrototipoApi.Application.Transaction.Queries.GetAllTransaction.ListResult;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace PrototipoApi.Controllers
 {
@@ -14,12 +12,12 @@ namespace PrototipoApi.Controllers
     public class TransactionsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILoguer _loguer;
+        private readonly ILogger<TransactionsController> _logger;
 
-        public TransactionsController(IMediator mediator, ILoguer loguer)
+        public TransactionsController(IMediator mediator, ILogger<TransactionsController> logger)
         {
             _mediator = mediator;
-            _loguer = loguer;
+            _logger = logger;
         }
 
         // GET: api/transactions
@@ -31,7 +29,7 @@ namespace PrototipoApi.Controllers
             [FromQuery] int? year = null,
             [FromQuery] int? month = null)
         {
-            _loguer.LogInfo($"Obteniendo transacciones. Tipo: {transactionType}, Página: {page}, Tamaño: {size}, Año: {year}, Mes: {month}");
+            _logger.LogInformation($"Obteniendo transacciones. Tipo: {transactionType}, Página: {page}, Tamaño: {size}, Año: {year}, Mes: {month}");
             var query = new GetAllTransactionsQuery(transactionType, page, size, year, month);
             var result = await _mediator.Send(query);
             return Ok(new { items = result.Items, total = result.Total });
@@ -41,11 +39,11 @@ namespace PrototipoApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<TransactionDto>> GetTransaction(int id)
         {
-            _loguer.LogInfo($"Obteniendo transacción con id {id}");
+            _logger.LogInformation($"Obteniendo transacción con id {id}");
             var transaction = await _mediator.Send(new GetTransactionByIdQuery(id));
             if (transaction == null)
             {
-                _loguer.LogWarning($"Transacción con id {id} no encontrada");
+                _logger.LogWarning($"Transacción con id {id} no encontrada");
                 return NotFound();
             }
             return Ok(transaction);
@@ -55,7 +53,7 @@ namespace PrototipoApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TransactionDto>> CreateTransaction([FromBody] CreateTransactionDto dto)
         {
-            _loguer.LogInfo("Creando nueva transacción");
+            _logger.LogInformation("Creando nueva transacción");
             var command = new CreateTransactionCommand(
                 DateTime.UtcNow, // O usa un campo de fecha si lo agregas al DTO
                 dto.Description,
@@ -63,7 +61,7 @@ namespace PrototipoApi.Controllers
                 dto.ApartmentCode
             );
             var createdTransaction = await _mediator.Send(command);
-            _loguer.LogInfo($"Transacción creada con id {createdTransaction.TransactionId}");
+            _logger.LogInformation($"Transacción creada con id {createdTransaction.TransactionId}");
             return CreatedAtAction(nameof(GetTransaction), new { id = createdTransaction.TransactionId }, createdTransaction);
         }
 
