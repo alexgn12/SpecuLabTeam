@@ -13,10 +13,12 @@ namespace PrototipoApi.Controllers
     public class BuildingController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<BuildingController> _logger;
 
-        public BuildingController(IMediator mediator)
+        public BuildingController(IMediator mediator, ILogger<BuildingController> logger)
         {
             _mediator = mediator;
+            this._logger = logger;
         }
 
         [HttpGet]
@@ -29,10 +31,23 @@ namespace PrototipoApi.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<BuildingDto>> GetById(int id)
         {
-            var result = await _mediator.Send(new GetBuildingByIdQuery(id));
-            if (result == null)
-                return NotFound();
-            return Ok(result);
+            _logger.LogInformation($"Iniciando búsqueda de Building con ID: {id}");
+            try
+            {
+                var result = await _mediator.Send(new GetBuildingByIdQuery(id));
+                if (result == null)
+                {
+                    _logger.LogInformation($"Building con ID: {id} no encontrado");
+                    return NotFound();
+                }
+                _logger.LogInformation($"Building con ID: {id} encontrado exitosamente");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error al obtener Building con ID: {id}");
+                return StatusCode(500, "Error interno del servidor");
+            }
         }
 
         [HttpPost]
