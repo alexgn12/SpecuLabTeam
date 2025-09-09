@@ -63,12 +63,17 @@ namespace PrototipoApi.Controllers
         [HttpPost("analyze-building-request")]
         public async Task<IActionResult> AnalyzeBuildingRequest([FromBody] AnalyzeBuildingRequest incoming)
         {
-            // Obtener la solicitud y entidades relacionadas
+            // Obtener la solicitud
             var request = await _context.Requests
-                .Include(r => r.Building)
-                .Include(r => r.Building.Apartments)
+                .AsNoTracking()
                 .FirstOrDefaultAsync(r => r.RequestId == incoming.RequestId);
             if (request == null) return NotFound("Solicitud no encontrada");
+
+            // Obtener el edificio y sus apartamentos
+            var building = await _context.Buildings
+                .Include(b => b.Apartments)
+                .FirstOrDefaultAsync(b => b.BuildingId == request.BuildingId);
+            if (building == null) return NotFound("Edificio no encontrado");
 
             var budget = await _context.ManagementBudgets
                 .OrderByDescending(b => b.LastUpdatedDate)
@@ -76,7 +81,7 @@ namespace PrototipoApi.Controllers
             if (budget == null) return NotFound("No hay presupuesto disponible");
 
             // Calcular estimaciones relevantes
-            var apartmentCount = request.Building.ApartmentCount;
+            var apartmentCount = building.ApartmentCount;
             double annualRentalIncome = apartmentCount * 12 * 1150; // alquiler medio estimado
             double totalRequestAmount = request.BuildingAmount + request.MaintenanceAmount;
             double netAnnualIncome = annualRentalIncome - request.MaintenanceAmount;
@@ -86,8 +91,8 @@ namespace PrototipoApi.Controllers
 Eres un agente inmobiliario financiero experto.
 Analiza la siguiente propuesta y toma una decisión con métricas numéricas:
 
-- Edificio: {request.Building.BuildingName}, Distrito: {request.Building.District}
-- Urbanización: {request.Building.District}
+- Edificio: {building.BuildingName}, Distrito: {building.District}
+- Urbanización: {building.District}
 - Solicitud: {request.BuildingAmount} compra + {request.MaintenanceAmount} mantenimiento
 - Presupuesto actual: {budget.CurrentAmount}
 - Apartamentos: {apartmentCount}, Ingreso estimado por venta: se venderá el 100% de los apartamentos disponibles
