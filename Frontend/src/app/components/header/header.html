@@ -20,7 +20,7 @@
           <ul>
             <li *ngFor="let n of notifications; let i = index">
               <span class="notif-desc" (click)="onNotificationClick(n)" style="cursor:pointer;user-select:auto;">
-                <b *ngIf="n.notifType">{{ n.notifType }}:</b> {{ n.description || n.type }}
+                <b *ngIf="n.notifType">{{ n.notifType }}:</b>
               </span>
               <span class="notif-date" (click)="onNotificationClick(n)" style="cursor:pointer;user-select:auto;">{{ n.utcCreated || n.requestDate | date:'short' }}</span>
               <button class="notif-remove-btn" (click)="$event.stopPropagation(); removeNotification(i)" title="Eliminar notificación" type="button">−</button>
@@ -73,7 +73,7 @@
             <ul>
               <li *ngFor="let n of notifications; let i = index">
                 <span class="notif-desc" (click)="onNotificationClick(n)" style="cursor:pointer;user-select:auto;">
-                <b *ngIf="n.notifType">{{ n.notifType }}:</b> {{ n.description || n.type }}
+                <b *ngIf="n.notifType">{{ n.notifType }}:</b> 
               </span>
                 <span class="notif-date" (click)="onNotificationClick(n)" style="cursor:pointer;user-select:auto;">{{ n.utcCreated || n.requestDate | date:'short' }}</span>
                 <button class="notif-remove-btn" (click)="$event.stopPropagation(); removeNotification(i)" title="Eliminar notificación" type="button">−</button>
