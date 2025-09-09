@@ -7,7 +7,8 @@
   </form>
   <div *ngIf="buildingCode || buildingName" class="mb-2">
     <strong>Código Edificio:</strong> {{ buildingCode }}<br>
-    <strong>Nombre Edificio:</strong> {{ buildingName }}
+    <strong>Nombre Edificio:</strong> {{ buildingName }}<br>
+    <span *ngIf="building && building.ApartmentCount > 0">{{ building.ApartmentCount }}</span>
   </div>
   <div *ngIf="loading">Analizando...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
