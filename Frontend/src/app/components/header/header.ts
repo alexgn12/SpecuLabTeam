@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { SignalRService, TransactionLiveDto, RequestLiveDto } from '../../services/signalr.service';
 
 @Component({
   selector: 'sl-header',
@@ -6,8 +7,33 @@ import { Component } from '@angular/core';
   templateUrl: './header.html',
   styleUrl: './header.css'
 })
-export class Header {
+export class Header implements OnDestroy {
   isMenuOpen = false;
+  notifications: Array<TransactionLiveDto | RequestLiveDto> = [];
+  showNotifications = false;
+  private subscriptions: any[] = [];
+
+  constructor(private signalR: SignalRService) {
+    // Suscribirse a eventos de SignalR
+    this.subscriptions.push(
+      this.signalR.transactionCreated$.subscribe(n => this.addNotification(n)),
+      this.signalR.transactionUpdated$.subscribe(n => this.addNotification(n)),
+      this.signalR.requestCreated$.subscribe(n => this.addNotification(n)),
+      this.signalR.requestUpdated$.subscribe(n => this.addNotification(n))
+    );
+  }
+
+  addNotification(n: TransactionLiveDto | RequestLiveDto | null) {
+    if (!n) return;
+    this.notifications.unshift(n);
+    if (this.notifications.length > 5) {
+      this.notifications = this.notifications.slice(0, 5);
+    }
+  }
+
+  toggleNotifications() {
+    this.showNotifications = !this.showNotifications;
+  }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
@@ -27,5 +53,9 @@ export class Header {
         if (nav) nav.classList.remove('show');
       }, 0);
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe && s.unsubscribe());
   }
 }

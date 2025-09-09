@@ -31,25 +31,27 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
-// Configura CORS para permitir cualquier origen
-//builder.Services.AddCors(options =>
-//{
-//    options.AddPolicy("AllowAll", policy =>
-//    {
-//        policy.AllowAnyOrigin()
-//              .AllowAnyHeader()
-//              .AllowAnyMethod();
-//    });
-//});
-
-// CORS para Angular dev (ajusta el origen seg�n tu puerto/host)
-builder.Services.AddCors(opt =>
+// Configura CORS para frontend y APIs externas
+builder.Services.AddCors(options =>
 {
-    opt.AddPolicy("ng", p => p
-        .WithOrigins("http://localhost:4200")
-        .AllowAnyHeader()
-        .AllowAnyMethod()
-        .AllowCredentials());
+    // Política para frontend (Netlify y localhost)
+    options.AddPolicy("Frontend", policy =>
+    {
+        policy.WithOrigins(
+                "https://speculab.netlify.app",
+                "http://localhost:4200"
+            )
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+    // Política abierta para APIs externas (solo si es necesario, úsala con precaución)
+    options.AddPolicy("ExternalApi", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
 });
 
 // Registra MediatR para la inyecci�n de dependencias y manejo de solicitudes (CQRS, Mediator Pattern)
@@ -138,9 +140,10 @@ app.Use(async (ctx, next) =>
 });
 
 // Habilita CORS antes de los controladores
-//app.UseCors("AllowAll");
-app.UseCors("ng");
+// Usa la política de frontend por defecto
+app.UseCors("Frontend");
 
+// Si necesitas exponer endpoints públicos para APIs externas, aplica la política "ExternalApi" en los controladores/endpoints correspondientes con [EnableCors("ExternalApi")]
 // Redirige autom�ticamente las solicitudes HTTP a HTTPS
 app.UseHttpsRedirection();
 

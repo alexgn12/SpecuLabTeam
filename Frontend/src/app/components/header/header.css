@@ -38,8 +38,94 @@
 .brand-text {
   color: var(--hd-text);
   font-weight: 700;
-  letter-spacing: -0.01em;
-  font-size: 1.05rem;
+}
+
+/* Notificaciones campana */
+.notification-bell {
+  position: relative;
+  margin-left: 1.5rem;
+  cursor: pointer;
+}
+.bell-wrapper {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.bell-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  transition: background 0.2s;
+}
+.notification-bell.has-unread .bell-icon {
+  background: rgba(59, 130, 246, 0.08);
+}
+.notification-dot {
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 10px;
+  height: 10px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 2px #fff;
+}
+.notification-list {
+  position: absolute;
+  right: 0;
+  top: 40px;
+  min-width: 260px;
+  background: #fff;
+  border: 1px solid #e8edf5;
+  box-shadow: 0 4px 24px rgba(20,24,40,0.10);
+  border-radius: 10px;
+  z-index: 2000;
+  padding: 0.5rem 0;
+  animation: fadeIn 0.2s;
+}
+.notification-title {
+  font-weight: 600;
+  color: #0f172a;
+  padding: 0.5rem 1rem 0.25rem 1rem;
+  border-bottom: 1px solid #e8edf5;
+  margin-bottom: 0.25rem;
+}
+.notification-list ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.notification-list li {
+  padding: 0.5rem 1rem;
+  font-size: 0.97rem;
+  color: #334155;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid #f1f5f9;
+}
+.notification-list li:last-child {
+  border-bottom: none;
+}
+.notif-desc {
+  font-weight: 500;
+  margin-bottom: 2px;
+}
+.notif-date {
+  font-size: 0.82em;
+  color: #64748b;
+}
+.notif-empty {
+  text-align: center;
+  color: #64748b;
+  font-style: italic;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* Toggler minimalista */
