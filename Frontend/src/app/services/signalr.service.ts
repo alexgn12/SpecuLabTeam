@@ -40,7 +40,7 @@ export class SignalRService {
   }
 
   private startConnection(): void {
-    const hubUrl = 'https://localhost:7092/hubs/live?topics=transactions,requests';
+    const hubUrl = 'https://devdemoapi3.azurewebsites.net/hubs/live?topics=transactions,requests';
     this.hubConnection = new HubConnectionBuilder()
       .withUrl(hubUrl, { withCredentials: true })
       .withAutomaticReconnect()
