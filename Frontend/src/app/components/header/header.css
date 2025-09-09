@@ -1,3 +1,31 @@
+/* Flex responsive para campana y hamburguesa */
+.header-flex-responsive {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Campana solo visible en mobile (fuera del menú) */
+.notification-bell-responsive {
+  display: flex;
+  align-items: center;
+}
+@media (min-width: 992px) {
+  .notification-bell-responsive {
+    display: none !important;
+  }
+}
+
+/* Campana solo visible en desktop (dentro del menú) */
+.notification-bell-desktop {
+  display: none !important;
+}
+@media (min-width: 992px) {
+  .notification-bell-desktop {
+    display: flex !important;
+    align-items: center;
+  }
+}
 /* ===== Paleta fría iOS solo para el header ===== */
 :host {
   --hd-bg: #ffffff;
@@ -76,7 +104,6 @@
 }
 .notification-list {
   position: absolute;
-  right: 0;
   top: 40px;
   min-width: 260px;
   background: #fff;
@@ -231,6 +258,9 @@
     margin-top: 6px;
     padding: 0.5rem 1rem 1rem 1rem;
     min-width: 180px;
+  }
+  .notification-list {
+    right: 0;
   }
   .navbar-collapse.show {
     max-height: 500px;
