@@ -21,6 +21,10 @@
         <div class="c c-year">
           <span class="label">Año</span> {{ b.yearBuilt }}
         </div>
+        <div class="c c-ocupacion">
+          <span class="label">Ocupación</span>
+          <span>{{ b.ocupacion }}%</span>
+        </div>
         <div class="c c-actions">
           <button class="btn-primary-sm"
                   (click)="viewBuildingDetails(b); $event.stopPropagation()">

@@ -76,8 +76,8 @@ namespace PrototipoApi.Controllers
             if (budget == null) return NotFound("No hay presupuesto disponible");
 
             // Calcular estimaciones relevantes
-            var apartments = request.Building.Apartments;
-            double annualRentalIncome = apartments.Sum(a => (double)a.ApartmentPrice) * 12; // asumimos precios mensuales
+            var apartmentCount = request.Building.ApartmentCount;
+            double annualRentalIncome = apartmentCount * 12 * 1150; // alquiler medio estimado
             double totalRequestAmount = request.BuildingAmount + request.MaintenanceAmount;
             double netAnnualIncome = annualRentalIncome - request.MaintenanceAmount;
             double paybackPeriod = netAnnualIncome > 0 ? totalRequestAmount / netAnnualIncome : 0;
@@ -87,10 +87,18 @@ Eres un agente inmobiliario financiero experto.
 Analiza la siguiente propuesta y toma una decisión con métricas numéricas:
 
 - Edificio: {request.Building.BuildingName}, Distrito: {request.Building.District}
+- Urbanización: {request.Building.District}
 - Solicitud: {request.BuildingAmount} compra + {request.MaintenanceAmount} mantenimiento
 - Presupuesto actual: {budget.CurrentAmount}
-- Apartamentos: {apartments.Count}, Ingreso alquiler anual estimado: {annualRentalIncome}
+- Apartamentos: {apartmentCount}, Ingreso estimado por venta: se venderá el 100% de los apartamentos disponibles
+- Los apartamentos no están alquilados al comprar el edificio. El precio de alquiler estimado está entre 800 y 1500 euros mensuales por apartamento (usar 1150€ como media).
 - Payback estimado: {paybackPeriod:N2} años
+
+Reglas para la decisión:
+- Si el presupuesto actual es menor que el monto total de la solicitud, rechaza la compra por falta de liquidez.
+- Si el presupuesto es alto y el edificio está en una buena urbanización, puedes permitir un gasto mayor.
+- Si el presupuesto es bajo pero el edificio es barato y rentable a largo plazo (muchos apartamentos a bajo precio), puedes recomendar la compra.
+- Considera riesgos, oportunidades y supuestos.
 
 Toma una decisión (COMPRAR o NO COMPRAR), justifica, indica supuestos, riesgos y oportunidades. Devuelve SOLO el siguiente JSON:
 {{

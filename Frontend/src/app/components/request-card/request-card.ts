@@ -33,7 +33,7 @@ export class RequestCard {
 
   showDetails = false;
   showIARecommendation = false;
-  iaRequestId: number | null = null;
+  // iaRequestId ya está declarado arriba, no repetir
 
   constructor(private requestsService: RequestsService, private router: Router) {}
 
@@ -107,12 +107,21 @@ export class RequestCard {
     }
   }
 
-  openIARecommendation() {
+  iaRequestId: number | null = null;
+  iaBuildingCode: string | null = null;
+  iaBuildingName: string | null = null;
+  // showIARecommendation ya está declarado arriba, no repetir
+
+  openIARecommendation(building: any) {
     this.iaRequestId = this.request.requestId;
+    this.iaBuildingCode = building?.buildingCode;
+    this.iaBuildingName = building?.buildingName;
     this.showIARecommendation = true;
   }
   closeIARecommendation() {
     this.showIARecommendation = false;
     this.iaRequestId = null;
+    this.iaBuildingCode = null;
+    this.iaBuildingName = null;
   }
 }
