@@ -103,6 +103,7 @@ Reglas para la decisión:
 - Si el presupuesto actual es menor que el monto total de la solicitud, rechaza la compra por falta de liquidez.
 - Si el presupuesto es alto y el edificio está en una buena urbanización, puedes permitir un gasto mayor.
 - Si el presupuesto es bajo pero el edificio es barato y rentable a largo plazo (muchos apartamentos a bajo precio), puedes recomendar la compra.
+- Si el edificio es demasiado barato, puedes aceptar la compra aunque tenga pocos ingresos.
 - Considera riesgos, oportunidades y supuestos.
 
 Toma una decisión (COMPRAR o NO COMPRAR), justifica, indica supuestos, riesgos y oportunidades. Devuelve SOLO el siguiente JSON:
