@@ -7,7 +7,6 @@ using PrototipoApi.Repositories;
 using PrototipoApi.Repositories.Interfaces;
 using System.Reflection;
 using FluentValidation;
-using PrototipoApi.Controllers.GammaAI;
 using PrototipoApi.Infrastructure.RealTime;
 
 // Crea el constructor de la aplicaci�n web
