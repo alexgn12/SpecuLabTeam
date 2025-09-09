@@ -22,8 +22,9 @@
       <div class="field"><span class="label">Dirección</span><span class="value">{{ data.item.street }}</span></div>
       <div class="field"><span class="label">Barrio</span><span class="value">{{ data.item.district }}</span></div>
       <div class="field"><span class="label">Fecha de construcción</span><span class="value">{{ data.item.yearBuilt }}</span></div>
-      <div class="field"><span class="label">Plantas</span><span class="value">{{ data.item.floorCount }}</span></div>
-      <div class="field"><span class="label">Fecha de alta</span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
+  <div class="field"><span class="label">Plantas</span><span class="value">{{ data.item.floorCount }}</span></div>
+  <div class="field"><span class="label">Apartamentos</span><span class="value">{{ data.item.apartmentCount }}</span></div>
+  <div class="field"><span class="label">Fecha de alta</span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
     </ng-container>
 
     <ng-template #apartmentBlock>
