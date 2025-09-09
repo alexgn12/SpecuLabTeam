@@ -76,8 +76,8 @@ namespace PrototipoApi.Controllers
             if (budget == null) return NotFound("No hay presupuesto disponible");
 
             // Calcular estimaciones relevantes
-            var apartments = request.Building.Apartments;
-            double annualRentalIncome = apartments.Sum(a => (double)a.ApartmentPrice) * 12; // asumimos precios mensuales
+            var apartmentCount = request.Building.ApartmentCount;
+            double annualRentalIncome = apartmentCount * 12 * 1150; // alquiler medio estimado
             double totalRequestAmount = request.BuildingAmount + request.MaintenanceAmount;
             double netAnnualIncome = annualRentalIncome - request.MaintenanceAmount;
             double paybackPeriod = netAnnualIncome > 0 ? totalRequestAmount / netAnnualIncome : 0;
@@ -90,8 +90,8 @@ Analiza la siguiente propuesta y toma una decisión con métricas numéricas:
 - Urbanización: {request.Building.District}
 - Solicitud: {request.BuildingAmount} compra + {request.MaintenanceAmount} mantenimiento
 - Presupuesto actual: {budget.CurrentAmount}
-- Apartamentos: {apartments.Count}, Ingreso estimado por venta: se venderá el 100% de los apartamentos disponibles
-- Los apartamentos no están alquilados al comprar el edificio. El precio de alquiler estimado está entre 800 y 1500 euros mensuales por apartamento.
+- Apartamentos: {apartmentCount}, Ingreso estimado por venta: se venderá el 100% de los apartamentos disponibles
+- Los apartamentos no están alquilados al comprar el edificio. El precio de alquiler estimado está entre 800 y 1500 euros mensuales por apartamento (usar 1150€ como media).
 - Payback estimado: {paybackPeriod:N2} años
 
 Reglas para la decisión:
