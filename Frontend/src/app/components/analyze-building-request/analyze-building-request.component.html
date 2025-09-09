@@ -8,7 +8,16 @@
   <div *ngIf="loading">Analizando...</div>
   <div *ngIf="error" class="error">{{ error }}</div>
   <div *ngIf="result">
-    <h3>Resultado:</h3>
-    <pre>{{ result | json }}</pre>
+    <h3>Resultado IA:</h3>
+    <div *ngIf="result.decision">
+      <strong>Decisión:</strong> {{ result.decision }}<br>
+      <strong>Motivo:</strong> {{ result.reason }}<br>
+      <div *ngIf="result.insights">
+        <strong>Insights:</strong> {{ result.insights }}
+      </div>
+    </div>
+    <div *ngIf="!result.decision">
+      {{ result }}
+    </div>
   </div>
 </div>
