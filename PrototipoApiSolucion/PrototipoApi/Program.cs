@@ -8,12 +8,24 @@ using PrototipoApi.Repositories.Interfaces;
 using System.Reflection;
 using FluentValidation;
 using PrototipoApi.Infrastructure.RealTime;
+using Serilog;
 
 // Crea el constructor de la aplicaci�n web
 var builder = WebApplication.CreateBuilder(args);
 
 // Agrega la carga de secretos de usuario para OpenAIService
 builder.Configuration.AddUserSecrets<GammaAI.Services.OpenAIService>();
+
+// Configura Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    .WriteTo.File("logs\\log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+
+// Agregar servicio de Serilog
+builder.Logging.AddSerilog();
 
 // Agrega servicios a la aplicaci�n
 
@@ -80,9 +92,6 @@ else
 // Registro del servicio externo de apartamentos (igual, si lo necesitas)
 builder.Services.AddHttpClient<PrototipoApi.Services.IExternalApartmentService, PrototipoApi.Services.ExternalApartmentService>();
 
-// Registro del loguer
-builder.Services.AddSingleton<PrototipoApi.Logging.ILoguer, PrototipoApi.Logging.Loguer>();
-
 // Registro de AutoMapper
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddSignalR();
@@ -126,16 +135,26 @@ if (app.Environment.IsDevelopment())
 }
 
 
+// Middleware global de excepciones
 app.Use(async (ctx, next) =>
 {
-    try { await next(); }
+    try
+    {
+        await next();
+    }
     catch (ValidationException ex)
     {
         var errors = ex.Errors
             .GroupBy(e => e.PropertyName)
             .ToDictionary(g => g.Key, g => g.Select(e => e.ErrorMessage).ToArray());
-
+        Log.Warning(ex, "Validation exception: {@Errors}", errors);
         await Results.ValidationProblem(errors).ExecuteAsync(ctx); // 400 con ProblemDetails
+    }
+    catch (Exception ex)
+    {
+        Log.Error(ex, "Unhandled exception");
+        ctx.Response.StatusCode = 500;
+        await ctx.Response.WriteAsJsonAsync(new { error = "Ocurrió un error inesperado." });
     }
 });
 

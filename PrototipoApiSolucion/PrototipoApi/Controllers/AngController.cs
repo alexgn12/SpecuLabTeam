@@ -7,37 +7,49 @@ using PrototipoApi.Application.AngController.Query;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PrototipoApi.BaseDatos;
+using PrototipoApi.Models;
+using Microsoft.Extensions.Logging;
+using System;
 
 namespace PrototipoApi.Controllers
 {
     // Controlador para endpoints relacionados con estadísticas y gestión de edificios, apartamentos y presupuesto
-    [Route("api/[controller]")]
+    [Route("api/ang")]
     [ApiController]
     public class AngController : ControllerBase
     {
         private readonly IMediator _mediator;
         private readonly ContextoBaseDatos _context;
+        private readonly ILogger<AngController> _logger;
 
-        public AngController(IMediator mediator, ContextoBaseDatos context)
+        public AngController(IMediator mediator, ContextoBaseDatos context, ILogger<AngController> logger)
         {
             _mediator = mediator;
             _context = context;
+            _logger = logger;
         }
 
         // Endpoint para obtener un resumen de requests agrupados por estado
         // Devuelve el total general y el total por cada estado
         [HttpGet("resumen-requests")]
-        public async Task<IActionResult> GetResumenRequests()
+        public async Task<ActionResult<Result<object>>> GetResumenRequests()
         {
-            var resumen = await _mediator.Send(new GetRequestsResumenQuery());
-
-            var totalGeneral = resumen.Values.Sum();
-
-            return Ok(new
+            try
             {
-                TotalGeneral = totalGeneral,
-                PorEstado = resumen.Select(x => new { Estado = x.Key, Total = x.Value })
-            });
+                var resumen = await _mediator.Send(new GetRequestsResumenQuery());
+                var totalGeneral = resumen.Values.Sum();
+                var result = new
+                {
+                    TotalGeneral = totalGeneral,
+                    PorEstado = resumen.Select(x => new { Estado = x.Key, Total = x.Value })
+                };
+                return Ok(Result<object>.Ok(result));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error en GetResumenRequests");
+                return StatusCode(500, Result<object>.Fail("Error interno del servidor", ex));
+            }
         }
 
         // Endpoint para obtener el gasto mensual agrupado por tipo

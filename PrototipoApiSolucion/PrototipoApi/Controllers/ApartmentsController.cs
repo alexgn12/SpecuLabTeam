@@ -1,7 +1,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using PrototipoApi.Models;
-using PrototipoApi.Logging;
 using PrototipoApi.Application.Apartments.Queries;
 using PrototipoApi.Application.Apartments.Commands;
 using System.Collections.Generic;
@@ -9,6 +8,7 @@ using System.Threading.Tasks;
 using PrototipoApi.Application.Apartments.Queries.GetAllApartments;
 using PrototipoApi.Application.Apartments.Queries.GetApartmentById;
 using PrototipoApi.Application.Apartments.Commands.CreateApartment;
+using Microsoft.Extensions.Logging;
 
 namespace PrototipoApi.Controllers
 {
@@ -18,47 +18,71 @@ namespace PrototipoApi.Controllers
     public class ApartmentsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private readonly ILoguer _loguer;
+        private readonly ILogger<ApartmentsController> _logger;
 
-        public ApartmentsController(IMediator mediator, ILoguer loguer)
+        public ApartmentsController(IMediator mediator, ILogger<ApartmentsController> logger)
         {
             _mediator = mediator;
-            _loguer = loguer;
+            _logger = logger;
         }
 
         // Endpoint para obtener una lista paginada de apartamentos
         // Permite ordenar y filtrar por página, tamaño y campo de orden
         [HttpGet]
-        public async Task<ActionResult<List<ApartmentDto>>> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? orderBy = "CreatedDate", [FromQuery] bool desc = true)
+        public async Task<ActionResult<Result<List<ApartmentDto>>>> GetAll([FromQuery] int page = 1, [FromQuery] int size = 10, [FromQuery] string? orderBy = "CreatedDate", [FromQuery] bool desc = true)
         {
-            _loguer.LogInfo($"Obteniendo apartamentos. Página: {page}, Tamaño: {size}, Orden: {orderBy}, Desc: {desc}");
-            var result = await _mediator.Send(new GetAllApartmentsQuery(page, size, orderBy, desc));
-            return Ok(result);
+            try
+            {
+                _logger.LogInformation($"Obteniendo apartamentos. Página: {page}, Tamaño: {size}, Orden: {orderBy}, Desc: {desc}");
+                var result = await _mediator.Send(new GetAllApartmentsQuery(page, size, orderBy, desc));
+                return Ok(Result<List<ApartmentDto>>.Ok(result));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener apartamentos");
+                return StatusCode(500, Result<List<ApartmentDto>>.Fail("Error interno del servidor", ex));
+            }
         }
 
         // Endpoint para obtener el detalle de un apartamento por su id
         [HttpGet("{id}")]
-        public async Task<ActionResult<ApartmentDto>> GetById(int id)
+        public async Task<ActionResult<Result<ApartmentDto>>> GetById(int id)
         {
-            _loguer.LogInfo($"Obteniendo apartamento con id {id}");
-            var result = await _mediator.Send(new GetApartmentByIdQuery(id));
-            if (result == null)
+            try
             {
-                _loguer.LogWarning($"Apartamento con id {id} no encontrado");
-                return NotFound();
+                _logger.LogInformation($"Obteniendo apartamento con id {id}");
+                var result = await _mediator.Send(new GetApartmentByIdQuery(id));
+                if (result == null)
+                {
+                    _logger.LogWarning($"Apartamento con id {id} no encontrado");
+                    return NotFound(Result<ApartmentDto>.Fail("No encontrado"));
+                }
+                return Ok(Result<ApartmentDto>.Ok(result));
             }
-            return Ok(result);
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al obtener apartamento por id");
+                return StatusCode(500, Result<ApartmentDto>.Fail("Error interno del servidor", ex));
+            }
         }
 
         // Endpoint para crear un nuevo apartamento
         // Recibe los datos del apartamento en el cuerpo de la petición
         [HttpPost]
-        public async Task<ActionResult<ApartmentDto>> Create([FromBody] ApartmentDto dto)
+        public async Task<ActionResult<Result<ApartmentDto>>> Create([FromBody] ApartmentDto dto)
         {
-            _loguer.LogInfo("Creando nuevo apartamento");
-            var result = await _mediator.Send(new CreateApartmentCommand(dto));
-            _loguer.LogInfo($"Apartamento creado con id {result.ApartmentId}");
-            return CreatedAtAction(nameof(GetById), new { id = result.ApartmentId }, result);
+            try
+            {
+                _logger.LogInformation("Creando nuevo apartamento");
+                var result = await _mediator.Send(new CreateApartmentCommand(dto));
+                _logger.LogInformation($"Apartamento creado con id {result.ApartmentId}");
+                return Ok(Result<ApartmentDto>.Ok(result));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error al crear apartamento");
+                return StatusCode(500, Result<ApartmentDto>.Fail("Error interno del servidor", ex));
+            }
         }
     }
 }

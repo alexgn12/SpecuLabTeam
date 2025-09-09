@@ -2,45 +2,52 @@ using MediatR;
 using PrototipoApi.Models;
 using PrototipoApi.Entities;
 using PrototipoApi.Repositories.Interfaces;
-using PrototipoApi.Logging;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace PrototipoApi.Application.Apartments.Queries.GetApartmentById
 {
-    public class GetApartmentByIdHandler : IRequestHandler<GetApartmentByIdQuery, ApartmentDto?>
+    public class GetApartmentByIdHandler : IRequestHandler<GetApartmentByIdQuery, ApartmentDto>
     {
         private readonly IRepository<Apartment> _apartments;
-        private readonly ILoguer _loguer;
-        public GetApartmentByIdHandler(IRepository<Apartment> apartments, ILoguer loguer)
+        private readonly ILogger<GetApartmentByIdHandler> _logger;
+        public GetApartmentByIdHandler(IRepository<Apartment> apartments, ILogger<GetApartmentByIdHandler> logger)
         {
             _apartments = apartments;
-            _loguer = loguer;
+            _logger = logger;
         }
-        public async Task<ApartmentDto?> Handle(GetApartmentByIdQuery request, CancellationToken cancellationToken)
+        public async Task<ApartmentDto> Handle(GetApartmentByIdQuery request, CancellationToken cancellationToken)
         {
-            _loguer.LogInfo($"Handler: Obteniendo apartamento con id {request.ApartmentId}");
-            var result = await _apartments.SelectOneAsync<ApartmentDto>(
-                a => a.ApartmentId == request.ApartmentId,
-                a => new ApartmentDto
+            try
+            {
+                _logger.LogInformation($"Obteniendo apartamento con id {request.ApartmentId}");
+                var apartment = await _apartments.GetByIdAsync(request.ApartmentId);
+                if (apartment == null)
                 {
-                    ApartmentId = a.ApartmentId,
-                    ApartmentCode = a.ApartmentCode,
-                    ApartmentDoor = a.ApartmentDoor,
-                    ApartmentFloor = a.ApartmentFloor,
-                    ApartmentPrice = a.ApartmentPrice,
-                    NumberOfRooms = a.NumberOfRooms,
-                    NumberOfBathrooms = a.NumberOfBathrooms,
-                    BuildingCode = a.Building.BuildingCode,
-                    HasLift = a.HasLift,
-                    HasGarage = a.HasGarage,
-                    CreatedDate = a.CreatedDate
-                },
-                cancellationToken
-            );
-            if (result == null)
-                _loguer.LogWarning($"Handler: Apartamento con id {request.ApartmentId} no encontrado");
-            return result;
+                    _logger.LogWarning($"Apartamento con id {request.ApartmentId} no encontrado");
+                    return null;
+                }
+                return new ApartmentDto
+                {
+                    ApartmentId = apartment.ApartmentId,
+                    ApartmentCode = apartment.ApartmentCode,
+                    ApartmentDoor = apartment.ApartmentDoor,
+                    ApartmentFloor = apartment.ApartmentFloor,
+                    ApartmentPrice = apartment.ApartmentPrice,
+                    NumberOfRooms = apartment.NumberOfRooms,
+                    NumberOfBathrooms = apartment.NumberOfBathrooms,
+                    BuildingCode = apartment.Building.BuildingCode,
+                    HasLift = apartment.HasLift,
+                    HasGarage = apartment.HasGarage,
+                    CreatedDate = apartment.CreatedDate
+                };
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error en GetApartmentByIdHandler");
+                throw;
+            }
         }
     }
 }

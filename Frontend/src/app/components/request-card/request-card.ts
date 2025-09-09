@@ -27,6 +27,7 @@ export class RequestCard {
     floorCount: number;
     yearBuilt: number;
     buildingCode: string;
+    apartmentCount?: number;
   };
 
   @Output() statusChanged = new EventEmitter<void>();
