@@ -1,19 +1,15 @@
   import { Component, OnDestroy, OnInit } from '@angular/core';
-  // ...existing code...
-  // ...existing code...
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { NgxSwapyComponent } from '@omnedia/ngx-swapy';
 import { NgChartsModule } from 'ng2-charts';
 import { ChartConfiguration } from 'chart.js';
-
 import { ResumenRequestsComponent } from 'src/app/components/resumen-requests/resumen-requests.component';
 import { InfoCard } from '../../components/info-card/info-card';
 import { HomeService, Summary, Transaction, BuildingsByDistrict } from './home.service';
 import { Subscription, combineLatest } from 'rxjs';
 import { SignalRService } from 'src/app/services/signalr.service';
 import { ToastService } from 'src/app/components/toast/toast.service';
-import { ToastComponent } from 'src/app/components/toast/toast.component';
 import { RentabilidadComponent } from '../../components/rentabilidad';
 
 @Component({
@@ -25,9 +21,8 @@ import { RentabilidadComponent } from '../../components/rentabilidad';
     NgxSwapyComponent,      // 👈 Swapy solo se usa en desktop (no se montará en móvil)
     NgChartsModule,
     ResumenRequestsComponent,
-    InfoCard
-    ,RentabilidadComponent,
-  ToastComponent
+    InfoCard,
+    RentabilidadComponent
   ],
   templateUrl: './home.html',
   styleUrls: ['./home.css']

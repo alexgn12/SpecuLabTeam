@@ -2,7 +2,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { RentabilidadService, AnalyzeJsonResponse } from '../../services/rentabilidad.service';
 import { CommonModule } from '@angular/common';
-// import { jsPDF } from 'jspdf';
 import Chart from 'chart.js/auto';
 
 

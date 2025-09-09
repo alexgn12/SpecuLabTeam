@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TransactionsService, Transaction } from '../../pages/budget/transactions.service';
-import { ApartmentService, Apartment } from '../../services/apartment.service';
-import { BuildingService, Building } from '../../services/building.service';
+import { ApartmentService } from '../../services/apartment.service';
+import { BuildingService } from '../../services/building.service';
 import { PatrimonyDetailModalComponent } from '../patrimony-detail-modal/patrimony-detail-modal.component';
 import { PaginacionComponent } from '../paginacion/paginacion.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -11,7 +11,7 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 @Component({
   selector: 'transactions-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, PatrimonyDetailModalComponent, MatDialogModule, PaginacionComponent],
+  imports: [CommonModule, FormsModule, MatDialogModule, PaginacionComponent],
   templateUrl: './transactions-page.component.html',
   styleUrls: ['./transactions-page.component.css']
 })
