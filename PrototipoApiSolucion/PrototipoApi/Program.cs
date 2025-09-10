@@ -59,6 +59,7 @@ builder.Services.AddIdentityCore<AppUser>(options =>
     // Email único
     options.User.RequireUniqueEmail = true;
 })
+.AddRoles<IdentityRole>() // <-- Añadido para soporte de roles
 .AddEntityFrameworkStores<ContextoBaseDatos>()
 .AddDefaultTokenProviders();
 
@@ -175,6 +176,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+
+app.UseHttpsRedirection();
 
 // Middleware global de excepciones
 app.Use(async (ctx, next) =>

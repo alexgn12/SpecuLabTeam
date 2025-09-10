@@ -9,10 +9,12 @@ using PrototipoApi.Application.Apartments.Queries.GetAllApartments;
 using PrototipoApi.Application.Apartments.Queries.GetApartmentById;
 using PrototipoApi.Application.Apartments.Commands.CreateApartment;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PrototipoApi.Controllers
 {
     // Controlador para la gestión de apartamentos: consulta, detalle y creación
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ApartmentsController : ControllerBase

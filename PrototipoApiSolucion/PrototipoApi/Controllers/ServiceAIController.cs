@@ -6,6 +6,7 @@ using PrototipoApi.Models;
 using OpenAI.Chat;
 using PrototipoApi.BaseDatos;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PrototipoApi.Controllers
 {

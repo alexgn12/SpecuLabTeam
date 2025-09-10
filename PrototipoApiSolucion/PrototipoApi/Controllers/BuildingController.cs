@@ -5,11 +5,14 @@ using PrototipoApi.Application.Building.Queries.GetAllBuildings;
 using PrototipoApi.Application.Building.Queries.GetBuildingById;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PrototipoApi.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [Route("api/[controller]")]
     [ApiController]
+
     public class BuildingController : ControllerBase
     {
         private readonly IMediator _mediator;

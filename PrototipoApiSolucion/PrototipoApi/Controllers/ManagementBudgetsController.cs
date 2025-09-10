@@ -5,9 +5,11 @@ using PrototipoApi.Models;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PrototipoApi.Controllers
 {
+    [Authorize]
     [Route("api/managementbudgets")]
     [ApiController]
     public class ManagementBudgetsController : ControllerBase

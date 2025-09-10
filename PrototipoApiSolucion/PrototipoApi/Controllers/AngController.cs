@@ -10,10 +10,12 @@ using PrototipoApi.BaseDatos;
 using PrototipoApi.Models;
 using Microsoft.Extensions.Logging;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PrototipoApi.Controllers
 {
     // Controlador para endpoints relacionados con estadísticas y gestión de edificios, apartamentos y presupuesto
+    [Authorize]
     [Route("api/ang")]
     [ApiController]
     public class AngController : ControllerBase

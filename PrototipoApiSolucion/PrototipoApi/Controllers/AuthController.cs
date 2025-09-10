@@ -17,11 +17,13 @@ namespace PrototipoApi.Controllers
     {
         private readonly UserManager<AppUser> _userManager;
         private readonly TokenService _tokenService;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AuthController(UserManager<AppUser> userManager, TokenService tokenService)
+        public AuthController(UserManager<AppUser> userManager, TokenService tokenService, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _roleManager = roleManager;
         }
 
         [HttpPost("login")]
@@ -38,7 +40,7 @@ namespace PrototipoApi.Controllers
             user.RefreshTokens.Add(refreshToken);
             await _userManager.UpdateAsync(user);
 
-            SetRefreshTokenCookie(refreshToken.Token);
+            SetRefreshTokenCookie(refreshToken.Token, refreshToken.ExpiresAt);
 
             return Ok(new { AccessToken = accessToken });
         }
@@ -57,6 +59,10 @@ namespace PrototipoApi.Controllers
             var result = await _userManager.CreateAsync(user, request.Password);
             if (!result.Succeeded)
                 return BadRequest(result.Errors);
+
+            // Asegura que el rol 'Admin' existe
+            if (!await _roleManager.RoleExistsAsync("Admin"))
+                await _roleManager.CreateAsync(new IdentityRole("Admin"));
 
             // Asignar rol de administrador por defecto
             await _userManager.AddToRoleAsync(user, "Admin");
@@ -85,7 +91,7 @@ namespace PrototipoApi.Controllers
             var newRefreshToken = _tokenService.GenerateRefreshToken(GetIpAddress());
             user.RefreshTokens.Add(newRefreshToken);
             await _userManager.UpdateAsync(user);
-            SetRefreshTokenCookie(newRefreshToken.Token);
+            SetRefreshTokenCookie(newRefreshToken.Token, newRefreshToken.ExpiresAt);
 
             return Ok(new { AccessToken = newAccessToken });
         }
@@ -109,14 +115,16 @@ namespace PrototipoApi.Controllers
             return Ok(new { Message = "Sesión cerrada correctamente" });
         }
 
-        private void SetRefreshTokenCookie(string token)
+        private void SetRefreshTokenCookie(string token, DateTime expires)
         {
             var cookieOptions = new CookieOptions
             {
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Expires = DateTime.UtcNow.AddDays(int.Parse(HttpContext.RequestServices.GetService<IConfiguration>()!["Jwt:RefreshTokenDays"]!))
+                HttpOnly = true,           // Previene acceso desde JavaScript
+                Secure = true,             // Solo HTTPS
+                SameSite = SameSiteMode.None, // Usa None si frontend y backend están en dominios distintos
+                Path = "/api/auth",      // Limita scope a endpoints auth
+                Expires = expires,         // Expiración igual al refresh token
+                IsEssential = true
             };
             Response.Cookies.Append("refreshToken", token, cookieOptions);
         }
