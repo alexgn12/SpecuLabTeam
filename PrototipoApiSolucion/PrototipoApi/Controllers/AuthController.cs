@@ -115,6 +115,37 @@ namespace PrototipoApi.Controllers
             return Ok(new { Message = "Sesión cerrada correctamente" });
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userManager.Users
+                .Select(u => new { u.Id, u.UserName, u.Email })
+                .ToListAsync();
+            return Ok(users);
+        }
+
+        [Authorize]
+        [HttpDelete("user")]
+        public async Task<IActionResult> DeleteUser([FromQuery] string? id, [FromQuery] string? email, [FromQuery] string? userName)
+        {
+            AppUser? user = null;
+            if (!string.IsNullOrEmpty(id))
+                user = await _userManager.FindByIdAsync(id);
+            else if (!string.IsNullOrEmpty(email))
+                user = await _userManager.FindByEmailAsync(email);
+            else if (!string.IsNullOrEmpty(userName))
+                user = await _userManager.FindByNameAsync(userName);
+
+            if (user == null)
+                return NotFound("Usuario no encontrado");
+
+            var result = await _userManager.DeleteAsync(user);
+            if (!result.Succeeded)
+                return BadRequest(result.Errors);
+
+            return Ok(new { Message = "Usuario eliminado correctamente" });
+        }
+
         private void SetRefreshTokenCookie(string token, DateTime expires)
         {
             var cookieOptions = new CookieOptions
