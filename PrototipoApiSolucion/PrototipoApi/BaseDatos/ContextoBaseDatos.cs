@@ -1,14 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using PrototipoApi.Entities;
 using PrototipoApi.Models;
 
 namespace PrototipoApi.BaseDatos
 {
-    public class ContextoBaseDatos : DbContext
+    // Unificado: ahora hereda de IdentityDbContext<AppUser>
+    public class ContextoBaseDatos : IdentityDbContext<AppUser>
     {
         public ContextoBaseDatos(DbContextOptions<ContextoBaseDatos> options) : base(options)
         {
-
         }
         public DbSet<Request> Requests { get; set; }
         public DbSet<Status> Statuses { get; set; }
@@ -18,6 +19,7 @@ namespace PrototipoApi.BaseDatos
         public DbSet<TransactionType> TransactionsTypes { get; set; } = default!;
         public DbSet<Apartment> Apartments { get; set; } = default!;
         public DbSet<RequestStatusHistory> RequestStatusHistories { get; set; } = default!;
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,6 +36,12 @@ namespace PrototipoApi.BaseDatos
                 .WithMany()
                 .HasForeignKey(rsh => rsh.NewStatusId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Índices para RefreshToken
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => rt.UserId);
+            modelBuilder.Entity<RefreshToken>()
+                .HasIndex(rt => new { rt.Token, rt.IsRevoked });
         }
     }
 }

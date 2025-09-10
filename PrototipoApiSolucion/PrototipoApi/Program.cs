@@ -9,6 +9,11 @@ using System.Reflection;
 using FluentValidation;
 using PrototipoApi.Infrastructure.RealTime;
 using Serilog;
+using PrototipoApi.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 // Crea el constructor de la aplicaci�n web
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +44,42 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ContextoBaseDatos>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Configuración de Identity
+builder.Services.AddIdentityCore<AppUser>(options =>
+{
+    // Política de contraseñas
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireUppercase = true;
+
+    // Configuración de bloqueo
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+
+    // Email único
+    options.User.RequireUniqueEmail = true;
+})
+.AddEntityFrameworkStores<ContextoBaseDatos>()
+.AddDefaultTokenProviders();
+
+// Registro de Autenticación JWT
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
+            ValidateIssuer = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidateAudience = true,
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30)
+        };
+    });
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -46,16 +87,13 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 // Configura CORS para frontend y APIs externas
 builder.Services.AddCors(options =>
 {
-    // Política para frontend (Netlify y localhost)
-    options.AddPolicy("Frontend", policy =>
+    // Política por defecto para SPA (Angular, React, etc.)
+    options.AddDefaultPolicy(policyBuilder =>
     {
-        policy.WithOrigins(
-                "https://speculab.netlify.app",
-                "http://localhost:4200"
-            )
-            .AllowAnyHeader()
+        policyBuilder.WithOrigins("https://localhost:4200", "https://miapp.com")
             .AllowAnyMethod()
-            .AllowCredentials();
+            .AllowAnyHeader()
+            .AllowCredentials(); // Necesario para cookies RT
     });
     // Política abierta para APIs externas (solo si es necesario, úsala con precaución)
     options.AddPolicy("ExternalApi", policy =>
@@ -89,7 +127,7 @@ else
     builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>();
 }
 
-// Registro del servicio externo de apartamentos (igual, si lo necesitas)
+// Registro del servicio externo de apartamentos (asalto, si lo necesitas)
 builder.Services.AddHttpClient<PrototipoApi.Services.IExternalApartmentService, PrototipoApi.Services.ExternalApartmentService>();
 
 // Registro de AutoMapper
@@ -159,14 +197,15 @@ app.Use(async (ctx, next) =>
 });
 
 // Habilita CORS antes de los controladores
-// Usa la política de frontend por defecto
 app.UseCors("Frontend");
 
-// Si necesitas exponer endpoints públicos para APIs externas, aplica la política "ExternalApi" en los controladores/endpoints correspondientes con [EnableCors("ExternalApi")]
-// Redirige autom�ticamente las solicitudes HTTP a HTTPS
+// Redirige automáticamente las solicitudes HTTP a HTTPS
 app.UseHttpsRedirection();
 
-// Habilita la autorizaci�n (pero no la autenticaci�n)
+// Habilita la autenticación JWT
+app.UseAuthentication();
+
+// Habilita la autorización
 app.UseAuthorization();
 
 // Mapea los controladores a las rutas correspondientes
@@ -175,5 +214,5 @@ app.MapControllers();
 // Hub en /hubs/live
 app.MapHub<LiveHub>("/hubs/live");
 
-// Ejecuta la aplicaci�n
+// Ejecuta la aplicación
 app.Run();
