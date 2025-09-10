@@ -140,6 +140,9 @@ builder.Services.AddSingleton<PrototipoApi.Infrastructure.RealTime.IRealTimeNoti
 // Registro del servicio OpenAIService en el contenedor DI para IOpenAIService
 builder.Services.AddScoped<GammaAI.Core.Interfaces.IOpenAIService, GammaAI.Services.OpenAIService>();
 
+// Registro del servicio TokenService para generación de tokens JWT y refresh tokens
+builder.Services.AddScoped<PrototipoApi.Services.TokenService>();
+
 // Construye la aplicaci�n web
 var app = builder.Build();
 
