@@ -121,10 +121,16 @@ if (builder.Environment.IsDevelopment())
         {
             ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
         });
+    builder.Services.AddHttpClient<PrototipoApi.Services.IExternalApiService, PrototipoApi.Services.ExternalApiService>()
+        .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        });
 }
 else
 {
     builder.Services.AddHttpClient<PrototipoApi.Services.IExternalBuildingService, PrototipoApi.Services.ExternalBuildingService>();
+    builder.Services.AddHttpClient<PrototipoApi.Services.IExternalApiService, PrototipoApi.Services.ExternalApiService>();
 }
 
 // Registro del servicio externo de apartamentos (asalto, si lo necesitas)
