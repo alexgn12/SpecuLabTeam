@@ -40,7 +40,8 @@ export class HomeService {
 
   getSummary(): Observable<Summary> {
     // Usar budgets para el total y transacciones para gasto/ingreso acumulado
-    return this.http.get<any[]>(this.endpoints.budgets).pipe(
+    return this.http.get<any>(this.endpoints.budgets).pipe(
+      map(res => res.value || []),
       map((budgets) => {
         let totalBudget = 0;
         let updatedAt = '';

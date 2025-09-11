@@ -77,7 +77,9 @@ export class RequestsService {
   }
 
   getResumenRequests(): Observable<any> {
-  return this.http.get<any>('https://devdemoapi3.azurewebsites.net/api/Ang/resumen-requests');
+    return this.http.get<any>('https://devdemoapi3.azurewebsites.net/api/Ang/resumen-requests').pipe(
+      map(res => res.value)
+    );
   }
 
   /**
