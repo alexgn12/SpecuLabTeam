@@ -88,13 +88,12 @@ builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBeh
 // Configura CORS para frontend y APIs externas
 builder.Services.AddCors(options =>
 {
-    // Política por defecto para SPA (Angular, React, etc.)
-    options.AddDefaultPolicy(policyBuilder =>
+    options.AddPolicy("Frontend", policy =>
     {
-        policyBuilder.WithOrigins("https://localhost:4200", "https://https://speculab.netlify.app")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials(); // Necesario para cookies RT
+        policy.WithOrigins("http://localhost:4200", "https://speculab.netlify.app")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
     // Política abierta para APIs externas (solo si es necesario, úsala con precaución)
     options.AddPolicy("ExternalApi", policy =>
@@ -221,4 +220,4 @@ app.MapControllers();
 app.MapHub<LiveHub>("/hubs/live");
 
 // Ejecuta la aplicación
-app.Run();
+app.Run();app.Run();
