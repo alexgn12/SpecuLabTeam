@@ -18,7 +18,7 @@ import { RentabilidadComponent } from '../../components/rentabilidad';
   imports: [
     CommonModule,
     RouterLink,
-    NgxSwapyComponent,      // 👈 Swapy solo se usa en desktop (no se montará en móvil)
+    NgxSwapyComponent,      // 👈 Swapy solo se usa en desktop (no se montará en móvil) 
     NgChartsModule,
     ResumenRequestsComponent,
     InfoCard,
