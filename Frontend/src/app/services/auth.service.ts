@@ -12,7 +12,7 @@ export class AuthService {
   login(credentials: LoginRequest) {
     // Ajusta la URL según tu backend
     return this.http.post<{ accessToken: string }>(
-      'https://localhost:7092/api/Auth/login',
+      'https://devdemoapi3.azurewebsites.net/api/Auth/login',
       credentials,
       { withCredentials: true }
     );
@@ -58,11 +58,11 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    return this.http.post('https://localhost:7092/api/Auth/refresh-token', {}, { withCredentials: true });
+    return this.http.post('https://devdemoapi3.azurewebsites.net/api/Auth/refresh-token', {}, { withCredentials: true });
   }
 
   logout(): Observable<any> {
-    return this.http.post('/api/Auth/logout', {}, { withCredentials: true });
+    return this.http.post('https://devdemoapi3.azurewebsites.net/api/Auth/logout', {}, { withCredentials: true });
   }
 
   setAccessToken(token: string): void {

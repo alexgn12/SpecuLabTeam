@@ -21,10 +21,10 @@ export class AuthInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // No añadir Authorization a endpoints de autenticación
     const isAuthEndpoint =
-      req.url.includes('https://localhost:7092/api/Auth/login') ||
-      req.url.includes('https://localhost:7092/api/Auth/refresh-token') ||
-      req.url.includes('https://localhost:7092/api/Auth/logout') ||
-      req.url.includes('https://localhost:7092/api/Auth/register');
+      req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/login') ||
+      req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/refresh-token') ||
+      req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/logout') ||
+      req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/register');
 
     let token = this.authService.getAccessToken();
     let authReq = req;
