@@ -1,0 +1,15 @@
+<div class="login-container">
+  <h2>Iniciar sesión</h2>
+  <form (ngSubmit)="login()" #loginForm="ngForm">
+    <div>
+      <label for="email">Email</label>
+      <input id="email" name="email" type="email" [(ngModel)]="email" required autocomplete="username" />
+    </div>
+    <div>
+      <label for="password">Contraseña</label>
+      <input id="password" name="password" type="password" [(ngModel)]="password" required autocomplete="current-password" />
+    </div>
+    <div *ngIf="error" class="error">{{ error }}</div>
+    <button type="submit" [disabled]="loading">Entrar</button>
+  </form>
+</div>

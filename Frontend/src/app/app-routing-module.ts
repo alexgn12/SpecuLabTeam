@@ -11,8 +11,10 @@ import { PatrimonyComponent } from './pages/patrimony/patrimony';
 
 // Definición de rutas
 import { RequestHistoryComponent } from './components/request-history/request-history.component';
+import { LoginComponent } from './pages/login/login.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },             // Ruta raíz: / 
+  { path: 'login', component: LoginComponent }, // /login
   { path: 'requests', component: Requests }, // /requests
   { path: 'budget', component: Budget},     // /budget
   // { path: 'history', component: History }, // /history (antiguo)

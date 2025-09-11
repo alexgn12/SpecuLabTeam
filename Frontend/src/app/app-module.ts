@@ -4,7 +4,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 // import { MatPaginatorModule } from '@angular/material/paginator'; // Instalar Angular Material para habilitar
 import { AppRoutingModule } from './app-routing-module';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './services/auth.interceptor';
 import { App } from './app';
 import { Header } from './components/header/header';
 import { Footer } from './components/footer/footer';
@@ -14,6 +15,7 @@ import { Requests } from './pages/requests/requests';
 import { Budget } from './pages/budget/budget';
 
 import { InfoCard } from './components/info-card/info-card';
+import { LoginComponent } from './pages/login/login.component';
 import { TransactionsPageComponent } from "./components/transactions-page/transactions-page.component";
 import { ResumenRequestsComponent } from './components/resumen-requests/resumen-requests.component';
 import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
@@ -40,11 +42,13 @@ import { AnalyzeBuildingRequestComponent } from './components/analyze-building-r
     ResumenRequestsComponent,
     ZoneGrafo,
     RequestHistoryComponent,
-  Footer,
-  AnalyzeBuildingRequestComponent,
+    Footer,
+    AnalyzeBuildingRequestComponent,
+    LoginComponent,
   ],
   providers: [
-    provideBrowserGlobalErrorListeners()
+    provideBrowserGlobalErrorListeners(),
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [App]
 })

@@ -1,7 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal, computed } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 export interface LoginRequest {
   email: string;
@@ -10,13 +9,52 @@ export interface LoginRequest {
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private tokenSubject = new BehaviorSubject<string | null>(null);
-  token$ = this.tokenSubject.asObservable();
+  login(credentials: LoginRequest) {
+    // Ajusta la URL según tu backend
+    return this.http.post<{ accessToken: string }>(
+      '/api/Auth/login',
+      credentials,
+      { withCredentials: true }
+    );
+  }
+  private _accessToken = signal<string | null>(null);
+  private _tokenExpiry = signal<Date | null>(null);
 
-  constructor(private http: HttpClient) {}
+  /**
+   * Devuelve los roles del usuario extraídos del JWT (claim 'roles' o 'role')
+   */
+  getUserRoles(): string[] {
+    const token = this._accessToken();
+    if (!token) return [];
+    const payload = this.parseJwt(token);
+    // Soporta 'roles' como array o string, o 'role' como string
+    if (Array.isArray(payload.roles)) return payload.roles;
+    if (typeof payload.roles === 'string') return [payload.roles];
+    if (typeof payload.role === 'string') return [payload.role];
+    return [];
+  }
 
-  login(credentials: LoginRequest): Observable<any> {
-    return this.http.post('/api/Auth/login', credentials, { withCredentials: true });
+  // ...el resto de la clase AuthService...
+
+
+  /**
+   * Devuelve si el usuario está autenticado (token válido y no expirado)
+   */
+  public isAuthenticated(): boolean {
+    const token = this._accessToken();
+    const expiry = this._tokenExpiry();
+    return token !== null && expiry !== null && expiry > new Date();
+  }
+
+
+  constructor(private http: HttpClient) {
+    // Cargar token y expiración desde localStorage si existen
+    const token = localStorage.getItem('access_token');
+    const expiry = localStorage.getItem('access_token_expiry');
+    if (token && expiry) {
+      this._accessToken.set(token);
+      this._tokenExpiry.set(new Date(expiry));
+    }
   }
 
   refreshToken(): Observable<any> {
@@ -24,22 +62,43 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post('/api/Auth/logout', {}, { withCredentials: true }).pipe(
-      tap(() => this.tokenSubject.next(null))
-    );
+    return this.http.post('/api/Auth/logout', {}, { withCredentials: true });
   }
 
-  setToken(token: string) {
-    this.tokenSubject.next(token);
+  setAccessToken(token: string): void {
+    const payload = this.parseJwt(token);
+    this._accessToken.set(token);
+    const expiry = new Date(payload.exp * 1000);
+    this._tokenExpiry.set(expiry);
     localStorage.setItem('access_token', token);
+    localStorage.setItem('access_token_expiry', expiry.toISOString());
   }
 
-  getToken(): string | null {
-    return this.tokenSubject.value || localStorage.getItem('access_token');
+  getAccessToken(): string | null {
+    return this.isAuthenticated() ? this._accessToken() : null;
   }
 
-  clearToken() {
-    this.tokenSubject.next(null);
+  clearToken(): void {
+    this._accessToken.set(null);
+    this._tokenExpiry.set(null);
     localStorage.removeItem('access_token');
+    localStorage.removeItem('access_token_expiry');
+  }
+
+  // Decodifica el JWT para extraer el payload
+  private parseJwt(token: string): any {
+    try {
+      const base64Url = token.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const jsonPayload = decodeURIComponent(
+        atob(base64)
+          .split('')
+          .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+          .join('')
+      );
+      return JSON.parse(jsonPayload);
+    } catch {
+      return {};
+    }
   }
 }
