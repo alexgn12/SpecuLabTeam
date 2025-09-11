@@ -1,0 +1,28 @@
+.logout-btn {
+  background: none;
+  border: none;
+  color: #dc3545;
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1.2rem;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-radius: 0.375rem;
+  margin-top: 0.53rem;
+}
+.logout-btn:hover, .logout-btn:focus {
+  background: rgba(220,53,69,0.08);
+  color: #a71d2a;
+}
+.logout-btn svg {
+  width: 1.1em;
+  height: 1.1em;
+  stroke: currentColor;
+}
+.logout-btn .logout-text {
+  font-weight: 500;
+  font-size: 0.9em;
+}

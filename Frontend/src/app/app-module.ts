@@ -22,6 +22,7 @@ import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
 import { RequestHistoryComponent } from './components/request-history/request-history.component';
 import { AnalyzeBuildingRequestComponent } from './components/analyze-building-request/analyze-building-request.component';
 import { AuthGuard } from './services/auth.guard';
+import { LogoutButtonComponent } from "./components/logout-button/logout-button";
 @NgModule({
   declarations: [
     App,
@@ -46,7 +47,8 @@ import { AuthGuard } from './services/auth.guard';
     Footer,
     AnalyzeBuildingRequestComponent,
     LoginComponent,
-  ],
+    LogoutButtonComponent
+],
   providers: [
     provideBrowserGlobalErrorListeners(),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
