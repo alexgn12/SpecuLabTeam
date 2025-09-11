@@ -12,7 +12,7 @@ export class AuthService {
   login(credentials: LoginRequest) {
     // Ajusta la URL según tu backend
     return this.http.post<{ accessToken: string }>(
-      '/api/Auth/login',
+      'https://localhost:7092/api/Auth/login',
       credentials,
       { withCredentials: true }
     );
@@ -58,7 +58,7 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    return this.http.post('/api/Auth/refresh-token', {}, { withCredentials: true });
+    return this.http.post('https://localhost:7092/api/Auth/refresh-token', {}, { withCredentials: true });
   }
 
   logout(): Observable<any> {

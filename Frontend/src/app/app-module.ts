@@ -21,6 +21,7 @@ import { ResumenRequestsComponent } from './components/resumen-requests/resumen-
 import { ZoneGrafo } from './components/zone-grafo/zone-grafo';
 import { RequestHistoryComponent } from './components/request-history/request-history.component';
 import { AnalyzeBuildingRequestComponent } from './components/analyze-building-request/analyze-building-request.component';
+import { AuthGuard } from './services/auth.guard';
 @NgModule({
   declarations: [
     App,
@@ -48,7 +49,8 @@ import { AnalyzeBuildingRequestComponent } from './components/analyze-building-r
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    AuthGuard
   ],
   bootstrap: [App]
 })

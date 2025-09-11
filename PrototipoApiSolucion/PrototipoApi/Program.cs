@@ -91,7 +91,7 @@ builder.Services.AddCors(options =>
     // Política por defecto para SPA (Angular, React, etc.)
     options.AddDefaultPolicy(policyBuilder =>
     {
-        policyBuilder.WithOrigins("https://localhost:4200", "https://miapp.com")
+        policyBuilder.WithOrigins("https://localhost:4200", "https://https://speculab.netlify.app")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials(); // Necesario para cookies RT

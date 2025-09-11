@@ -12,17 +12,18 @@ import { PatrimonyComponent } from './pages/patrimony/patrimony';
 // Definición de rutas
 import { RequestHistoryComponent } from './components/request-history/request-history.component';
 import { LoginComponent } from './pages/login/login.component';
+import { AuthGuard } from './services/auth.guard';
 const routes: Routes = [
-  { path: '', component: HomeComponent },             // Ruta raíz: / 
-  { path: 'login', component: LoginComponent }, // /login
-  { path: 'requests', component: Requests }, // /requests
-  { path: 'budget', component: Budget},     // /budget
+  { path: 'login', component: LoginComponent }, // /login (sin guard)
+  { path: '', component: HomeComponent, canActivate: [AuthGuard] },             // Ruta raíz: / 
+  { path: 'requests', component: Requests, canActivate: [AuthGuard] }, // /requests
+  { path: 'budget', component: Budget, canActivate: [AuthGuard] },     // /budget
   // { path: 'history', component: History }, // /history (antiguo)
-  { path: 'request-history', component: RequestHistoryComponent }, // /request-history (nuevo)
-  { path: 'formulario', component: Formulario }, // /formulario
-  { path: 'formulario/:buildingCode', component: Formulario }, // /formulario/:buildingCode
-  { path: 'formulario/:buildingCode/:requestId', component: Formulario }, // /formulario/:buildingCode/:requestId
-  { path: 'patrimony', component: PatrimonyComponent }, // /patrimony
+  { path: 'request-history', component: RequestHistoryComponent, canActivate: [AuthGuard] }, // /request-history (nuevo)
+  { path: 'formulario', component: Formulario, canActivate: [AuthGuard] }, // /formulario
+  { path: 'formulario/:buildingCode', component: Formulario, canActivate: [AuthGuard] }, // /formulario/:buildingCode
+  { path: 'formulario/:buildingCode/:requestId', component: Formulario, canActivate: [AuthGuard] }, // /formulario/:buildingCode/:requestId
+  { path: 'patrimony', component: PatrimonyComponent, canActivate: [AuthGuard] }, // /patrimony
 
   // Si quieres manejar rutas no encontradas (404)
   { path: '**', redirectTo: '', pathMatch: 'full' }    // Redirige a Home
