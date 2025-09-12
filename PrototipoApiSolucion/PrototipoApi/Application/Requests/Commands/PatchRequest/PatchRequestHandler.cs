@@ -63,20 +63,7 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
             });
             await _requests.SaveChangesAsync();
 
-            // Llamada a la API externa si el estado es Aprobado o Rechazado
-            if (status.StatusType == "Aprobado" || status.StatusType == "Rechazado")
-            {
-                string value = status.StatusType == "Aprobado"
-                    ? "5BAA7D8E-08A4-44AD-A713-2CF845C90471"
-                    : "5112B66E-3DD7-4E1C-A95B-FB60D1C87704";
-                var buildingCode = entity.Building?.BuildingCode;
-                if (!string.IsNullOrEmpty(buildingCode))
-                {
-                    await _externalApiService.PatchBuildingStatusAsync(buildingCode, value);
-                }
-            }
-
-            // Si el nuevo estado es "Aprobado", crear transacción de gasto
+            // Si el nuevo estado es "Aprobado", crear transacción de gasto y luego llamar a la API externa con manejo de excepción
             if (status.StatusType == "Aprobado")
             {
                 var gastoType = await _transactionTypes.GetOneAsync(t => t.TransactionName == "GASTO");
@@ -103,7 +90,41 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
                         await _budgetRepository.SaveChangesAsync();
                     }
                 }
+                // Llamada a la API externa con manejo de excepción
+                try
+                {
+                    string value = "5BAA7D8E-08A4-44AD-A713-2CF845C90471";
+                    var buildingCode = entity.Building?.BuildingCode;
+                    if (!string.IsNullOrEmpty(buildingCode))
+                    {
+                        await _externalApiService.PatchBuildingStatusAsync(buildingCode, value);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Puedes registrar el error aquí, por ejemplo usando un logger
+                    // Console.WriteLine($"Error al llamar a la API externa: {ex.Message}");
+                }
             }
+            // Si el estado es "Rechazado", solo llamar a la API externa con manejo de excepción
+            else if (status.StatusType == "Rechazado")
+            {
+                try
+                {
+                    string value = "5112B66E-3DD7-4E1C-A95B-FB60D1C87704";
+                    var buildingCode = entity.Building?.BuildingCode;
+                    if (!string.IsNullOrEmpty(buildingCode))
+                    {
+                        await _externalApiService.PatchBuildingStatusAsync(buildingCode, value);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Puedes registrar el error aquí, por ejemplo usando un logger
+                    // Console.WriteLine($"Error al llamar a la API externa: {ex.Message}");
+                }
+            }
+
             return true;
         }
     }
