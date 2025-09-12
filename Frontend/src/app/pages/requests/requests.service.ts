@@ -30,7 +30,7 @@ export interface IPaginatedRequests {
 
 @Injectable({ providedIn: 'root' })
 export class RequestsService {
-  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/requests';
+  private apiUrl = 'https://devdemoapi3.azurewebsites.net/api/requests'; 
 
   constructor(private http: HttpClient) {}
 
