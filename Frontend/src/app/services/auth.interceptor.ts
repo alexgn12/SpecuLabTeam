@@ -23,7 +23,6 @@ export class AuthInterceptor implements HttpInterceptor {
     const isAuthEndpoint =
       req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/login') ||
       req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/refresh-token') ||
-      req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/logout') ||
       req.url.includes('https://devdemoapi3.azurewebsites.net/api/Auth/register');
 
     let token = this.authService.getAccessToken();

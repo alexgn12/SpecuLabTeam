@@ -1,43 +1,149 @@
-.login-container {
-  max-width: 350px;
-  margin: 60px auto;
-  padding: 2rem;
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+:host {
+  /* Paleta y tokens */
+  --brand: #1976d2;
+  --brand-2: #6c8cff;
+  --ok: #10b981;
+  --error: #ef4444;
+
+  /* Degradado gris-azulado de arriba a abajo (ajusta a tu app) */
+  --bg-top: #eef2f7;      /* más claro arriba */
+  --bg-mid: #e4ebf5;      /* transición sutil */
+  --bg-bottom: #d2dbea;   /* más azulado abajo */
+
+  /* Dark mode opcional (si tu app lo usa) */
+  --bg-top-dark: #0b1220;
+  --bg-mid-dark: #0e1727;
+  --bg-bottom-dark: #121d32;
+
+  --card-bg: rgba(255, 255, 255, 0.14);
+  --card-bd: rgba(255, 255, 255, 0.28);
+  --text: #0f172a;
+  --muted: #64748b;
 }
-.login-container h2 {
-  margin-bottom: 1.5rem;
-  text-align: center;
+
+/* ===== Shell y fondo ===== */
+.auth-shell {
+  /* Antes: position: relative; min-height: 100svh; ... */
+  position: fixed;      /* ocupa el viewport completo */
+  inset: 0;             /* top/right/bottom/left = 0 */
+  display: grid;
+  place-items: center;
+  overflow: hidden;     /* evita cualquier scroll */
+  color: var(--text);
+  background: linear-gradient(to bottom, var(--bg-top), var(--bg-mid) 55%, var(--bg-bottom));
 }
-.login-container label {
-  display: block;
-  margin-bottom: 0.3rem;
-  font-weight: 500;
+
+
+.bg-gradient { position: absolute; inset: 0; pointer-events: none; }
+
+.grain, .vignette { position: absolute; inset: 0; pointer-events: none; }
+.grain {
+  opacity: .05; /* textura muy sutil para evitar banding en el degradado */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160' viewBox='0 0 160 160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
-.login-container input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.vignette { box-shadow: inset 0 0 180px rgba(0,0,0,.18); }
+
+/* ===== Tarjeta glass ===== */
+.login-card {
+  position: relative;
+  width: min(420px, 92vw);
+  padding: clamp(1.2rem, 3.2vw, 2rem);
+  border-radius: 24px;
+  background: var(--card-bg);
+  border: 1px solid var(--card-bd);
+  backdrop-filter: blur(18px) saturate(140%);
+  box-shadow: 0 30px 60px rgba(20, 24, 40, 0.18);
 }
-.login-container .error {
-  color: #c00;
-  margin-bottom: 1rem;
-  text-align: center;
+
+.brand { text-align: center; margin-bottom: 1rem; }
+.brand-logo { width: 56px; height: 56px; object-fit: contain; opacity: .9; }
+.brand-title { font-size: clamp(1.3rem, 2.4vw, 1.6rem); font-weight: 800; letter-spacing: .2px; }
+.brand-subtitle { color: var(--muted); margin-top: .2rem; margin-bottom: .8rem; }
+
+/* ===== Form ===== */
+.field { margin: .9rem 0; }
+label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: .4rem; }
+.input-wrap {
+  display: grid;
+  grid-template-columns: 28px 1fr auto;
+  align-items: center;
+  gap: .6rem;
+  padding: .6rem .8rem;
+  border-radius: 14px;
+  background: rgba(255,255,255,.55);
+  border: 1px solid rgba(15,23,42,.06);
+  transition: border-color .2s, box-shadow .2s, background .2s;
 }
-.login-container button {
-  width: 100%;
-  padding: 0.7rem;
-  background: #1976d2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 1rem;
-  cursor: pointer;
+.input-wrap:focus-within {
+  border-color: color-mix(in srgb, var(--brand) 50%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 18%, transparent);
+  background: rgba(255,255,255,.72);
 }
-.login-container button[disabled] {
-  background: #90caf9;
-  cursor: not-allowed;
+.input-wrap .icon { font-weight: 700; opacity: .5; text-align: center; }
+.input-wrap input {
+  border: 0; background: transparent; outline: none; width: 100%;
+  font-size: 1rem; color: var(--text);
+}
+.input-wrap .ghost {
+  border: 0; background: transparent; font-weight: 600; color: var(--brand);
+  padding: .3rem .4rem; border-radius: 8px; cursor: pointer;
+}
+.input-wrap .ghost:hover { text-decoration: underline; }
+
+.error {
+  margin: .6rem 0 0.8rem;
+  color: #d93025;
+  background: color-mix(in srgb, #d93025 8%, transparent);
+  border: 1px solid color-mix(in srgb, #d93025 24%, transparent);
+  padding: .6rem .8rem; border-radius: 10px; font-weight: 600; text-align: center;
+}
+
+/* ===== Botón CTA con shimmer y spinner ===== */
+.cta {
+  margin-top: .4rem; width: 100%; border: 0; cursor: pointer; color: #fff;
+  font-weight: 700; font-size: 1rem; padding: .9rem 1rem; border-radius: 14px;
+  position: relative; background: linear-gradient(90deg, var(--brand), var(--brand-2));
+  box-shadow: 0 16px 34px rgba(25,118,210,.35); overflow: hidden;
+  transition: transform .06s ease, box-shadow .2s ease, opacity .2s;
+}
+/* Botón sin sombra */
+.cta { box-shadow: none !important; }
+.cta:hover:not(:disabled) { box-shadow: none !important; }
+
+.cta:disabled { opacity: .7; cursor: not-allowed; }
+.cta:hover:not(:disabled) { box-shadow: 0 20px 40px rgba(25,118,210,.42); }
+.cta:active:not(:disabled) { transform: translateY(1px) scale(.997); }
+/* shimmer */
+.cta::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.3) 20%, transparent 40%);
+  transform: translateX(-220%); animation: shine 3.2s ease-in-out infinite;
+}
+@keyframes shine { 0%{transform:translateX(-220%);} 40%,100%{transform:translateX(220%);} }
+/* spinner */
+.btn-loading { display: inline-flex; align-items: center; gap: .6rem; }
+.spinner {
+  width: 16px; height: 16px; border: 2px solid rgba(255,255,255,.6);
+  border-right-color: transparent; border-radius: 50%; animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg);} }
+
+.legal { margin-top: 1rem; text-align: center; font-size: .82rem; color: var(--muted); }
+
+/* ===== Dark mode opcional ===== */
+@media (prefers-color-scheme: dark) {
+  :host {
+    --card-bg: rgba(10, 14, 23, 0.40);
+    --card-bd: rgba(255, 255, 255, 0.10);
+    --text: #e8eef7;
+    --muted: #a5b4c9;
+  }
+  .auth-shell {
+    background: linear-gradient(to bottom, var(--bg-top-dark), var(--bg-mid-dark) 55%, var(--bg-bottom-dark));
+  }
+  .input-wrap {
+    background: rgba(255,255,255,.08);
+    border-color: rgba(255,255,255,.08);
+  }
+  .input-wrap:focus-within { background: rgba(255,255,255,.14); }
 }

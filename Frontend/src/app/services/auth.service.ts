@@ -62,7 +62,8 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.post('https://devdemoapi3.azurewebsites.net/api/Auth/logout', {}, { withCredentials: true });
+  this.clearToken();
+  return this.http.post('https://devdemoapi3.azurewebsites.net/api/Auth/logout', {}, { withCredentials: true });
   }
 
   setAccessToken(token: string): void {
