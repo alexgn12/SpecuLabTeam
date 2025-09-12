@@ -1,6 +1,7 @@
 using MediatR;
 using PrototipoApi.Entities;
 using PrototipoApi.Repositories.Interfaces;
+using PrototipoApi.Services;
 using System;
 using System.Linq;
 using System.Threading;
@@ -16,6 +17,7 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
         private readonly IRepository<PrototipoApi.Entities.Transaction> _transactions;
         private readonly IRepository<PrototipoApi.Entities.TransactionType> _transactionTypes;
         private readonly IRepository<PrototipoApi.Entities.ManagementBudget> _budgetRepository;
+        private readonly IExternalApiService _externalApiService;
 
         public PatchRequestHandler(
             IRepository<Request> requests,
@@ -23,7 +25,8 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
             IRepository<RequestStatusHistory> history,
             IRepository<PrototipoApi.Entities.Transaction> transactions,
             IRepository<PrototipoApi.Entities.TransactionType> transactionTypes,
-            IRepository<PrototipoApi.Entities.ManagementBudget> budgetRepository)
+            IRepository<PrototipoApi.Entities.ManagementBudget> budgetRepository,
+            IExternalApiService externalApiService)
         {
             _requests = requests;
             _statuses = statuses;
@@ -31,11 +34,13 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
             _transactions = transactions;
             _transactionTypes = transactionTypes;
             _budgetRepository = budgetRepository;
+            _externalApiService = externalApiService;
         }
 
         public async Task<bool?> Handle(PatchRequestCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _requests.GetByIdAsync(request.RequestId);
+            // Incluir la relación Building
+            var entity = await _requests.GetOneAsync(r => r.RequestId == request.RequestId, r => r.Building);
             if (entity == null)
                 return null;
             var status = await _statuses.GetByIdAsync(request.StatusId);
@@ -57,6 +62,19 @@ namespace PrototipoApi.Application.Requests.Commands.PatchRequest
                 });
             });
             await _requests.SaveChangesAsync();
+
+            // Llamada a la API externa si el estado es Aprobado o Rechazado
+            if (status.StatusType == "Aprobado" || status.StatusType == "Rechazado")
+            {
+                string value = status.StatusType == "Aprobado"
+                    ? "5BAA7D8E-08A4-44AD-A713-2CF845C90471"
+                    : "5112B66E-3DD7-4E1C-A95B-FB60D1C87704";
+                var buildingCode = entity.Building?.BuildingCode;
+                if (!string.IsNullOrEmpty(buildingCode))
+                {
+                    await _externalApiService.PatchBuildingStatusAsync(buildingCode, value);
+                }
+            }
 
             // Si el nuevo estado es "Aprobado", crear transacción de gasto
             if (status.StatusType == "Aprobado")
