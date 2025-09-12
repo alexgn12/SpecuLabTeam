@@ -28,14 +28,19 @@
     </ng-container>
 
     <ng-template #apartmentBlock>
-      <div class="field"><span class="label">Código</span><span class="value">{{ data.item.apartmentCode }}</span></div>
-      <div class="field"><span class="label">Puerta</span><span class="value">{{ data.item.apartmentDoor }}</span></div>
-      <div class="field"><span class="label">Piso</span><span class="value">{{ data.item.apartmentFloor }}</span></div>
-      <div class="field"><span class="label">Habitaciones</span><span class="value">{{ data.item.numberOfRooms }}</span></div>
-      <div class="field"><span class="label">Baños</span><span class="value">{{ data.item.numberOfBathrooms }}</span></div>
-      <div class="field"><span class="label">Ascensor</span><span class="value">{{ data.item.hasLift ? 'Sí' : 'No' }}</span></div>
-      <div class="field"><span class="label">Garaje</span><span class="value">{{ data.item.hasGarage ? 'Sí' : 'No' }}</span></div>
-      <div class="field"><span class="label">Fecha de alta</span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
+      <ng-container *ngIf="data.item; else noApartment">
+        <div class="field"><span class="label">Código</span><span class="value">{{ data.item.apartmentCode }}</span></div>
+        <div class="field"><span class="label">Puerta</span><span class="value">{{ data.item.apartmentDoor }}</span></div>
+        <div class="field"><span class="label">Piso</span><span class="value">{{ data.item.apartmentFloor }}</span></div>
+        <div class="field"><span class="label">Habitaciones</span><span class="value">{{ data.item.numberOfRooms }}</span></div>
+        <div class="field"><span class="label">Baños</span><span class="value">{{ data.item.numberOfBathrooms }}</span></div>
+        <div class="field"><span class="label">Ascensor</span><span class="value">{{ data.item.hasLift ? 'Sí' : 'No' }}</span></div>
+        <div class="field"><span class="label">Garaje</span><span class="value">{{ data.item.hasGarage ? 'Sí' : 'No' }}</span></div>
+        <div class="field"><span class="label">Fecha de alta</span><span class="value">{{ data.item.createdDate | date:'mediumDate' }}</span></div>
+      </ng-container>
+      <ng-template #noApartment>
+        <div class="field error"><span class="label">Error:</span> No se encontraron datos del apartamento.</div>
+      </ng-template>
     </ng-template>
   </div>
 

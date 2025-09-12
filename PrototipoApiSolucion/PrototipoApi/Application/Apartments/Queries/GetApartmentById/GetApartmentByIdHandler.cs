@@ -22,7 +22,7 @@ namespace PrototipoApi.Application.Apartments.Queries.GetApartmentById
             try
             {
                 _logger.LogInformation($"Obteniendo apartamento con id {request.ApartmentId}");
-                var apartment = await _apartments.GetByIdAsync(request.ApartmentId);
+                var apartment = await _apartments.GetOneAsync(a => a.ApartmentId == request.ApartmentId, a => a.Building);
                 if (apartment == null)
                 {
                     _logger.LogWarning($"Apartamento con id {request.ApartmentId} no encontrado");

@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
-using PrototipoApi.Entities;
+using PrototipoApi.Models;
 
 namespace PrototipoApi.Services
 {
     public interface IExternalApartmentService
     {
-        Task<Apartment?> GetApartmentByCodeAsync(string apartmentCode);
+        Task<ApartmentDto?> GetApartmentByCodeAsync(string apartmentCode);
     }
 }

@@ -15,19 +15,22 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
     private readonly IExternalApartmentService _externalApartmentService;
     private readonly IRepository<ManagementBudget> _budgetRepository;
     private readonly IRealTimeNotifier _realTimeNotifier;
+    private readonly IRepository<Building> _buildingRepository;
 
     public CreateTransactionHandler(
         IRepository<Transaction> repository,
         IRepository<Apartment> apartmentRepository,
         IExternalApartmentService externalApartmentService,
         IRepository<ManagementBudget> budgetRepository,
-        IRealTimeNotifier realTimeNotifier)
+        IRealTimeNotifier realTimeNotifier,
+        IRepository<Building> buildingRepository)
     {
         _repository = repository;
         _apartmentRepository = apartmentRepository;
         _externalApartmentService = externalApartmentService;
         _budgetRepository = budgetRepository;
         _realTimeNotifier = realTimeNotifier;
+        _buildingRepository = buildingRepository;
     }
 
     public async Task<TransactionDto> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
@@ -42,9 +45,26 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
                 var external = await _externalApartmentService.GetApartmentByCodeAsync(request.ApartmentCode);
                 if (external != null)
                 {
-                    await _apartmentRepository.AddAsync(external);
+                    // Buscar el BuildingId usando el BuildingCode
+                    var building = await _buildingRepository.GetOneAsync(b => b.BuildingCode == external.BuildingCode);
+                    var apartmentEntity = new Apartment
+                    {
+                        ApartmentCode = external.ApartmentCode,
+                        ApartmentDoor = external.ApartmentDoor,
+                        ApartmentFloor = external.ApartmentFloor,
+                        ApartmentPrice = external.ApartmentPrice,
+                        NumberOfRooms = external.NumberOfRooms,
+                        NumberOfBathrooms = external.NumberOfBathrooms,
+                        HasLift = external.HasLift,
+                        HasGarage = external.HasGarage,
+                        CreatedDate = external.CreatedDate,
+                        BuildingId = building?.BuildingId ?? 0
+                    };
+                    await _apartmentRepository.AddAsync(apartmentEntity);
                     await _apartmentRepository.SaveChangesAsync();
-                    apartmentId = external.ApartmentId;
+                    // Buscar el ApartmentId por ApartmentCode tras guardar
+                    var savedApartment = await _apartmentRepository.GetOneAsync(a => a.ApartmentCode == apartmentEntity.ApartmentCode);
+                    apartmentId = savedApartment?.ApartmentId;
                 }
             }
             else
@@ -99,6 +119,7 @@ public class CreateTransactionHandler : IRequestHandler<CreateTransactionCommand
             TransactionType = transactionTypeName,
             Description = transaction.Description,
             Amount = (decimal)transaction.Amount,
+            ApartmentId = apartmentId
         };
     }
 }

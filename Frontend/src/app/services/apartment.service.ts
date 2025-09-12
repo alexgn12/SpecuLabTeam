@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 export interface Apartment {
   apartmentId: number;
@@ -23,6 +24,8 @@ export class ApartmentService {
   constructor(private http: HttpClient) {}
 
   getApartmentById(id: number): Observable<Apartment> {
-    return this.http.get<Apartment>(`${this.baseUrl}/${id}`);
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
+      map(res => res.value)
+    );
   }
 }
