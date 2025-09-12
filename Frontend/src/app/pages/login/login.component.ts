@@ -3,12 +3,13 @@ import { Router } from '@angular/router';
 import { AuthService, LoginRequest } from '../../services/auth.service';
 
 import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 @Component({
 	selector: 'app-login',
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.css'],
 	standalone: true,
-	imports: [FormsModule]
+	imports: [CommonModule, FormsModule]
 })
 export class LoginComponent {
 	email = '';
@@ -16,13 +17,20 @@ export class LoginComponent {
 	error: string | null = null;
 	loading = false;
 
+	showPassword = false;
+
+
 	constructor(private auth: AuthService, private router: Router) {}
 
 	login() {
 		this.error = null;
+		// Validación simple de campos
+		if (!this.email || !this.password) {
+			this.error = 'Introduce tu email y contraseña.';
+			return;
+		}
 		this.loading = true;
 		const credentials: LoginRequest = { email: this.email, password: this.password };
-		// Implementa el login real usando AuthService
 		this.auth.login(credentials).subscribe({
 			next: (resp: any) => {
 				if (resp && resp.accessToken) {
@@ -34,7 +42,13 @@ export class LoginComponent {
 				this.loading = false;
 			},
 			error: (err) => {
-				this.error = err?.error?.message || 'Error al iniciar sesión';
+				if (err.status === 401) {
+					this.error = 'Email o contraseña incorrectos.';
+				} else if (err?.error?.message) {
+					this.error = err.error.message;
+				} else {
+					this.error = 'Error al iniciar sesión';
+				}
 				this.loading = false;
 			}
 		});
