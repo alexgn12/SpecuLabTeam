@@ -18,5 +18,6 @@ export class DetalleRequest {
     floorCount: number;
     yearBuilt: number;
     buildingCode: string;
+    apartmentCount?: number;
   };
 }
