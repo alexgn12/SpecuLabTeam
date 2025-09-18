@@ -24,9 +24,7 @@
       <p class="card-text mb-0">
         <strong>Dirección:</strong> {{ building?.street || "N/A" }}<br>
         <strong>Distrito:</strong> {{ building?.district || "N/A" }}<br>
-        <strong>Altura (pisos):</strong> {{ building?.floorCount ?? 'N/A' }}<br>
         <strong>Año:</strong> {{ building?.yearBuilt ?? 'N/A' }}<br>
-        <strong>Número de apartamentos:</strong> {{ building?.apartmentCount ?? 'N/A' }}
       </p>
 
       <button class="btn btn-outline-info btn-sm mt-3"
@@ -37,17 +35,17 @@
     <div class="rc-nums">
       <ul class="list-group list-group-flush rc-list mb-2">
         <li class="list-group-item">
-          <span class="rc-label">Building</span>
+          <span class="rc-label">Precio del Edificio</span>
           <span class="rc-value">{{ request.buildingAmount }}</span>
         </li>
         <li class="list-group-item">
-          <span class="rc-label">Maintenance</span>
+          <span class="rc-label">Precio del Mantenimiento</span>
           <span class="rc-value">{{ request.maintenanceAmount }}</span>
         </li>
       </ul>
 
       <div class="rc-total">
-        <span>Total Amount</span>
+        <span>Cantidad Total</span>
         <strong>{{ totalAmountText }}</strong>
       </div>
 
@@ -82,10 +80,6 @@
 
     <!-- detalle (debajo del grid, ocupa todo el ancho) -->
     <div class="rc-detail" *ngIf="showDetails">
-      <div class="mb-2">
-        <strong>Número de apartamentos:</strong>
-        {{ building?.apartmentCount ?? 'N/A' }}
-      </div>
       <sl-detalle-request [request]="request" [building]="building"></sl-detalle-request>
     </div>
   </div>
